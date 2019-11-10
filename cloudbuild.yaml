@@ -3,8 +3,8 @@ steps:
   #   args: ['fetch', '--unshallow']
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: ['-c', 'echo $$_FIRESTORE_TOKEN']
-    secretEnv: ['_FIRESTORE_TOKEN']
+    args: ['-c', 'echo $$FIRESTORE_TOKEN']
+    secretEnv: ['FIRESTORE_TOKEN']
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: ['-c', 'ls -al']
@@ -24,22 +24,33 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'prebuild:apijson']
 
-  # Deploy to firebase
-  - name: 'gcr.io/$PROJECT_ID/firebase_builder'
+  # build firebase tool
+  - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
       [
         '-c',
-        'firebase',
+        'docker build -t gcr.io/$PROJECT_ID/firebase_builder:latest -f Dockerfile --build-arg FIRESTORE_TOKEN=$$FIRESTORE_TOKEN .',
+      ]
+    secretEnv: ['FIRESTORE_TOKEN']
+    dir: 'build_tools/firebase'
+  # Push Images
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/firebase_builder:latest']
+
+  # Deploy to firebase
+  - name: 'gcr.io/$PROJECT_ID/firebase_builder'
+    args:
+      [
         'deploy',
         '-P',
         '$PROJECT_ID',
         '--only',
         'hosting',
-        '--token=$$_FIRESTORE_TOKEN',
+        '--token=$$FIRESTORE_TOKEN',
         '--debug',
       ]
-    secretEnv: ['_FIRESTORE_TOKEN']
+    secretEnv: ['FIRESTORE_TOKEN']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/monorock-api', '.']
@@ -64,4 +75,4 @@ steps:
 secrets:
   - kmsKeyName: projects/monorock/locations/global/keyRings/monorock-integration-secrets/cryptoKeys/monorock-firebase-token
     secretEnv:
-      _FIRESTORE_TOKEN: CiQAy0NVR7SUUqDhfL1ij6knHd9sIiLX/kgy8pBEeUPIBWnF3vwSkAEAlioXGAphMnchTae3mzJ8Mav88uqFX4AgZj9s5qnkXEmSsTdgNcKd+7E+XvMoY0tDfLHh4kjFZEjsVUhE30FORC6+rDmrdaSEYpJNJ7tmJ14mrWvhLAz7AOLAqoFA0l0+yGdiM2UQYPnU4xkx51uJgtu1AS146XaVgOjk69UpyTVF1r/twGSl8Jx7cmqbGAY=
+      FIRESTORE_TOKEN: CiQAy0NVR7SUUqDhfL1ij6knHd9sIiLX/kgy8pBEeUPIBWnF3vwSkAEAlioXGAphMnchTae3mzJ8Mav88uqFX4AgZj9s5qnkXEmSsTdgNcKd+7E+XvMoY0tDfLHh4kjFZEjsVUhE30FORC6+rDmrdaSEYpJNJ7tmJ14mrWvhLAz7AOLAqoFA0l0+yGdiM2UQYPnU4xkx51uJgtu1AS146XaVgOjk69UpyTVF1r/twGSl8Jx7cmqbGAY=
