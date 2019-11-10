@@ -33,7 +33,7 @@ steps:
         '$PROJECT_ID',
         '--only',
         'hosting',
-        '--token=$_FIRESTORE_TOKEN',
+        '--token=${$_FIRESTORE_TOKEN}',
         '--debug',
       ]
     secretEnv: ['_FIRESTORE_TOKEN']
