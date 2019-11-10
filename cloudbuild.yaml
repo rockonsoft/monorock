@@ -3,8 +3,8 @@ steps:
   #   args: ['fetch', '--unshallow']
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: ['-c', 'echo $$FIRESTORE_TOKEN']
-    secretEnv: ['FIRESTORE_TOKEN']
+    args: ['-c', 'echo $$_FIRESTORE_TOKEN']
+    secretEnv: ['_FIRESTORE_TOKEN']
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: ['-c', 'ls -al']
@@ -33,10 +33,10 @@ steps:
         '$PROJECT_ID',
         '--only',
         'hosting',
-        '--token=$FIRESTORE_TOKEN',
+        '--token=$_FIRESTORE_TOKEN',
         '--debug',
       ]
-    secretEnv: ['FIRESTORE_TOKEN']
+    secretEnv: ['_FIRESTORE_TOKEN']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/monorock-api', '.']
@@ -61,4 +61,4 @@ steps:
 secrets:
   - kmsKeyName: projects/monorock/locations/global/keyRings/monorock-integration-secrets/cryptoKeys/monorock-firebase-token
     secretEnv:
-      FIRESTORE_TOKEN: CiQAy0NVR7SUUqDhfL1ij6knHd9sIiLX/kgy8pBEeUPIBWnF3vwSkAEAlioXGAphMnchTae3mzJ8Mav88uqFX4AgZj9s5qnkXEmSsTdgNcKd+7E+XvMoY0tDfLHh4kjFZEjsVUhE30FORC6+rDmrdaSEYpJNJ7tmJ14mrWvhLAz7AOLAqoFA0l0+yGdiM2UQYPnU4xkx51uJgtu1AS146XaVgOjk69UpyTVF1r/twGSl8Jx7cmqbGAY=
+      _FIRESTORE_TOKEN: CiQAy0NVR7SUUqDhfL1ij6knHd9sIiLX/kgy8pBEeUPIBWnF3vwSkAEAlioXGAphMnchTae3mzJ8Mav88uqFX4AgZj9s5qnkXEmSsTdgNcKd+7E+XvMoY0tDfLHh4kjFZEjsVUhE30FORC6+rDmrdaSEYpJNJ7tmJ14mrWvhLAz7AOLAqoFA0l0+yGdiM2UQYPnU4xkx51uJgtu1AS146XaVgOjk69UpyTVF1r/twGSl8Jx7cmqbGAY=
