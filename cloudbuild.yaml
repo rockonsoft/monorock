@@ -1,6 +1,6 @@
 steps:
-  - name: gcr.io/cloud-builders/git
-    args: ['fetch', '--unshallow']
+  # - name: gcr.io/cloud-builders/git - needed if you want a deep clone
+  #   args: ['fetch', '--unshallow']
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['install']
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
