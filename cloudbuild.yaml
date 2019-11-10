@@ -58,4 +58,4 @@ steps:
 secrets:
   - kmsKeyName: projects/monorock/locations/global/keyRings/monorock-integration-secrets/cryptoKeys/monorock-firebase-token
     secretEnv:
-      FIRESTORE_TOKEN: CiQAy0NVR66pWZveF8Sw8aTSs9/BBEdFkjubfxwsB1RZIDPzr6YSkAEAlioXGLtNE6JldirgqLvpz7DKjhOc3Zxc45UF1zp09FA8slpCSRamtJc9Pw/nbk9edzISJxgG85+eJ9ghgMazvsY5bTzJ1mBFiIxbLF5lEU7GNYITjL74EYik959ETgw6EPe6Iy9Qh14XCVCDaEzZbuXDbI+Ho4T8nXDUv4uWpj2QQ2NwntMENDhodCp2rFY=
+      FIRESTORE_TOKEN: CiQAy0NVR7SUUqDhfL1ij6knHd9sIiLX/kgy8pBEeUPIBWnF3vwSkAEAlioXGAphMnchTae3mzJ8Mav88uqFX4AgZj9s5qnkXEmSsTdgNcKd+7E+XvMoY0tDfLHh4kjFZEjsVUhE30FORC6+rDmrdaSEYpJNJ7tmJ14mrWvhLAz7AOLAqoFA0l0+yGdiM2UQYPnU4xkx51uJgtu1AS146XaVgOjk69UpyTVF1r/twGSl8Jx7cmqbGAY=
