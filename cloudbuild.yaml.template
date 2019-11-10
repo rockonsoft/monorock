@@ -1,0 +1,50 @@
+steps:
+  - name: gcr.io/cloud-builders/git
+    args: ['fetch', '--unshallow']
+  - name: 'gcr.io/{PROJECT_ID}/nrwl_builder'
+    args: ['install']
+  - name: 'gcr.io/{PROJECT_ID}/nrwl_builder'
+    args: ['run-script', 'build']
+  - name: 'gcr.io/{PROJECT_ID}/nrwl_builder'
+    args: ['run-script', 'build', 'api']
+
+  - name: 'gcr.io/{PROJECT_ID}/nrwl_builder'
+    args: ['run-script', 'prebuild:apipackage']
+
+  - name: 'gcr.io/{PROJECT_ID}/nrwl_builder'
+    args: ['run-script', 'prebuild:apidocker']
+
+  - name: 'gcr.io/{PROJECT_ID}/nrwl_builder'
+    args: ['run-script', 'prebuild:apijson']
+  # Deploy to firebase
+  - name: 'gcr.io/{PROJECT_ID}/firebase_builder'
+    args:
+      [
+        'deploy',
+        '-P',
+        '{PROJECT_ID}',
+        '--only',
+        'hosting',
+        '--token',
+        '1/VRPFNl3_jIvagxXwS4v-DZnGg2157MbGiAcDVECQIhQ',
+      ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/{PROJECT_ID}/rockme-api', '.']
+    dir: 'dist/apps/api'
+  # Deploy an image from Container Registry to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      [
+        'beta',
+        'run',
+        'deploy',
+        'rockmeapi',
+        '--image',
+        'gcr.io/{PROJECT_ID}/rockme-api',
+        '--region',
+        us-central1,
+        '--platform',
+        'managed',
+        '--allow-unauthenticated',
+      ]
