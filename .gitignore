@@ -39,6 +39,5 @@ testem.log
 Thumbs.db
 
 /.firebase
-.firebaserc
 .firebasetoken*
 

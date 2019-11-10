@@ -31,12 +31,12 @@ steps:
         '--only',
         'hosting',
         '--token',
-        '1//03qZ6MngU0PhXCgYIARAAGAMSNwF-L9Irsw8EiUIz4KDUSKJPt9jGWLG347NAFW1saXqeiCep5-9KzbF16pCM-nngSG85SxE3GRc',
+        '$$FIRESTORE_TOKEN',
       ]
     secretEnv: ['FIRESTORE_TOKEN']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/{PROJECT_ID}/monorock-api', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/monorock-api', '.']
     dir: 'dist/apps/api'
   # Deploy an image from Container Registry to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -47,7 +47,7 @@ steps:
         'deploy',
         'monorockapi',
         '--image',
-        'gcr.io/{PROJECT_ID}/monorock-api',
+        'gcr.io/$PROJECT_ID/monorock-api',
         '--region',
         us-central1,
         '--platform',
