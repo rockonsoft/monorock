@@ -1,10 +1,13 @@
 steps:
-  - name: gcr.io/cloud-builders/git
-    args: ['fetch', '--unshallow']
+  # - name: gcr.io/cloud-builders/git
+  #   args: ['fetch', '--unshallow']
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: ['-c', 'echo $$FIRESTORE_TOKEN']
     secretEnv: ['FIRESTORE_TOKEN']
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'ls -al']
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['install']
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
