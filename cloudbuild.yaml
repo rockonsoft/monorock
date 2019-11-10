@@ -26,7 +26,8 @@ steps:
         '{PROJECT_ID}',
         '--only',
         'hosting',
-        '--token=$$FIRESTORE_TOKEN',
+        '--token'
+        '$FIRESTORE_TOKEN',
       ]
     secretEnv: ['FIRESTORE_TOKEN']
 
