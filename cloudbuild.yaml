@@ -31,7 +31,7 @@ steps:
         '--only',
         'hosting',
         '--token',
-        '$$FIRESTORE_TOKEN',
+        '1//03qZ6MngU0PhXCgYIARAAGAMSNwF-L9Irsw8EiUIz4KDUSKJPt9jGWLG347NAFW1saXqeiCep5-9KzbF16pCM-nngSG85SxE3GRc',
       ]
     secretEnv: ['FIRESTORE_TOKEN']
 
