@@ -27,7 +27,7 @@ steps:
       [
         'deploy',
         '-P',
-        '{PROJECT_ID}',
+        '$PROJECT_ID',
         '--only',
         'hosting',
         '--token',
