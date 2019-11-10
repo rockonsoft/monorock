@@ -27,7 +27,7 @@ steps:
         '--only',
         'hosting',
         '--token',
-        '$FIRESTORE_TOKEN',
+        '$$FIRESTORE_TOKEN',
       ]
     secretEnv: ['FIRESTORE_TOKEN']
 
@@ -54,4 +54,4 @@ steps:
 secrets:
   - kmsKeyName: projects/monorock/locations/global/keyRings/monorock-integration-secrets/cryptoKeys/monorock-firebase-token
     secretEnv:
-      FIRESTORE_TOKEN: 'CiQAy0NVR66pWZveF8Sw8aTSs9/BBEdFkjubfxwsB1RZIDPzr6YSkAEAlioXGLtNE6JldirgqLvpz7DKjhOc3Zxc45UF1zp09FA8slpCSRamtJc9Pw/nbk9edzISJxgG85+eJ9ghgMazvsY5bTzJ1mBFiIxbLF5lEU7GNYITjL74EYik959ETgw6EPe6Iy9Qh14XCVCDaEzZbuXDbI+Ho4T8nXDUv4uWpj2QQ2NwntMENDhodCp2rFY='
+      FIRESTORE_TOKEN: CiQAy0NVR66pWZveF8Sw8aTSs9/BBEdFkjubfxwsB1RZIDPzr6YSkAEAlioXGLtNE6JldirgqLvpz7DKjhOc3Zxc45UF1zp09FA8slpCSRamtJc9Pw/nbk9edzISJxgG85+eJ9ghgMazvsY5bTzJ1mBFiIxbLF5lEU7GNYITjL74EYik959ETgw6EPe6Iy9Qh14XCVCDaEzZbuXDbI+Ho4T8nXDUv4uWpj2QQ2NwntMENDhodCp2rFY=
