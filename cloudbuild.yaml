@@ -1,6 +1,6 @@
 steps:
-  # - name: gcr.io/cloud-builders/git - needed if you want a deep clone
-  #   args: ['fetch', '--unshallow']
+  - name: gcr.io/cloud-builders/git - needed if you want a deep clone
+    args: ['fetch', '--unshallow']
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: ['-c', 'echo $$FIRESTORE_TOKEN']
@@ -30,8 +30,8 @@ steps:
         '$PROJECT_ID',
         '--only',
         'hosting',
-        '--token',
-        $$FIRESTORE_TOKEN,
+        '--token=$$FIRESTORE_TOKEN',
+        '--debug',
       ]
     secretEnv: ['FIRESTORE_TOKEN']
 
