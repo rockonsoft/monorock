@@ -19,9 +19,9 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/firebase_builder:latest']
 
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'gcr.io/$PROJECT_ID/firebase_builder'
     entrypoint: 'bash'
-    args: ['-c', 'ls -al']
+    args: ['-c', 'printenv ENV_FIRESTORE_TOKEN']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['install']
@@ -41,16 +41,7 @@ steps:
 
   # Deploy to firebase
   - name: 'gcr.io/$PROJECT_ID/firebase_builder'
-    args:
-      [
-        'deploy',
-        '-P',
-        '$PROJECT_ID',
-        '--only',
-        'hosting',
-        '--token=ENV_FIRESTORE_TOKEN',
-        '--debug',
-      ]
+    args: ['deploy', '-P', '$PROJECT_ID', '--only', 'hosting', '--debug']
     secretEnv: ['FIRESTORE_TOKEN']
 
   - name: 'gcr.io/cloud-builders/docker'
