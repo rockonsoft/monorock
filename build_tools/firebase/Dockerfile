@@ -1,9 +1,7 @@
-# use latest Node LTS (Boron)
-FROM node:dubnium
-# install Firebase CLI
-RUN npm install -g firebase-tools
+FROM node
 
-ARG FIRESTORE_TOKEN
-ENV ENV_FIRESTORE_TOKEN=${FIRESTORE_TOKEN}
+RUN npm i -g firebase-tools
+ADD firebase.bash /usr/bin
+RUN chmod +x /usr/bin/firebase.bash
 
-ENTRYPOINT ["/usr/local/bin/firebase","--token=`$ENV_FIRESTORE_TOKEN`"]
+ENTRYPOINT [ "/usr/bin/firebase.bash" ]
