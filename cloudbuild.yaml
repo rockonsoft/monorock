@@ -19,14 +19,10 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/firebase_builder:latest']
 
-    # test env variable
-  - name: 'gcr.io/$PROJECT_ID/firebase_builder'
-    entrypoint: 'bash'
-    args: ['-c', 'echo ENV_FIRESTORE_TOKEN']
-
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: ['-c', 'ls -al']
+
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['install']
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
