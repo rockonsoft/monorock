@@ -22,7 +22,7 @@ steps:
     # test env variable
   - name: 'gcr.io/$PROJECT_ID/firebase_builder'
     entrypoint: 'bash'
-    args: ['-c', 'echo $ENV_FIRESTORE_TOKEN']
+    args: ['-c', 'echo ENV_FIRESTORE_TOKEN']
 
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
