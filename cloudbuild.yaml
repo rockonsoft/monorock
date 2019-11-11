@@ -9,9 +9,12 @@ steps:
 
   # build firebase tool
   - name: 'gcr.io/cloud-builders/docker'
+    dir: 'build_tools/firebase'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/firebase', '.']
-    images:
-      - 'gcr.io/$PROJECT_ID/firebase'
+
+  # Push Images
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/firebase:latest']
 
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['list']
@@ -33,6 +36,7 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'prebuild:apijson']
 
+  # Set firebase project
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['use', '$PROJECT_ID']
     secretEnv: ['FIREBASE_TOKEN']
