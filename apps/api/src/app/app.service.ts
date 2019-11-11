@@ -4,6 +4,6 @@ import { Message } from '@monorock/api-interfaces';
 @Injectable()
 export class AppService {
   getData(): Message {
-    return { message: 'Welcome to api!' };
+    return { message: `Welcome to api, version:${process.env.BUILD_ID}` };
   }
 }
