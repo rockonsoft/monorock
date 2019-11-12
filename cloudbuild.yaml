@@ -53,7 +53,7 @@ steps:
         '-t',
         'gcr.io/$PROJECT_ID/monorock-api',
         '.',
-        '--build-arg=$SHORT_SHA',
+        '--build-arg BUILD_COMMIT=$SHORT_SHA',
       ]
     dir: 'dist/apps/api'
   # Deploy an image from Container Registry to Cloud Run
