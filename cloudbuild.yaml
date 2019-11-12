@@ -47,16 +47,16 @@ steps:
     secretEnv: ['FIREBASE_TOKEN']
 
   - name: 'gcr.io/cloud-builders/docker'
+    dir: 'dist/apps/api'
+    entrypoint: 'bash'
     args:
       [
-        'build',
-        '-t',
-        'gcr.io/$PROJECT_ID/monorock-api',
-        '.',
-        '--build-arg BUILD_COMMIT=$SHORT_SHA',
+        '-c',
+        'docker build -t gcr.io/$PROJECT_ID/monorock-api:latest -f Dockerfile --build-arg BUILD_COMMIT=$SHORT_SHA .',
       ]
-    dir: 'dist/apps/api'
-  # Deploy an image from Container Registry to Cloud Run
+    images: ['gcr.io/$PROJECT_ID/monorock-api']
+
+  # Deploy API to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       [
