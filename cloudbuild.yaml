@@ -1,12 +1,4 @@
 steps:
-  # - name: gcr.io/cloud-builders/git
-  #   args: ['fetch', '--unshallow']
-
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: ['-c', 'echo $$FIREBASE_TOKEN']
-    secretEnv: ['FIREBASE_TOKEN']
-
   # build firebase tool
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'build_tools/firebase'
@@ -16,14 +8,21 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/firebase:latest']
 
-  - name: 'gcr.io/$PROJECT_ID/firebase'
-    args: ['list']
-    secretEnv: ['FIREBASE_TOKEN']
+  # build nrwl tool
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'build_tools/nrwl'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/nrwl_builder', '.']
+
+  # Push Images
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/nrwl_builder:latest']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['install']
+
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'build']
+
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'build', 'api']
 
@@ -46,17 +45,18 @@ steps:
     args: ['deploy', '--only', 'hosting', '--debug']
     secretEnv: ['FIREBASE_TOKEN']
 
+  # Build api image with arguments
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'dist/apps/api'
     entrypoint: 'bash'
     args:
       [
         '-c',
-        'docker build -t gcr.io/$PROJECT_ID/monorock-api:latest -f Dockerfile --build-arg BUILD_COMMIT=$SHORT_SHA .',
+        'docker build -t gcr.io/$PROJECT_ID/${_API_IMAGE_NAME}:latest -f Dockerfile --build-arg BUILD_COMMIT=$SHORT_SHA .',
       ]
   # Push Images
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/monorock-api:latest']
+    args: ['push', 'gcr.io/$PROJECT_ID/${_API_IMAGE_NAME}:latest']
   # Deploy API to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -64,15 +64,18 @@ steps:
         'beta',
         'run',
         'deploy',
-        'monorockapi',
+        '${_API_SERVICE_NAME}',
         '--image',
-        'gcr.io/$PROJECT_ID/monorock-api',
+        'gcr.io/$PROJECT_ID/${_API_IMAGE_NAME}',
         '--region',
         us-central1,
         '--platform',
         'managed',
         '--allow-unauthenticated',
       ]
+substitutions:
+  _API_SERVICE_NAME: monorockapi
+  _API_IMAGE_NAME: monorock-api
 
 secrets:
   - kmsKeyName: projects/monorock/locations/global/keyRings/monorock-integration-secrets/cryptoKeys/monorock-firebase-token
