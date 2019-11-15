@@ -1,5 +1,67 @@
 # Monorock
 
+Monorock is a monorepo that features:
+
+- Nestjs API deployable to Google Cloud Run
+- Angular Frontend, deployable to firebase
+- Continious build and integration with Google Cloud Build
+
+## CI / DI with Google Cloud build
+
+Include is a build chain to enable automatic build and deploy on changes to the repository.
+The current solution wat tested with the GitHub integration. Direct integrations are possible with Bitbucket. It is also possible to allow access via a Cloud Source repository.
+
+## Required IAMS
+
+- KMS
+- Cloud Run Admin
+
+### Add your GitHub repo to Cloud Build
+
+From the GCP console, go to Gloud Build | Settings | Add Repository, then follow the simple instructions to configure access to the GitHub repo and create a push trigger.
+
+### Build Tools
+
+Building and deploying the project with Google Cloud Build requires that you create the following build tools (docker images in you project)
+
+- Firebase Build tool
+- Nrwl Buil tools
+
+#### Firebase Build Tool
+
+- [`firebase login:ci`]
+
+To create the firebase build tool
+
+- [`cd build_tool/firebase`]
+- Change all the references to {PROJECT_ID} to your own project
+- [`gcloud builds submit --config=cloudbuild.yaml . `]
+
+#### Nrwl Build Tool
+
+To create the Nrwl build tool
+
+- [`cd build_tool/nrwl`]
+- Change all the references to {PROJECT_ID} to your own project
+- [`gcloud builds submit --config=cloudbuild.yaml . `]
+
+#### Get the firebase token
+
+- [`firebase login:ci`]
+- Enable the KMS api
+- [`gcloud kms keyrings create monorock-integration-secrets --location global`]
+- Create a file to store the secret .firebasetoken
+- [`gcloud kms keys create monorock-firebase-token --location global --keyring monorock-integration-secrets --purpose encryption`]
+- [`gcloud kms encrypt --plaintext-file=.firebasetoken --ciphertext-file=.firebasetoken.enc --location=global --keyring=monorock-integration-secrets --key=monorock-firebase-token`]
+- Use output of [`gcloud kms keys list --location global --keyring monorock-integration-secrets`] add as kmsKeyName to cloudbuild.yaml
+- Convert encoded value to base64 string [`base64 .firebasetoken.enc -w 0 > .firebasetoken.enc.txt`]
+
+Once you Build Tools are created, update the cloudbuild.yaml to reference the tool. Then push changes to the repo or kick off a build manually.
+
+### Skip CI Build
+
+In such scenarios, you can include [skip ci] or [ci skip] in the commit message, and a build will not be triggered.
+
 ## Deploy
 
 The API is deployed to Google Cloud run as a stateless service.
