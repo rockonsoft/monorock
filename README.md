@@ -11,6 +11,11 @@ Monorock is a monorepo that features:
 Include is a build chain to enable automatic build and deploy on changes to the repository.
 The current solution wat tested with the GitHub integration. Direct integrations are possible with Bitbucket. It is also possible to allow access via a Cloud Source repository.
 
+## Required IAMS
+
+- KMS
+- Cloud Run Admin
+
 ### Add your GitHub repo to Cloud Build
 
 From the GCP console, go to Gloud Build | Settings | Add Repository, then follow the simple instructions to configure access to the GitHub repo and create a push trigger.
@@ -52,6 +57,10 @@ To create the Nrwl build tool
 - Convert encoded value to base64 string [`base64 .firebasetoken.enc -w 0 > .firebasetoken.enc.txt`]
 
 Once you Build Tools are created, update the cloudbuild.yaml to reference the tool. Then push changes to the repo or kick off a build manually.
+
+### Skip CI Build
+
+In such scenarios, you can include [skip ci] or [ci skip] in the commit message, and a build will not be triggered.
 
 ## Deploy
 
