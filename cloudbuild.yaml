@@ -4,7 +4,7 @@ steps:
     dir: 'build_tools/firebase'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/firebase', '.']
 
-  # Push Images
+  # push firebase tool image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/firebase:latest']
 
@@ -13,7 +13,7 @@ steps:
     dir: 'build_tools/nrwl'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/nrwl_builder', '.']
 
-  # Push Images
+  # push nrwl tool image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/nrwl_builder:latest']
 
@@ -35,17 +35,17 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'prebuild:apijson']
 
-  # Set firebase project
+  # set firebase token
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['use', '$PROJECT_ID']
     secretEnv: ['FIREBASE_TOKEN']
 
-  # Deploy to firebase
+  # deploy to firebase
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['deploy', '--only', 'hosting', '--debug']
     secretEnv: ['FIREBASE_TOKEN']
 
-  # Build api image with arguments
+  # build api image with arguments
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'dist/apps/api'
     entrypoint: 'bash'
@@ -54,10 +54,11 @@ steps:
         '-c',
         'docker build -t gcr.io/$PROJECT_ID/${_API_IMAGE_NAME}:latest -f Dockerfile --build-arg BUILD_COMMIT=$SHORT_SHA .',
       ]
-  # Push Images
+  # push api images
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/${_API_IMAGE_NAME}:latest']
-  # Deploy API to Cloud Run
+
+  # deploy API to cloud run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       [

@@ -49,6 +49,7 @@ To create the Nrwl build tool
 
 - [`firebase login:ci`]
 - Enable the KMS api
+- Ensure you are in the using the correct project [`gcloud config set project ${PROJECT_ID}`]
 - [`gcloud kms keyrings create monorock-integration-secrets --location global`]
 - Create a file to store the secret .firebasetoken
 - [`gcloud kms keys create monorock-firebase-token --location global --keyring monorock-integration-secrets --purpose encryption`]
