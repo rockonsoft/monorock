@@ -27,7 +27,7 @@ steps:
       - kms
       - decrypt
       - --ciphertext-file=environment.prod.ts.enc
-      - --plaintext-file=environment.prod.ts
+      - --plaintext-file=environment.ts
       - --location=global
       - --keyring=${_ENC_KEY_RING}
       - --key=${_ENC_KEY}
