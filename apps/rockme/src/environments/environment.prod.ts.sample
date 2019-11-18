@@ -1,0 +1,14 @@
+export const environment = {
+  production: true,
+  application: 'rockme',
+  firebase: {
+    apiKey: '',
+    authDomain: '',
+    databaseURL: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: '',
+    appId: '',
+    measurementId: ''
+  }
+};
