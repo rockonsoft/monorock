@@ -32,6 +32,11 @@ steps:
       - --keyring=${_ENC_KEY_RING}
       - --key=${_ENC_KEY}
 
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'apps/rockme/src/environments'
+    entrypoint: 'bash'
+    args: ['-c', 'ls -al']
+
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'build', '--prod']
 
