@@ -41,6 +41,9 @@ steps:
     args: ['run-script', 'build', '--prod']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
+    args: ['run-script', 'build', 'api', '--prod']
+
+  - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'prebuild:apipackage']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
