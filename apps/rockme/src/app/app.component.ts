@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Message } from '@monorock/api-interfaces';
+import { UserAuthService } from './auth/user-auth.service';
 
 @Component({
   selector: 'monorock-root',

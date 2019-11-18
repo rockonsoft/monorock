@@ -6,6 +6,12 @@ Monorock is a monorepo that features:
 - Angular Frontend, deployable to firebase
 - Continious build and integration with Google Cloud Build
 
+## Client Authentication
+
+- Enable anonymous login in Firebase Project
+- Get Firebase project settings and add to environments
+- Encode environment file, to be decrypted during build
+
 ## CI / DI with Google Cloud build
 
 Include is a build chain to enable automatic build and deploy on changes to the repository.

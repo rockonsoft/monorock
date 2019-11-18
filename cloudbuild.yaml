@@ -20,11 +20,20 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['install']
 
-  - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
-    args: ['run-script', 'build']
+  # decrypt environment file
+  - name: gcr.io/cloud-builders/gcloud
+    dir: apps/rockme/src/environments
+    args:
+      - kms
+      - decrypt
+      - --ciphertext-file=environment.prod.ts.enc
+      - --plaintext-file=environment.prod.ts
+      - --location=global
+      - --keyring=${_ENC_KEY_RING}
+      - --key=${_ENC_KEY}
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
-    args: ['run-script', 'build', 'api']
+    args: ['run-script', 'build', '--prod']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'prebuild:apipackage']
@@ -42,7 +51,7 @@ steps:
 
   # deploy to firebase
   - name: 'gcr.io/$PROJECT_ID/firebase'
-    args: ['deploy', '--only', 'hosting', '--debug']
+    args: ['deploy', '--only', 'hosting']
     secretEnv: ['FIREBASE_TOKEN']
 
   # build api image with arguments
@@ -77,6 +86,8 @@ steps:
 substitutions:
   _API_SERVICE_NAME: monorockapi
   _API_IMAGE_NAME: monorock-api
+  _ENC_KEY_RING: monorock-integration-secrets
+  _ENC_KEY: monorock-firebase-token
 
 secrets:
   - kmsKeyName: projects/monorock/locations/global/keyRings/monorock-integration-secrets/cryptoKeys/monorock-firebase-token

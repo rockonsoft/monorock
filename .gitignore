@@ -41,3 +41,4 @@ Thumbs.db
 /.firebase
 .firebasetoken*
 
+apps/rockme/src/environments/*.ts
