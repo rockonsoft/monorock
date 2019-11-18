@@ -38,6 +38,12 @@ steps:
     args: ['-c', 'ls -al']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
+    args: ['run-script', 'test', 'api']
+
+  - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
+    args: ['run-script', 'test', 'rockme']
+
+  - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'build', '--prod']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
