@@ -3,8 +3,24 @@
   <div>User Id:{{ authUser.uid }}</div>
   <div>Is Anonymous:{{ authUser.isAnonymous }}</div>
 </div>
+<div *ngIf="tenants !== null; else loading_tenants">
+  <div>Loaded tenant:{{ tenants.length }}</div>
+</div>
+<div *ngIf="roles !== null; else loading_roles">
+  <div>Loaded roles:{{ roles.length }}</div>
+</div>
 <ng-template #nouser>
   <div class="no-user">
     Landing: No User
+  </div>
+</ng-template>
+<ng-template #loading_tenants>
+  <div class="loading-tenants">
+    Loading tenants...
+  </div>
+</ng-template>
+<ng-template #loading_roles>
+  <div class="loading-roles">
+    Loading roles...
   </div>
 </ng-template>

@@ -5,7 +5,9 @@ import { AuthModule } from '../auth/auth.module';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-
+import { TenantService } from '../services/tenant.service';
+import { RoleService } from '../services/role.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('LandingComponent', () => {
   let component: LandingComponent;
   let fixture: ComponentFixture<LandingComponent>;
@@ -14,10 +16,12 @@ describe('LandingComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LandingComponent],
       imports: [
+        HttpClientTestingModule,
         AuthModule,
         AngularFireModule.initializeApp(environment.firebase, 'firestarter'),
         AngularFireAuthModule
-      ]
+      ],
+      providers: [TenantService, RoleService]
     }).compileComponents();
   }));
 

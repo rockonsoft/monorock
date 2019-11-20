@@ -11,8 +11,19 @@
     "@nestjs/common": "^6.8.3",
     "@nestjs/core": "^6.8.3",
     "@nestjs/platform-express": "^6.8.3",
+    "@nestjs/typeorm": "^6.2.0",
+    "@nestjsx/crud": "^4.2.0",
+    "@nestjsx/crud-typeorm": "^4.2.0",
+    "@nrwl/angular": "8.7.0",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.11.0",
+    "core-js": "^2.5.4",
+    "firebase": "^7.4.0",
+    "pg": "^7.12.1",
+    "reflect-metadata": "^0.1.13",
     "rxjs": "~6.4.0",
-    "reflect-metadata": "^0.1.13"
+    "typeorm": "^0.2.20",
+    "zone.js": "^0.9.1"
   },
   "devDependencies": {}
 }

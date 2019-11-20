@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserAuthService } from '../auth/user-auth.service';
+import { TenantService } from '../services/tenant.service';
+import { RoleService } from '../services/role.service';
+import { Tenant, Role } from '@monorock/api-interfaces';
 
 @Component({
   selector: 'monorock-landing',
@@ -8,7 +11,13 @@ import { UserAuthService } from '../auth/user-auth.service';
 })
 export class LandingComponent implements OnInit {
   authUser: any = null;
-  constructor(private userAuthService: UserAuthService) {
+  tenants: Tenant[] = null;
+  roles: Role[] = null;
+  constructor(
+    private userAuthService: UserAuthService,
+    private tenantService: TenantService,
+    private roleService: RoleService
+  ) {
     userAuthService.oauthUser.subscribe({
       next: authUser => {
         if (authUser) {
@@ -16,7 +25,24 @@ export class LandingComponent implements OnInit {
         }
       }
     });
+    tenantService.tenants.subscribe({
+      next: tenants => {
+        if (tenants) {
+          this.tenants = tenants;
+        }
+      }
+    });
+    roleService.roles.subscribe({
+      next: roles => {
+        if (roles) {
+          this.roles = roles;
+        }
+      }
+    });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tenantService.load();
+    this.roleService.load();
+  }
 }
