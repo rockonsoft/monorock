@@ -98,7 +98,7 @@ steps:
         'managed',
         '--allow-unauthenticated',
         '--update-env-vars',
-        'DB_ENV=production',
+        'DB_ENV=production,CLOUD_SQL_CONNECTION_NAME=monorock:us-east1:monorock',
       ]
 substitutions:
   _API_SERVICE_NAME: monorockapi
