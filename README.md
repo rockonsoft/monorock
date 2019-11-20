@@ -5,6 +5,11 @@ Monorock is a monorepo that features:
 - Nestjs API deployable to Google Cloud Run
 - Angular Frontend, deployable to firebase
 - Continious build and integration with Google Cloud Build
+- CRUD operations with RBAC on PostgreSQL database
+
+## PostgreSQL and TypeOrm
+
+- running the local proxy: cloud_sql_proxy -instances=projectId:location:instanceName=tcp:5432, e.g: cloud_sql_proxy.exe -instances=monorock:us-east1:monorock=tcp:5432
 
 ## Client Authentication
 
