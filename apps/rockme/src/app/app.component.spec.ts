@@ -9,12 +9,14 @@ import { environment } from '../environments/environment';
 import { LandingComponent } from './landing/landing.component';
 
 import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonModule } from 'primeng/button';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent, LandingComponent],
       imports: [
+        ButtonModule,
         HttpClientModule,
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase, 'firestarter'),
