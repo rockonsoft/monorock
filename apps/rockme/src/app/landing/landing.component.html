@@ -9,6 +9,13 @@
 <div *ngIf="roles !== null; else loading_roles">
   <div>Loaded roles:{{ roles.length }}</div>
 </div>
+
+<div>
+  <button pButton type="button" label="Secondary" class="ui-button-secondary"></button>
+  <button pButton type="button" label="Success" class="ui-button-success"></button>
+  <p-button icon="pi pi-check" iconPos="right" label="Click"></p-button>
+</div>
+
 <ng-template #nouser>
   <div class="no-user">
     Landing: No User

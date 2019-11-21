@@ -22,7 +22,12 @@
             "tsConfig": "apps/rockme/tsconfig.app.json",
             "aot": false,
             "assets": ["apps/rockme/src/favicon.ico", "apps/rockme/src/assets"],
-            "styles": ["apps/rockme/src/styles.scss"],
+            "styles": [
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/nova-light/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "apps/rockme/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -78,10 +83,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "apps/rockme/tsconfig.app.json",
-              "apps/rockme/tsconfig.spec.json"
-            ],
+            "tsConfig": ["apps/rockme/tsconfig.app.json", "apps/rockme/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!apps/rockme/**"]
           }
         },
@@ -160,10 +162,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "apps/api/tsconfig.app.json",
-              "apps/api/tsconfig.spec.json"
-            ],
+            "tsConfig": ["apps/api/tsconfig.app.json", "apps/api/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!apps/api/**"]
           }
         },
@@ -185,10 +184,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/api-interfaces/tsconfig.lib.json",
-              "libs/api-interfaces/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api-interfaces/tsconfig.lib.json", "libs/api-interfaces/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api-interfaces/**"]
           }
         },

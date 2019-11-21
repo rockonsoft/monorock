@@ -16,9 +16,13 @@ import { AppRoutingModule } from './routing/routing.module';
 import { environment } from '../environments/environment';
 import { AuthModule } from './auth/auth.module';
 
+//prime-ng
+import { ButtonModule } from 'primeng/button';
+
 @NgModule({
   declarations: [AppComponent, LandingComponent],
   imports: [
+    ButtonModule,
     BrowserModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase, 'rockme'),
