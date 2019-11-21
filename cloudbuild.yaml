@@ -29,6 +29,10 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['install']
 
+  - name: 'gcr.io/$PROJECT_ID/sass_builder'
+    entrypoint: 'bash'
+    args: ['-c', 'ls -al']
+
   # build stylesheets
   - name: 'gcr.io/$PROJECT_ID/sass_builder'
     args: ['apps/sass/theme.scss', 'apps/rockme/src/assets/theme.css']
@@ -44,11 +48,6 @@ steps:
       - --location=global
       - --keyring=${_ENC_KEY_RING}
       - --key=${_ENC_KEY}
-
-  - name: 'gcr.io/cloud-builders/docker'
-    dir: 'apps/rockme/src/environments'
-    entrypoint: 'bash'
-    args: ['-c', 'ls -al']
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'test', 'api']
