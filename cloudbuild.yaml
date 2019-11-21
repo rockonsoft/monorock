@@ -33,9 +33,11 @@ steps:
     entrypoint: 'bash'
     args: ['-c', 'ls -al']
 
+  - name: 'gcr.io/$PROJECT_ID/sass_builder'
+    args: ['--version']
   # build stylesheets
   - name: 'gcr.io/$PROJECT_ID/sass_builder'
-    args: ['apps/sass/theme.scss', 'apps/rockme/src/assets/theme.css']
+    args: ['./apps/sass/theme.scss', './apps/rockme/src/assets/theme.css']
 
   # decrypt environment file
   - name: gcr.io/cloud-builders/gcloud
