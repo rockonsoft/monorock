@@ -53,6 +53,8 @@
     "core-js": "^2.5.4",
     "firebase": "^7.4.0",
     "pg": "^7.12.1",
+    "primeicons": "^2.0.0",
+    "primeng": "^8.1.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.4.0",
     "typeorm": "^0.2.20",
