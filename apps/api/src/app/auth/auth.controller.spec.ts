@@ -13,9 +13,14 @@ describe('Auth Controller', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [],
       providers: [
-        AuthService,
         LocalStrategy,
         JwtStrategy,
+        {
+          provide: 'AuthService',
+          useValue: {
+            // Your mock
+          }
+        },
         {
           provide: 'UsersService',
           useValue: {
