@@ -1,6 +1,6 @@
 //DbModelMeta
 
-import { Module, Controller } from '@nestjs/common';
+import { Module, Controller, UseGuards } from '@nestjs/common';
 
 import { Injectable } from '@nestjs/common';
 
@@ -8,6 +8,7 @@ import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Crud } from '@nestjsx/crud';
 import { DbModelMeta } from '../dal/entities/model-meta-data.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class ModelMetaService extends TypeOrmCrudService<DbModelMeta> {
@@ -16,6 +17,7 @@ export class ModelMetaService extends TypeOrmCrudService<DbModelMeta> {
   }
 }
 
+@UseGuards(AuthGuard('jwt'))
 @Crud({
   model: {
     type: DbModelMeta

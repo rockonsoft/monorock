@@ -5,9 +5,11 @@
 </div>
 <div *ngIf="tenants !== null; else loading_tenants">
   <div>Loaded tenant:{{ tenants.length }}</div>
+  <div *ngIf="tenantError">Error:{{ tenantError }}</div>
 </div>
 <div *ngIf="roles !== null; else loading_roles">
   <div>Loaded roles:{{ roles.length }}</div>
+  <div *ngIf="rolesError">Error:{{ rolesError }}</div>
 </div>
 
 <div>

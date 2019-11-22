@@ -2,6 +2,10 @@ export enum UserRoles {
   Guest
 }
 
+export interface AccessCheckResult {
+  hasAccess: boolean;
+}
+
 export class AccessItem {
   model: string;
   access: number;

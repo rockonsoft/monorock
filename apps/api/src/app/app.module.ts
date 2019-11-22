@@ -15,6 +15,7 @@ import { UserAccessView } from './dal/entities/user-access.entity';
 import { HostedApplicationModule } from './hosted-app/hosted-app.module';
 import { TenantsModule } from './tenants/tenants.module';
 import { RolesModule } from './roles/roles.module';
+import { AuthModule } from './auth/auth.module';
 
 const PWD = process.env.DB_PWD;
 const connectionName = process.env.CLOUD_SQL_CONNECTION_NAME;
@@ -25,6 +26,7 @@ console.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionNa
 
 @Module({
   imports: [
+    AuthModule,
     HostedApplicationModule,
     TenantsModule,
     RolesModule,

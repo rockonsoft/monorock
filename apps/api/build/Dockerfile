@@ -11,6 +11,8 @@ ENV BUILD_ID=${BUILD_COMMIT}
 ARG DB_PASSWORD
 ENV DB_PWD=${DB_PASSWORD}
 
+ENV API_JWT_TOKEN=${BUILD_COMMIT}${DB_PASSWORD}
+
 # Copy application dependency manifests to the container image.
 # A wildcard is used to ensure both package.json AND package-lock.json are copied.
 # Copying this separately prevents re-running npm install on every code change.
