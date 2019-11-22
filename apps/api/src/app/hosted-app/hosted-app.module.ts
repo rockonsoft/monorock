@@ -1,4 +1,4 @@
-import { Module, Controller } from '@nestjs/common';
+import { Module, Controller, UseGuards } from '@nestjs/common';
 
 import { Injectable } from '@nestjs/common';
 
@@ -6,6 +6,7 @@ import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Crud } from '@nestjsx/crud';
 import { DbApplication } from '../dal/entities/application.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class HostedApplicationService extends TypeOrmCrudService<DbApplication> {
@@ -14,6 +15,7 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
   }
 }
 
+@UseGuards(AuthGuard('jwt'))
 @Crud({
   model: {
     type: DbApplication

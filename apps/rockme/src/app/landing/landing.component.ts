@@ -12,7 +12,10 @@ import { Tenant, Role } from '@monorock/api-interfaces';
 export class LandingComponent implements OnInit {
   authUser: any = null;
   tenants: Tenant[] = null;
+  tenantError: string;
   roles: Role[] = null;
+  rolesError: string;
+
   constructor(
     private userAuthService: UserAuthService,
     private tenantService: TenantService,
@@ -32,10 +35,26 @@ export class LandingComponent implements OnInit {
         }
       }
     });
+    tenantService.error.subscribe({
+      next: error => {
+        if (error) {
+          this.tenantError = error.statusText;
+          this.tenants = [];
+        }
+      }
+    });
     roleService.roles.subscribe({
       next: roles => {
         if (roles) {
           this.roles = roles;
+        }
+      }
+    });
+    roleService.error.subscribe({
+      next: error => {
+        if (error) {
+          this.rolesError = error.statusText;
+          this.roles = [];
         }
       }
     });
