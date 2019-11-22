@@ -12,7 +12,7 @@ import { JwtStrategy } from './jwt.strategy';
     UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.API_JWT_TOKEN,
+      secret: process.env.API_JWT_TOKEN ? process.env.API_JWT_TOKEN : 'TEST_TOKEN',
       signOptions: { expiresIn: '60s' }
     })
   ],
