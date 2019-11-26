@@ -3,11 +3,10 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as admin from 'firebase-admin';
 
-admin.initializeApp();
-
-// admin.initializeApp({
-//   credential: admin.credential.applicationDefault()
-// });
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://monorock.firebaseio.com'
+});
 
 @Injectable()
 export class AuthService {
