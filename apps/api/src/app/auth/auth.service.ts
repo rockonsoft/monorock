@@ -3,9 +3,11 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as admin from 'firebase-admin';
 
-admin.initializeApp({
-  credential: admin.credential.applicationDefault()
-});
+admin.initializeApp();
+
+// admin.initializeApp({
+//   credential: admin.credential.applicationDefault()
+// });
 
 @Injectable()
 export class AuthService {
