@@ -5,6 +5,7 @@ import * as admin from 'firebase-admin';
 const creds = admin.credential.applicationDefault();
 
 console.log(creds);
+console.log(process.env.FIREBASE_CONFIG);
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   databaseURL: 'https://monorock.firebaseio.com'
