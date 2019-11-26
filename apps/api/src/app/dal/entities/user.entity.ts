@@ -10,8 +10,15 @@ export class DbUser implements AppUser {
   @Column()
   display: string;
 
-  @Column()
-  tenantId: string;
+  @Column({
+    nullable: true
+  })
+  tenantId: number;
+
+  @Column({
+    nullable: true
+  })
+  tenantExternalId: string;
 
   @Column({
     nullable: true

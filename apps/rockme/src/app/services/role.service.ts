@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { UserRoles, Role } from '@monorock/api-interfaces';
+import { Role } from '@monorock/api-interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { ApiAuthService } from '../auth/api-auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,13 @@ export class RoleService {
   private _error: BehaviorSubject<HttpErrorResponse | null> = new BehaviorSubject(null);
   public readonly error: Observable<HttpErrorResponse | null> = this._error.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiAuth: ApiAuthService) {}
 
   load() {
-    this.http.get<Role[]>('/api/roles').subscribe({
+    const apiToken = this.apiAuth.getToken();
+    let headers = new HttpHeaders().set('Authorization', 'Bearer ' + apiToken);
+
+    this.http.get<Role[]>('/api/roles', { headers }).subscribe({
       next: roles => {
         if (roles) {
           this._roles.next(roles);

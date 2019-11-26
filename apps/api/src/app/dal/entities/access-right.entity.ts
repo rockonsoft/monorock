@@ -1,12 +1,5 @@
 import { Entity, Column, PrimaryColumn, Index, PrimaryGeneratedColumn } from 'typeorm';
-
-enum AccessType {
-  create,
-  read,
-  update,
-  delete,
-  all
-}
+import { AccessType } from '@monorock/api-interfaces';
 
 @Entity('accessright')
 export class DbAccessRight {
@@ -14,10 +7,10 @@ export class DbAccessRight {
   id: number;
 
   @Column({ type: 'int' })
-  model: number; //fk for either
+  modelId: number; //fk for either
 
   @Column({ type: 'int', nullable: true })
-  property: number; //fk for either
+  propertyId: number; //fk for either
 
   @Column({ type: 'int' })
   roleId: number;

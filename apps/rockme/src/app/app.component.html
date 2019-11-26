@@ -1,9 +1,9 @@
 <div style="text-align:center">
   <h1>Welcome to monorock!</h1>
+  <h3>({{ (hello$ | async).message }})</h3>
   <img height="200px" src="assets/images/rockonsoft-cat-white.svg" />
   <h3>A deployable monorepo demo application from Rockonsoft</h3>
   <div class="content-container">
     <router-outlet></router-outlet>
   </div>
 </div>
-<div>Message: {{ hello$ | async | json }}</div>

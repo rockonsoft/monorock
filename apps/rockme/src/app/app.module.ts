@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -18,11 +19,14 @@ import { AuthModule } from './auth/auth.module';
 
 //prime-ng
 import { ButtonModule } from 'primeng/button';
+import { PanelModule } from 'primeng/panel';
 
 @NgModule({
   declarations: [AppComponent, LandingComponent],
   imports: [
+    BrowserAnimationsModule,
     ButtonModule,
+    PanelModule,
     BrowserModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase, 'rockme'),

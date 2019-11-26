@@ -1,35 +1,39 @@
-<h1>Landing Page</h1>
-<div *ngIf="authUser !== null; else nouser">
-  <div>User Id:{{ authUser.uid }}</div>
-  <div>Is Anonymous:{{ authUser.isAnonymous }}</div>
-</div>
-<div *ngIf="tenants !== null; else loading_tenants">
-  <div>Loaded tenant:{{ tenants.length }}</div>
-  <div *ngIf="tenantError">Error:{{ tenantError }}</div>
-</div>
-<div *ngIf="roles !== null; else loading_roles">
-  <div>Loaded roles:{{ roles.length }}</div>
-  <div *ngIf="rolesError">Error:{{ rolesError }}</div>
-</div>
+<div *ngIf="authUser !== null; else nouser" class="profile-container">
+  <div class="profile-box profile-box-yellow">
+    <div class="profile-box-header">Welcome, {{ authUser.display }}</div>
 
-<div>
-  <button pButton type="button" label="Secondary" class="ui-button-secondary"></button>
-  <button pButton type="button" label="Success" class="ui-button-success"></button>
-  <p-button icon="pi pi-check" iconPos="right" label="Click"></p-button>
+    <div class="profile-box-content">
+      <div class="p-grid profile-detail" *ngIf="authUser.isAnonymous" class="p-grid profile-detail">
+        <div class="p-col">This is an anonymous account created for you.</div>
+      </div>
+      <div class="p-grid profile-detail">
+        <div class="p-col right">Id:</div>
+        <div class="p-col left">{{ authUser.userId }}</div>
+      </div>
+      <div class="p-grid profile-detail">
+        <div class="p-col  right">You are associated with the tenant:</div>
+        <div class="p-col  left">{{ authUser.tenantExternalId }}</div>
+      </div>
+      <div class="p-grid profile-detail">
+        <div class="p-col right">You have the following roles:</div>
+        <div *ngFor="let role of authUser.roles" class="p-col left">{{ role }}</div>
+      </div>
+      <div class="p-grid profile-access-title">
+        <div class="p-col">You have the following access</div>
+      </div>
+      <div class="p-grid profile-access-header">
+        <div class="p-col">Model</div>
+        <div class="p-col">Access</div>
+      </div>
+      <div *ngFor="let accProf of authUser.accessProfile" class="p-grid profile-access-detail">
+        <div class="p-col">{{ accProf.model }}</div>
+        <div class="p-col">{{ getAccessString(accProf.access, accProf.model) }}</div>
+      </div>
+    </div>
+  </div>
 </div>
-
 <ng-template #nouser>
   <div class="no-user">
-    Landing: No User
-  </div>
-</ng-template>
-<ng-template #loading_tenants>
-  <div class="loading-tenants">
-    Loading tenants...
-  </div>
-</ng-template>
-<ng-template #loading_roles>
-  <div class="loading-roles">
-    Loading roles...
+    The user is being signed in and infation fetched from the api.
   </div>
 </ng-template>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserAuthService } from '../auth/user-auth.service';
 import { TenantService } from '../services/tenant.service';
 import { RoleService } from '../services/role.service';
-import { Tenant, Role } from '@monorock/api-interfaces';
+import { Tenant, Role, getFriendlyAccessName } from '@monorock/api-interfaces';
+import { ApiAuthService } from '../auth/api-auth.service';
 
 @Component({
   selector: 'monorock-landing',
@@ -17,14 +17,16 @@ export class LandingComponent implements OnInit {
   rolesError: string;
 
   constructor(
-    private userAuthService: UserAuthService,
+    private apiAuthService: ApiAuthService,
     private tenantService: TenantService,
     private roleService: RoleService
   ) {
-    userAuthService.oauthUser.subscribe({
+    apiAuthService.appUser.subscribe({
       next: authUser => {
         if (authUser) {
           this.authUser = authUser;
+          this.tenantService.load();
+          this.roleService.load();
         }
       }
     });
@@ -60,8 +62,9 @@ export class LandingComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.tenantService.load();
-    this.roleService.load();
+  ngOnInit() {}
+
+  getAccessString(acc, model) {
+    return getFriendlyAccessName(acc, model);
   }
 }

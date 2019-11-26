@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Tenant } from '@monorock/api-interfaces';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { ApiAuthService } from '../auth/api-auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,13 @@ export class TenantService {
   private _error: BehaviorSubject<HttpErrorResponse | null> = new BehaviorSubject(null);
   public readonly error: Observable<HttpErrorResponse | null> = this._error.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiAuth: ApiAuthService) {}
 
   load() {
-    this.http.get<Tenant[]>('/api/tenants').subscribe({
+    const apiToken = this.apiAuth.getToken();
+    let headers = new HttpHeaders().set('Authorization', 'Bearer ' + apiToken);
+
+    this.http.get<Tenant[]>('/api/tenants', { headers }).subscribe({
       next: tenants => {
         console.log(tenants);
         if (tenants) {
