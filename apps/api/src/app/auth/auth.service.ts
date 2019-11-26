@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as admin from 'firebase-admin';
+const creds = admin.credential.applicationDefault();
 
+console.log(creds);
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   databaseURL: 'https://monorock.firebaseio.com'
