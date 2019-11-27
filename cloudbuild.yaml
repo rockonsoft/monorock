@@ -63,10 +63,6 @@ steps:
     entrypoint: 'bash'
     args: ['-c', 'ls -al']
 
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: ['-c', 'cp ./key.json ./dist/apps/api/']
-
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'test', 'api']
 
@@ -87,6 +83,10 @@ steps:
 
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'prebuild:apijson']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'cp ./key.json dist/apps/api']
 
   # set firebase token
   - name: 'gcr.io/$PROJECT_ID/firebase'
