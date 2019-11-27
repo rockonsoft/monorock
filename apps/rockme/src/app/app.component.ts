@@ -9,6 +9,12 @@ import { UserAuthService } from './auth/user-auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
-  constructor(private http: HttpClient) {}
+  greeting = 'Checking api...';
+  constructor(private http: HttpClient) {
+    this.http.get<Message>('/api/hello').subscribe(msg => {
+      if (msg) {
+        this.greeting = msg.message;
+      }
+    });
+  }
 }
