@@ -64,7 +64,6 @@ steps:
     args: ['-c', 'ls -al']
 
   - name: 'gcr.io/cloud-builders/docker'
-    dir: 'dist/apps/api'
     entrypoint: 'bash'
     args: ['-c', 'cp ./key.json ./dist/apps/api/']
 
