@@ -6,7 +6,9 @@ import { getManager } from 'typeorm';
 import { UserAccessView } from '../dal/entities/user-access.entity';
 import { DbAppUserRole } from '../dal/entities/app-user-role.entity';
 import { DbRole } from '../dal/entities/role.entity';
-import { AppUser, UserRoles } from '@monorock/api-interfaces';
+import { AppUser, GUEST_ROLE, HOST_APPLICATION, TENANT_ZERO_EXT_ID } from '@monorock/api-interfaces';
+import { DbApplication } from '../dal/entities/application.entity';
+import { DbTenant } from '../dal/entities/tenant.entity';
 
 export type User = any;
 
@@ -16,11 +18,17 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
     super(repo);
   }
 
-  // async findOne(username: string): Promise<User | undefined> {
-  //   return this.users.find(user => user.username === username);
-  // }
-
   async upsertUser(user: AppUser) {
+    Logger.log('Start upsert user');
+
+    const entityManager = getManager();
+    const tenant0 = await entityManager
+      .createQueryBuilder(DbTenant, 'tenant')
+      .where('tenant.externalId = :extId', {
+        extId: TENANT_ZERO_EXT_ID
+      })
+      .getOne();
+
     const existing = await this.repo
       .createQueryBuilder('appuser')
       .where('appuser.userId = :userId', {
@@ -29,32 +37,50 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .getOne();
     if (!existing) {
       Logger.log(`Inserting user: ${user.display}: ${user.userId}`);
+
+      user.tenantExternalId = tenant0.externalId;
+      user.tenantId = tenant0.id;
       const newUser = await this.repo.save(user);
       //assign Guest role
       await this.assignGuestRole(newUser);
+      return newUser;
     } else return existing;
   }
 
   async assignGuestRole(newUser: DbUser) {
     const entityManager = getManager();
 
+    const app0 = await entityManager
+      .createQueryBuilder(DbApplication, 'application')
+      .where('application.name = :appName', {
+        appName: HOST_APPLICATION
+      })
+      .getOne();
+
+    const tenant0 = await entityManager
+      .createQueryBuilder(DbTenant, 'tenant')
+      .where('tenant.externalId = :extId', {
+        extId: TENANT_ZERO_EXT_ID
+      })
+      .getOne();
+
     const role = await entityManager
       .createQueryBuilder(DbRole, 'role')
       .where('role.name = :guestRole', {
-        guestRole: 'GUESTUSER'
+        guestRole: GUEST_ROLE
       })
       .getOne();
     const dbAppUserRole: DbAppUserRole = {
-      appId: 1,
-      tenantId: 3,
+      appId: app0.id,
+      tenantId: tenant0.id,
       roleId: role.id,
       userId: newUser.userId
     };
     const res = await entityManager
-      .createQueryBuilder()
+      .createQueryBuilder(DbAppUserRole, 'appuserrole')
       .insert()
       .into('appuserrole')
-      .values([dbAppUserRole])
+      .values(dbAppUserRole)
       .execute();
     return res;
   }
@@ -68,12 +94,22 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
         userId: userId
       })
       .getOne();
+
     if (!dbUser) {
       throw new UnauthorizedException();
     }
 
-    //check access
+    //TODO use relation to get in one query
     const entityManager = getManager();
+
+    const tenant = await entityManager
+      .createQueryBuilder(DbTenant, 'tenant')
+      .where('tenant.externalId = :extId', {
+        extId: dbUser.tenantExternalId ? dbUser.tenantExternalId : TENANT_ZERO_EXT_ID
+      })
+      .getOne();
+
+    //check access
     const res = await entityManager
       .createQueryBuilder(UserAccessView, 'accessview')
       .where('accessview.userId =  :userId', {
@@ -87,14 +123,17 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       };
     });
 
+    const roles = [...new Set(res.map(accView => accView.roleName))];
+
     const appUser: AppUser = {
       userId: userId,
       display: dbUser.display,
-      tenantId: 'tenant-0',
+      tenantId: tenant.id,
+      tenantExternalId: tenant.externalId,
       email: dbUser.email,
       picture: dbUser.picture,
       isAnonymous: false,
-      roles: [UserRoles.Guest],
+      roles: roles,
       accessProfile: accessProfile
     };
     return appUser;

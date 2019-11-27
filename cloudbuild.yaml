@@ -46,6 +46,23 @@ steps:
       - --keyring=${_ENC_KEY_RING}
       - --key=${_ENC_KEY}
 
+  # decrypt key file
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - kms
+      - decrypt
+      - --ciphertext-file=monorock_key.enc
+      - --plaintext-file=key.json
+      - --location=global
+      - --keyring=${_ENC_KEY_RING}
+      - --key=${_ENC_KEY}
+      - --verbosity=debug
+
+  # build api image with arguments
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'ls -al']
+
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'test', 'api']
 
@@ -67,6 +84,10 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'prebuild:apijson']
 
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'cp ./key.json dist/apps/api']
+
   # set firebase token
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['use', '$PROJECT_ID']
@@ -84,7 +105,7 @@ steps:
     args:
       [
         '-c',
-        'docker build -t gcr.io/$PROJECT_ID/${_API_IMAGE_NAME}:latest -f Dockerfile --build-arg BUILD_COMMIT=$SHORT_SHA --build-arg DB_PASSWORD=$$DB_PASSWORD .',
+        'docker build -t gcr.io/$PROJECT_ID/${_API_IMAGE_NAME}:latest -f Dockerfile --build-arg BUILD_COMMIT=$SHORT_SHA --build-arg DB_PASSWORD=$$DB_PASSWORD  .',
       ]
     secretEnv: ['DB_PASSWORD']
   # push api images

@@ -1,0 +1,117 @@
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.profile-container {
+  .profile-box {
+    height: 100%;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 10px;
+    @include multi-shadow(
+      0 1px 3px 0 rgba(0, 0, 0, 0.2),
+      0 2px 2px 0 rgba(0, 0, 0, 0.12),
+      0 0 2px 0 rgba(0, 0, 0, 0.14)
+    );
+
+    .profile-box-header {
+      font-size: 24px;
+      border-radius: 10px;
+      height: 24px;
+    }
+
+    .profile-box-content {
+      padding: 8px 14px 14px 14px;
+
+      .profile-box-icon {
+        @include border-radius(50%);
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        margin: 0 auto;
+        margin-top: -28px;
+
+        i {
+          line-height: inherit;
+          font-size: 28px;
+        }
+      }
+
+      .profile-box-title {
+        font-size: 16px;
+      }
+      .profile-access-title {
+        font-size: 24px;
+      }
+      .profile-access-header {
+        font-size: 16px;
+      }
+
+      .profile-box-count {
+        font-size: 24px;
+      }
+    }
+
+    &.profile-box-red {
+      background-color: #e91e63;
+      .profile-box-header {
+        background-color: #f06292;
+      }
+
+      .profile-box-content {
+        background-color: #e91e63;
+
+        .profile-box-icon {
+          background-color: #e91e63;
+        }
+      }
+    }
+
+    &.profile-box-blue {
+      background-color: #00bcd4;
+      .profile-box-header {
+        background-color: #4dd0e1;
+      }
+
+      .profile-box-content {
+        background-color: #00bcd4;
+
+        .profile-box-icon {
+          background-color: #00bcd4;
+        }
+      }
+    }
+
+    &.profile-box-yellow {
+      background-color: #ffc107;
+      .profile-box-header {
+        background-color: #ffd54f;
+      }
+
+      .profile-box-content {
+        background-color: #ffc107;
+
+        .profile-box-icon {
+          background-color: #ffc107;
+        }
+      }
+    }
+
+    &.profile-box-grey {
+      background-color: #616161;
+      .profile-box-header {
+        background-color: #9e9e9e;
+      }
+
+      .profile-box-content {
+        background-color: #616161;
+
+        .profile-box-icon {
+          background-color: #616161;
+        }
+      }
+    }
+  }
+}

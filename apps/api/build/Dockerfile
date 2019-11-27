@@ -11,6 +11,8 @@ ENV BUILD_ID=${BUILD_COMMIT}
 ARG DB_PASSWORD
 ENV DB_PWD=${DB_PASSWORD}
 
+ENV GOOGLE_APPLICATION_CREDENTIALS=key.json
+
 ENV API_JWT_TOKEN=${BUILD_COMMIT}${DB_PASSWORD}
 
 # Copy application dependency manifests to the container image.

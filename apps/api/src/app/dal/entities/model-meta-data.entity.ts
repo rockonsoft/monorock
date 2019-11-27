@@ -13,5 +13,5 @@ export class DbModelMeta implements ModelMeta {
   description: string;
 
   @Column({ type: 'int' })
-  application: number; //fk for application
+  applicationId: number; //fk for application
 }

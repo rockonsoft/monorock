@@ -24,7 +24,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         const savedUser: AppUser = {
           userId: decodedToken.user_id,
           display: anonymous ? decodedToken.provider_id : decodedToken.name,
-          tenantId: 'tenant0', //TODO
           picture: anonymous ? null : decodedToken.picture,
           email: anonymous ? null : decodedToken.email
         };

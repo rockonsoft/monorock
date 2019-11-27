@@ -1,7 +1,3 @@
-export enum UserRoles {
-  Guest
-}
-
 export interface AccessCheckResult {
   hasAccess: boolean;
 }
@@ -14,8 +10,9 @@ export class AccessItem {
 export interface AppUser {
   userId: string;
   display: string;
-  tenantId: string;
-  roles?: UserRoles[];
+  tenantId?: number;
+  tenantExternalId?: string;
+  roles?: string[];
   apiToken?: string;
   oathToken?: string;
   accessProfile?: AccessItem[];
