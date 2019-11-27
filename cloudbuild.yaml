@@ -60,7 +60,6 @@ steps:
 
   # build api image with arguments
   - name: 'gcr.io/cloud-builders/docker'
-    dir: 'dist/apps/api'
     entrypoint: 'bash'
     args: ['-c', 'ls -al']
 
