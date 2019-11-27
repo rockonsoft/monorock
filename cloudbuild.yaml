@@ -57,6 +57,12 @@ steps:
       - --keyring=${_ENC_KEY_RING}
       - --key=${_ENC_KEY}
 
+  # build api image with arguments
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'dist/apps/api'
+    entrypoint: 'bash'
+    args: ['-c', 'cp key.json dist/apps/api/']
+
   - name: 'gcr.io/$PROJECT_ID/nrwl_builder'
     args: ['run-script', 'test', 'api']
 
