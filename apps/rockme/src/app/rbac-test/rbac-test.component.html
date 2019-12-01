@@ -1,0 +1,40 @@
+<div class="p-grid list-bar">
+  <div class="p-col-1 list-bar-hamburger">
+    <button pButton type="button" icon="pi pi-home" iconPos="left"></button>
+  </div>
+  <div class="p-col-10 list-bar-title">Roles & RBAC</div>
+  <div class="p-col-1 list-bar-action">
+    <button pButton type="button" icon="pi pi-refresh" iconPos="left"></button>
+  </div>
+</div>
+<div *ngIf="authUser !== null; else nouser">
+  <div class="p-grid roles">
+    <div class="p-col">
+      <p>You have the following roles</p>
+    </div>
+  </div>
+  <div>
+    <div class="p-grid profile-access-title">
+      <div class="p-col feature">You have the following role-based access</div>
+    </div>
+    <p-table [value]="authUser.accessProfile">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Model</th>
+          <th>Access</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-access>
+        <tr>
+          <td>{{ access.model }}</td>
+          <td>{{ getAccessString(access.access, access.model) }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<ng-template #nouser>
+  <div class="no-user">
+    You are being signed in and details fetched from the api.
+  </div>
+</ng-template>

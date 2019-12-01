@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { TenantService } from '../services/tenant.service';
-import { RoleService } from '../services/role.service';
-import { Tenant, Role, getFriendlyAccessName, TENANT_ADMIN_ROLE, AppUser } from '@monorock/api-interfaces';
 import { ApiAuthService } from '../auth/api-auth.service';
 import { UserAuthService } from '../auth/user-auth.service';
+import { TenantService } from '../services/tenant.service';
+import { RoleService } from '../services/role.service';
 import { Router } from '@angular/router';
+import { Tenant, Role, getFriendlyAccessName } from '@monorock/api-interfaces';
 
 @Component({
-  selector: 'monorock-landing',
-  templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss']
+  selector: 'monorock-rbac-test',
+  templateUrl: './rbac-test.component.html',
+  styleUrls: ['./rbac-test.component.scss']
 })
-export class LandingComponent implements OnInit {
-  authUser: AppUser = null;
+export class RbacTestComponent implements OnInit {
+  authUser: any = null;
   tenants: Tenant[] = null;
   tenantError: string;
   roles: Role[] = null;
   rolesError: string;
   userProperties: any[] = [];
-  showDetail = false;
 
   constructor(
     private apiAuthService: ApiAuthService,
@@ -75,28 +74,9 @@ export class LandingComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
-
   getAccessString(acc, model) {
     return getFriendlyAccessName(acc, model);
   }
 
-  logout() {
-    this.userAuthService.logout();
-  }
-
-  gotoRbackTest() {
-    this.router.navigateByUrl(`/rbactest`);
-  }
-
-  gotoTenantManagement() {
-    this.router.navigateByUrl(`/tenant`);
-  }
-
-  isTenantAdim() {
-    if (this.authUser && this.authUser.roles.length) {
-      return this.authUser.roles.find(x => x === TENANT_ADMIN_ROLE);
-    }
-    return false;
-  }
+  ngOnInit() {}
 }

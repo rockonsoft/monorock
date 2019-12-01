@@ -1,0 +1,22 @@
+.app-top-bar {
+  height: 85px;
+  background-color: #616161;
+
+  img {
+    height: 70px;
+    margin: 10px;
+  }
+  .top-bar-heading {
+    text-align: center;
+    .top-bar-title {
+      font-size: 32px;
+    }
+    .top-bar-byline {
+      font-size: 16px;
+    }
+  }
+  .get-started {
+    padding-top: 25px;
+    padding-left: 45px;
+  }
+}

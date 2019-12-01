@@ -10,6 +10,7 @@
     text-align: center;
     color: #ffffff;
     border-radius: 10px;
+    margin-top: 10px;
     @include multi-shadow(
       0 1px 3px 0 rgba(0, 0, 0, 0.2),
       0 2px 2px 0 rgba(0, 0, 0, 0.12),
@@ -40,17 +41,31 @@
       }
 
       .profile-box-title {
-        font-size: 16px;
+        font-size: 14px;
       }
       .profile-access-title {
         font-size: 24px;
       }
       .profile-access-header {
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .profile-box-count {
         font-size: 24px;
+      }
+
+      .feature {
+        text-align: left;
+        font-size: 18px;
+      }
+
+      .feature-description {
+        text-align: left;
+        margin-top: 4px;
+      }
+
+      .profile-row-button {
+        margin-top: 4px;
       }
     }
 

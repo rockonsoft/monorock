@@ -6,7 +6,15 @@ import { getManager } from 'typeorm';
 import { UserAccessView } from '../dal/entities/user-access.entity';
 import { DbAppUserRole } from '../dal/entities/app-user-role.entity';
 import { DbRole } from '../dal/entities/role.entity';
-import { AppUser, GUEST_ROLE, HOST_APPLICATION, TENANT_ZERO_EXT_ID } from '@monorock/api-interfaces';
+import {
+  AppUser,
+  GUEST_ROLE,
+  HOST_APPLICATION,
+  TENANT_ZERO_EXT_ID,
+  TENANT_ZERO_NAME,
+  TENANT_ADMIN_ROLE,
+  USER_ADMIN_ROLE
+} from '@monorock/api-interfaces';
 import { DbApplication } from '../dal/entities/application.entity';
 import { DbTenant } from '../dal/entities/tenant.entity';
 
@@ -21,13 +29,16 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
   async upsertUser(user: AppUser) {
     Logger.log('Start upsert user');
 
+    let tenantExtId = user.isAnonymous === false ? user.userId : TENANT_ZERO_EXT_ID;
+    //guess tenant name
+    let tenantName = TENANT_ZERO_NAME;
+    if (user.email) {
+      tenantName = user.email.split('@')[1];
+    }
+
     const entityManager = getManager();
-    const tenant0 = await entityManager
-      .createQueryBuilder(DbTenant, 'tenant')
-      .where('tenant.externalId = :extId', {
-        extId: TENANT_ZERO_EXT_ID
-      })
-      .getOne();
+
+    const tenantId = await this.upsertTenant(tenantExtId, tenantName);
 
     const existing = await this.repo
       .createQueryBuilder('appuser')
@@ -38,16 +49,46 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
     if (!existing) {
       Logger.log(`Inserting user: ${user.display}: ${user.userId}`);
 
-      user.tenantExternalId = tenant0.externalId;
-      user.tenantId = tenant0.id;
+      user.tenantExternalId = tenantExtId;
+      user.tenantId = tenantId;
       const newUser = await this.repo.save(user);
       //assign Guest role
-      await this.assignGuestRole(newUser);
+      if (user.isAnonymous) {
+        await this.assignRole(GUEST_ROLE, newUser, tenantId);
+      } else {
+        //original singned in user creates new tenant
+        await this.assignRole(TENANT_ADMIN_ROLE, newUser, tenantId);
+        await this.assignRole(USER_ADMIN_ROLE, newUser, tenantId);
+        //Todo kick off more tenant initiation stuff here
+      }
       return newUser;
     } else return existing;
   }
 
-  async assignGuestRole(newUser: DbUser) {
+  async upsertTenant(tenantExtId: string, tenantName: string) {
+    const entityManager = getManager();
+    const existing = await entityManager
+      .createQueryBuilder(DbTenant, 'tenant')
+      .where('tenant.externalId = :extId', {
+        extId: tenantExtId
+      })
+      .getOne();
+    let id = null;
+    if (!existing) {
+      const newResult = await entityManager
+        .createQueryBuilder()
+        .insert()
+        .into('tenant')
+        .values({ externalId: tenantExtId, name: tenantName, description: tenantName })
+        .execute();
+      id = newResult.identifiers[0]['id'];
+    } else {
+      id = existing.id;
+    }
+    return id;
+  }
+
+  async assignRole(roleName: string, newUser: DbUser, tenantId: number) {
     const entityManager = getManager();
 
     const app0 = await entityManager
@@ -57,25 +98,20 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       })
       .getOne();
 
-    const tenant0 = await entityManager
-      .createQueryBuilder(DbTenant, 'tenant')
-      .where('tenant.externalId = :extId', {
-        extId: TENANT_ZERO_EXT_ID
-      })
-      .getOne();
-
     const role = await entityManager
       .createQueryBuilder(DbRole, 'role')
       .where('role.name = :guestRole', {
-        guestRole: GUEST_ROLE
+        guestRole: roleName
       })
       .getOne();
+
     const dbAppUserRole: DbAppUserRole = {
       appId: app0.id,
-      tenantId: tenant0.id,
+      tenantId: tenantId,
       roleId: role.id,
       userId: newUser.userId
     };
+
     const res = await entityManager
       .createQueryBuilder(DbAppUserRole, 'appuserrole')
       .insert()

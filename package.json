@@ -33,6 +33,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^8.2.14",
+    "@angular/cdk": "^8.2.3",
     "@angular/common": "^8.2.0",
     "@angular/compiler": "^8.2.0",
     "@angular/core": "^8.2.0",
@@ -55,6 +56,8 @@
     "core-js": "^2.5.4",
     "firebase": "^7.4.0",
     "firebase-admin": "^8.8.0",
+    "firebaseui": "^4.3.0",
+    "firebaseui-angular": "^4.0.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
