@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryColumn, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { AccessType } from '@monorock/api-interfaces';
 
 @Entity('accessright')
 export class DbAccessRight {
@@ -16,5 +15,5 @@ export class DbAccessRight {
   roleId: number;
 
   @Column({ type: 'int' })
-  accessType: AccessType;
+  accessType: number;
 }

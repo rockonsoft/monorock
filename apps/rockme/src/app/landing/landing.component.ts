@@ -33,7 +33,7 @@ export class LandingComponent implements OnInit {
           this.userProperties = [];
           this.userProperties.push({ key: 'Name', value: authUser.display });
           this.userProperties.push({ key: 'Id', value: authUser.userId });
-          this.userProperties.push({ key: 'Tenant', value: authUser.tenantExternalId });
+          this.userProperties.push({ key: 'Tenant', value: authUser.tenantName });
           authUser.roles.forEach(role => {
             this.userProperties.push({ key: 'Role', value: role });
           });

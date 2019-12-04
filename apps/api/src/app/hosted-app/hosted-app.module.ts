@@ -26,7 +26,9 @@ import {
   TENANT_MODEL_DESC,
   ROLE_MODEL_DESC,
   ROLE_MODEL_NAME,
-  AccessType
+  getAccessType,
+  ActionType,
+  ActionScope
 } from '@monorock/api-interfaces';
 import { DbTenant } from '../dal/entities/tenant.entity';
 import { getManager } from 'typeorm';
@@ -63,17 +65,53 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
     const userAdminRoleId = await this.upsertRole(USER_ADMIN_ROLE, USER_ADMIN_ROLE_DESC, applicationId, tenantId);
     const tenantAdminRoleId = await this.upsertRole(TENANT_ADMIN_ROLE, TENANT_ADMIN_ROLE_DESC, applicationId, tenantId);
 
-    await this.upsertAccessRight(guestRoleId, userModelId, AccessType.all_own);
-    await this.upsertAccessRight(guestRoleId, tenantModelId, AccessType.read_own);
-    await this.upsertAccessRight(guestRoleId, roleModelId, AccessType.read_own);
+    await this.upsertAccessRight(guestRoleId, userModelId, getAccessType(ActionType.read, ActionScope.own));
+    await this.upsertAccessRight(guestRoleId, tenantModelId, getAccessType(ActionType.read, ActionScope.own));
+    await this.upsertAccessRight(guestRoleId, roleModelId, getAccessType(ActionType.read, ActionScope.own));
 
-    await this.upsertAccessRight(userAdminRoleId, userModelId, AccessType.all);
-    await this.upsertAccessRight(userAdminRoleId, tenantModelId, AccessType.read_own);
-    await this.upsertAccessRight(userAdminRoleId, roleModelId, AccessType.all);
+    const userAccess =
+      getAccessType(ActionType.read, ActionScope.all) |
+      getAccessType(ActionType.update, ActionScope.ownExcluded) |
+      getAccessType(ActionType.create, ActionScope.all) |
+      getAccessType(ActionType.delete, ActionScope.ownExcluded);
+    await this.upsertAccessRight(userAdminRoleId, userModelId, userAccess);
 
-    await this.upsertAccessRight(tenantAdminRoleId, userModelId, AccessType.all_own);
-    await this.upsertAccessRight(tenantAdminRoleId, tenantModelId, AccessType.all);
-    await this.upsertAccessRight(tenantAdminRoleId, roleModelId, AccessType.all_own);
+    const tenantAccess =
+      getAccessType(ActionType.read, ActionScope.own) |
+      getAccessType(ActionType.update, ActionScope.none) |
+      getAccessType(ActionType.create, ActionScope.none) |
+      getAccessType(ActionType.delete, ActionScope.none);
+
+    await this.upsertAccessRight(userAdminRoleId, tenantModelId, tenantAccess);
+
+    const roleAccess =
+      getAccessType(ActionType.read, ActionScope.all) |
+      getAccessType(ActionType.update, ActionScope.none) |
+      getAccessType(ActionType.create, ActionScope.none) |
+      getAccessType(ActionType.delete, ActionScope.none);
+    await this.upsertAccessRight(userAdminRoleId, roleModelId, roleAccess);
+
+    const userAccessTenantAdmin =
+      getAccessType(ActionType.read, ActionScope.all) |
+      getAccessType(ActionType.update, ActionScope.ownExcluded) |
+      getAccessType(ActionType.create, ActionScope.all) |
+      getAccessType(ActionType.delete, ActionScope.ownExcluded);
+    await this.upsertAccessRight(tenantAdminRoleId, userModelId, userAccessTenantAdmin);
+
+    const tenantAccessTenantAdmin =
+      getAccessType(ActionType.read, ActionScope.own) |
+      getAccessType(ActionType.update, ActionScope.own) |
+      getAccessType(ActionType.create, ActionScope.none) |
+      getAccessType(ActionType.delete, ActionScope.none);
+    await this.upsertAccessRight(tenantAdminRoleId, tenantModelId, tenantAccessTenantAdmin);
+
+    //tenant admins can create new roles
+    const tenantAdmiRoleAccess =
+      getAccessType(ActionType.read, ActionScope.all) |
+      getAccessType(ActionType.update, ActionScope.ownExcluded) |
+      getAccessType(ActionType.create, ActionScope.all) |
+      getAccessType(ActionType.delete, ActionScope.ownExcluded);
+    await this.upsertAccessRight(tenantAdminRoleId, roleModelId, tenantAdmiRoleAccess);
   }
 
   async upsertRole(roleName: string, roleDescription: string, applicationId: number, tenantId: number) {
@@ -158,7 +196,7 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
     return id;
   }
 
-  async upsertAccessRight(roleId: number, modelId: number, accessType: AccessType) {
+  async upsertAccessRight(roleId: number, modelId: number, accessType: number) {
     let id = null;
     const entityManager = getManager();
     const existing = await entityManager

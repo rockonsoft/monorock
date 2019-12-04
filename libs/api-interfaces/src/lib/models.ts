@@ -1,41 +1,53 @@
-export enum AccessType {
-  create,
-  create_own,
-  read,
-  read_own,
-  update,
-  update_own,
-  delete,
-  delete_own,
-  all,
-  all_own
+//ACCESS NUM  |DELETE|CREATE|UPDATE  |READ|
+//ACCESS QUAD |ALL   |None |EXCL.OWN|OWN |
+
+export enum ActionType {
+  read = 0,
+  update = 4,
+  create = 8,
+  delete = 12
 }
 
-export function getFriendlyAccessName(accessType: AccessType, model: string) {
-  switch (accessType) {
-    case AccessType.create:
-      return `Allows user to create ${model} for any user`;
-    case AccessType.create_own:
-      return `Allows user to create own ${model}.`;
-    case AccessType.read:
-      return `Allows user to read ${model} for any user.`;
-    case AccessType.read_own:
-      return `Allows user to read own ${model}.`;
-    case AccessType.update:
-      return `Allows user to update ${model} for any user.`;
-    case AccessType.update_own:
-      return `Allows user to update own ${model}.`;
-    case AccessType.delete:
-      return `Allows user to delete ${model} for any user.`;
-    case AccessType.delete_own:
-      return `Allows user to delete own ${model}.`;
-    case AccessType.all:
-      return `Allows user to list, read, create, update and delete ${model} for any user.`;
-    case AccessType.all_own:
-      return `Allows user to list, read, create, update and delete own ${model}.`;
-    default:
-      return `Has no rights on model ${model}.`;
-  }
+export enum ActionScope {
+  own = 0x0001,
+  ownExcluded = 0x0002,
+  none = 0x0004,
+  all = 0x0008
+}
+
+export function getAccessType(actionType: ActionType, actionScope): number {
+  return actionScope << actionType;
+}
+
+export function getReadAccess(access: number): ActionScope {
+  const readRights = access & 0x000f;
+  if (readRights & ActionScope.all) return ActionScope.all;
+  if (readRights & ActionScope.none) return ActionScope.none;
+  if (readRights & ActionScope.ownExcluded) return ActionScope.ownExcluded;
+  if (readRights & ActionScope.own) return ActionScope.own;
+}
+
+function getScopeText(scope: number) {
+  if (scope & ActionScope.all) return 'All';
+  if (scope & ActionScope.none) return 'Not Allowed';
+  if (scope & ActionScope.ownExcluded) return 'Except Own';
+  if (scope & ActionScope.own) return 'Own';
+
+  return 'Not allowed';
+}
+
+export function getFriendlyAccessName(accessType: number, model: string) {
+  const readRights = accessType & 0x000f;
+  const updateRights = (accessType & 0x00f0) >> ActionType.update;
+  const createRights = (accessType & 0x0f00) >> ActionType.create;
+  const deleteRights = (accessType & 0xf000) >> ActionType.delete;
+
+  const readTxt = `Read:${getScopeText(readRights)}`;
+  const updateTxt = `Update:${getScopeText(updateRights)}`;
+  const createTxt = `Create:${getScopeText(createRights)}`;
+  const DeleteTxt = `Delete:${getScopeText(deleteRights)}`;
+
+  return `User is allowed: ${readTxt},${updateTxt},${createTxt},${DeleteTxt} on ${model}`;
 }
 
 export interface HostedApplication {}

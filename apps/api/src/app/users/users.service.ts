@@ -13,10 +13,13 @@ import {
   TENANT_ZERO_EXT_ID,
   TENANT_ZERO_NAME,
   TENANT_ADMIN_ROLE,
-  USER_ADMIN_ROLE
+  USER_ADMIN_ROLE,
+  TENANT_MODEL_NAME,
+  USER_MODEL_NAME
 } from '@monorock/api-interfaces';
 import { DbApplication } from '../dal/entities/application.entity';
 import { DbTenant } from '../dal/entities/tenant.entity';
+import { DbModelMeta } from '../dal/entities/model-meta-data.entity';
 
 export type User = any;
 
@@ -38,6 +41,13 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
 
     const entityManager = getManager();
 
+    const application = await entityManager
+      .createQueryBuilder(DbApplication, 'application')
+      .where('application.name = :name', {
+        name: HOST_APPLICATION
+      })
+      .getOne();
+
     const tenantId = await this.upsertTenant(tenantExtId, tenantName);
 
     const existing = await this.repo
@@ -51,7 +61,12 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
 
       user.tenantExternalId = tenantExtId;
       user.tenantId = tenantId;
+      user.internalId = (await this.repo.count()) + 1;
       const newUser = await this.repo.save(user);
+
+      // await this.insertOwner(application.id, tenantId, newUser.userId, tenantId, TENANT_MODEL_NAME);
+      // await this.insertOwner(application.id, tenantId, newUser.userId, newUser.internalId, USER_MODEL_NAME);
+
       //assign Guest role
       if (user.isAnonymous) {
         await this.assignRole(GUEST_ROLE, newUser, tenantId);
@@ -64,6 +79,33 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       return newUser;
     } else return existing;
   }
+
+  // async insertOwner(applicationId: number, tenantId: number, ownerId: string, ownedId: number, modelName: string) {
+  //   const entityManager = getManager();
+
+  //   const existingModel = await entityManager
+  //     .createQueryBuilder(DbModelMeta, 'model')
+  //     .where('model.applicationId = :appId', {
+  //       appId: applicationId
+  //     })
+  //     .andWhere('model.name = :modelName', {
+  //       modelName: modelName
+  //     })
+  //     .getOne();
+
+  //   return await entityManager
+  //     .createQueryBuilder()
+  //     .insert()
+  //     .into('userowned')
+  //     .values({
+  //       applicationId: applicationId,
+  //       tenantId: tenantId,
+  //       ownerId: ownerId,
+  //       ownedId: ownedId,
+  //       modelId: existingModel.id
+  //     })
+  //     .execute();
+  // }
 
   async upsertTenant(tenantExtId: string, tenantName: string) {
     const entityManager = getManager();
@@ -152,20 +194,29 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
         userId: userId
       })
       .getMany();
-    const accessProfile = res.map(accView => {
-      return {
-        model: accView.modelName,
-        access: accView.accessType
-      };
+    let accessProfile = [];
+    res.forEach(accView => {
+      const findModel = accessProfile.find(x => x.model === accView.modelName.toLocaleLowerCase());
+      if (findModel) {
+        findModel.access = findModel.access | accView.accessType;
+      } else {
+        accessProfile.push({
+          model: accView.modelName.toLocaleLowerCase(),
+          modelId: accView.modelId,
+          access: accView.accessType
+        });
+      }
     });
 
     const roles = [...new Set(res.map(accView => accView.roleName))];
 
     const appUser: AppUser = {
       userId: userId,
+      internalId: dbUser.internalId,
       display: dbUser.display,
       tenantId: tenant.id,
       tenantExternalId: tenant.externalId,
+      tenantName: tenant.name,
       email: dbUser.email,
       picture: dbUser.picture,
       isAnonymous: false,

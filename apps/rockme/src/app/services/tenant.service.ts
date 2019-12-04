@@ -20,7 +20,7 @@ export class TenantService {
     const apiToken = this.apiAuth.getToken();
     let headers = new HttpHeaders().set('Authorization', 'Bearer ' + apiToken);
 
-    this.http.get<Tenant[]>('/api/tenants', { headers }).subscribe({
+    this.http.get<Tenant[]>('/api/tenant', { headers }).subscribe({
       next: tenants => {
         console.log(tenants);
         if (tenants) {

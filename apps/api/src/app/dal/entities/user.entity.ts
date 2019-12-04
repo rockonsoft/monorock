@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index, Generated } from 'typeorm';
 import { AppUser } from '@monorock/api-interfaces';
 
 @Entity('appuser')
@@ -6,6 +6,9 @@ import { AppUser } from '@monorock/api-interfaces';
 export class DbUser implements AppUser {
   @PrimaryColumn({ type: 'varchar' })
   userId: string;
+
+  @Column({ type: 'int' })
+  internalId: number;
 
   @Column()
   display: string;

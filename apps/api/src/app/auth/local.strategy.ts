@@ -26,7 +26,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
           display: anonymous ? decodedToken.provider_id : decodedToken.name,
           picture: anonymous ? null : decodedToken.picture,
           email: anonymous ? null : decodedToken.email,
-          isAnonymous: anonymous
+          isAnonymous: anonymous,
+          internalId: 0
         };
         const upsertedUser = await this.userService.upsertUser(savedUser);
         return {
