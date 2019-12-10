@@ -51,6 +51,20 @@ export function getFriendlyAccessName(accessType: number, model: string) {
 }
 
 export interface HostedApplication {}
-export interface ModelMeta {}
+export interface ModelMeta {
+  id: number;
+  name: string;
+  description: string;
+  endpoint: string;
+  identityProperty: string;
+  parentName?: string;
+}
 export interface Role {}
 export interface Tenant {}
+export interface Product {}
+export interface UserComment {}
+
+export interface TestResult {
+  statusCode: string;
+  error: string;
+}

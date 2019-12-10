@@ -10,7 +10,7 @@ export class AccessItem {
 
 export interface AppUser {
   userId: string;
-  internalId: number;
+  id?: number;
   display: string;
   tenantId?: number;
   tenantExternalId?: string;

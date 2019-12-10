@@ -8,6 +8,25 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(AuthGuard('local'))
+  @Post('login')
+  async loginUser(@Request() req) {
+    Logger.log('Received request on api/login');
+    Logger.log('got this user from local strategy');
+    Logger.log(req.user);
+    //should be: {
+    //   token: decodedToken,
+    //   user: upsertedUser
+    // };
+    //req.body contains the original user:pwd passed in from client
+    const newToken = await this.authService.generateToken(req.user);
+    Logger.log(`generated ${newToken} for user:${req.user.userId}`);
+    return {
+      api_token: newToken,
+      user: req.user.user
+    };
+  }
+
+  @UseGuards(AuthGuard('local'))
   @Post('tokenlogin')
   async login(@Request() req) {
     Logger.log('Received request on api/tokenlogin');

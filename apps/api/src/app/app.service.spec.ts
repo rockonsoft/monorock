@@ -15,9 +15,8 @@ describe('AppService', () => {
 
   describe('getData', () => {
     it('should return "Welcome to api!"', () => {
-      expect(service.getData()).toEqual({
-        message: 'Welcome to api, version:local build'
-      });
+      const data = service.getData();
+      expect(data.message).toContain('Welcome from api');
     });
   });
 });

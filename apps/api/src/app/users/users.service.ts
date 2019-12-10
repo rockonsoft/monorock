@@ -18,8 +18,8 @@ import {
   USER_MODEL_NAME
 } from '@monorock/api-interfaces';
 import { DbApplication } from '../dal/entities/application.entity';
-import { DbTenant } from '../dal/entities/tenant.entity';
 import { DbModelMeta } from '../dal/entities/model-meta-data.entity';
+import { DbTenant } from '../dal/entities/tenant.entity';
 
 export type User = any;
 
@@ -61,7 +61,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
 
       user.tenantExternalId = tenantExtId;
       user.tenantId = tenantId;
-      user.internalId = (await this.repo.count()) + 1;
+      user.id = (await this.repo.count()) + 1;
       const newUser = await this.repo.save(user);
 
       // await this.insertOwner(application.id, tenantId, newUser.userId, tenantId, TENANT_MODEL_NAME);
@@ -212,7 +212,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
 
     const appUser: AppUser = {
       userId: userId,
-      internalId: dbUser.internalId,
+      id: dbUser.id,
       display: dbUser.display,
       tenantId: tenant.id,
       tenantExternalId: tenant.externalId,

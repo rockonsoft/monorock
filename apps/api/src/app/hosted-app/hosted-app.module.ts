@@ -28,7 +28,16 @@ import {
   ROLE_MODEL_NAME,
   getAccessType,
   ActionType,
-  ActionScope
+  ActionScope,
+  PRODUCT_MODEL_NAME,
+  PRODUCT_MODEL_DESC,
+  COMMENT_MODEL_NAME,
+  COMMENT_MODEL_DESC,
+  USER_MODEL_ENDPOINT,
+  ROLE_MODEL_ENDPOINT,
+  PRODUCT_MODEL_ENDPOINT,
+  COMMENT_MODEL_ENDPOINT,
+  TENANT_MODEL_ENDPOINT
 } from '@monorock/api-interfaces';
 import { DbTenant } from '../dal/entities/tenant.entity';
 import { getManager } from 'typeorm';
@@ -57,18 +66,53 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
 
     const tenantId = await this.upsertTenant();
 
-    const userModelId = await this.upsertModel(applicationId, USER_MODEL_NAME, USER_MODEL_DESC);
-    const tenantModelId = await this.upsertModel(applicationId, TENANT_MODEL_NAME, TENANT_MODEL_DESC);
-    const roleModelId = await this.upsertModel(applicationId, ROLE_MODEL_NAME, ROLE_MODEL_DESC);
+    const userModelId = await this.upsertModel(
+      applicationId,
+      USER_MODEL_NAME,
+      USER_MODEL_DESC,
+      USER_MODEL_ENDPOINT,
+      'userId'
+    );
+    const tenantModelId = await this.upsertModel(
+      applicationId,
+      TENANT_MODEL_NAME,
+      TENANT_MODEL_DESC,
+      TENANT_MODEL_ENDPOINT
+    );
+    const roleModelId = await this.upsertModel(applicationId, ROLE_MODEL_NAME, ROLE_MODEL_DESC, ROLE_MODEL_ENDPOINT);
+    const productModelId = await this.upsertModel(
+      applicationId,
+      PRODUCT_MODEL_NAME,
+      PRODUCT_MODEL_DESC,
+      PRODUCT_MODEL_ENDPOINT
+    );
+    const commentModelId = await this.upsertModel(
+      applicationId,
+      COMMENT_MODEL_NAME,
+      COMMENT_MODEL_DESC,
+      COMMENT_MODEL_ENDPOINT,
+      'id',
+      PRODUCT_MODEL_NAME
+    );
 
     const guestRoleId = await this.upsertRole(GUEST_ROLE, GUEST_ROLE_DESC, applicationId, tenantId);
     const userAdminRoleId = await this.upsertRole(USER_ADMIN_ROLE, USER_ADMIN_ROLE_DESC, applicationId, tenantId);
     const tenantAdminRoleId = await this.upsertRole(TENANT_ADMIN_ROLE, TENANT_ADMIN_ROLE_DESC, applicationId, tenantId);
 
+    //guest user
     await this.upsertAccessRight(guestRoleId, userModelId, getAccessType(ActionType.read, ActionScope.own));
     await this.upsertAccessRight(guestRoleId, tenantModelId, getAccessType(ActionType.read, ActionScope.own));
     await this.upsertAccessRight(guestRoleId, roleModelId, getAccessType(ActionType.read, ActionScope.own));
+    await this.upsertAccessRight(guestRoleId, productModelId, getAccessType(ActionType.read, ActionScope.all));
 
+    const userCommentAccess =
+      getAccessType(ActionType.read, ActionScope.all) |
+      getAccessType(ActionType.update, ActionScope.own) |
+      getAccessType(ActionType.create, ActionScope.own) |
+      getAccessType(ActionType.delete, ActionScope.own);
+    await this.upsertAccessRight(guestRoleId, commentModelId, userCommentAccess);
+
+    //user admin
     const userAccess =
       getAccessType(ActionType.read, ActionScope.all) |
       getAccessType(ActionType.update, ActionScope.ownExcluded) |
@@ -91,6 +135,7 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
       getAccessType(ActionType.delete, ActionScope.none);
     await this.upsertAccessRight(userAdminRoleId, roleModelId, roleAccess);
 
+    //tenant admin
     const userAccessTenantAdmin =
       getAccessType(ActionType.read, ActionScope.all) |
       getAccessType(ActionType.update, ActionScope.ownExcluded) |
@@ -112,6 +157,20 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
       getAccessType(ActionType.create, ActionScope.all) |
       getAccessType(ActionType.delete, ActionScope.ownExcluded);
     await this.upsertAccessRight(tenantAdminRoleId, roleModelId, tenantAdmiRoleAccess);
+
+    const tenantAdmiProductAccess =
+      getAccessType(ActionType.read, ActionScope.all) |
+      getAccessType(ActionType.update, ActionScope.all) |
+      getAccessType(ActionType.create, ActionScope.all) |
+      getAccessType(ActionType.delete, ActionScope.all);
+    await this.upsertAccessRight(tenantAdminRoleId, productModelId, tenantAdmiProductAccess);
+
+    const tenantAdmiCommentAccess =
+      getAccessType(ActionType.read, ActionScope.all) |
+      getAccessType(ActionType.update, ActionScope.all) |
+      getAccessType(ActionType.create, ActionScope.all) |
+      getAccessType(ActionType.delete, ActionScope.all);
+    await this.upsertAccessRight(tenantAdminRoleId, commentModelId, tenantAdmiCommentAccess);
   }
 
   async upsertRole(roleName: string, roleDescription: string, applicationId: number, tenantId: number) {
@@ -169,7 +228,14 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
     return id;
   }
 
-  async upsertModel(applicationId: number, modelName: string, modelDescription: string) {
+  async upsertModel(
+    applicationId: number,
+    modelName: string,
+    modelDescription: string,
+    endpoint: string,
+    identityKey: string = 'id',
+    parent: string = null
+  ) {
     let id = null;
     const entityManager = getManager();
     const existing = await entityManager
@@ -187,7 +253,14 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
         .createQueryBuilder(DbModelMeta, 'model')
         .insert()
         .into('model')
-        .values({ name: modelName, description: modelDescription, applicationId: applicationId })
+        .values({
+          name: modelName,
+          description: modelDescription,
+          applicationId: applicationId,
+          endpoint: endpoint,
+          identityProperty: identityKey,
+          parentName: parent
+        })
         .execute();
       id = newResult.identifiers[0]['id'];
     } else {
@@ -230,7 +303,7 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
     type: DbApplication
   }
 })
-@Controller('hostedapplication')
+@Controller('application')
 export class HostedApplicationController {
   constructor(public service: HostedApplicationService) {}
 }

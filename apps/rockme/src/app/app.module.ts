@@ -21,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
 
 import { LoginComponent } from './components/login/login.component';
 
@@ -49,6 +50,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     ButtonModule,
     PanelModule,
     TableModule,
+    DropdownModule,
     BrowserModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase, 'rockme'),

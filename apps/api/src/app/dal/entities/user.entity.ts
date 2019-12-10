@@ -1,5 +1,8 @@
-import { Entity, Column, PrimaryColumn, Index, Generated } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index, Generated, ManyToOne, OneToMany } from 'typeorm';
 import { AppUser } from '@monorock/api-interfaces';
+import { DbTenant } from './tenant.entity';
+import { DbComment } from './comment.entity';
+import { Type } from 'class-transformer';
 
 @Entity('appuser')
 @Index(['userId', 'display', 'tenantId'])
@@ -8,7 +11,7 @@ export class DbUser implements AppUser {
   userId: string;
 
   @Column({ type: 'int' })
-  internalId: number;
+  id?: number;
 
   @Column()
   display: string;
@@ -49,4 +52,13 @@ export class DbUser implements AppUser {
     default: () => 'LOCALTIMESTAMP'
   })
   created: Date;
+
+  /**
+   * Relations
+   */
+
+  @ManyToOne(type => DbTenant, c => c.users)
+  tenant?: DbTenant;
+
+  comments: DbComment[];
 }

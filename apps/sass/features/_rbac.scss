@@ -1,0 +1,47 @@
+.superuser-container {
+  background-color: #f06292;
+  border-radius: 8px;
+
+  .super-user-used {
+    font-size: 12px;
+    text-align: center;
+  }
+  .assign-roles-header {
+    font-size: 16px;
+    text-align: center;
+  }
+  .assign-roles {
+    text-align: center;
+  }
+}
+
+.roles-container {
+  margin-top: 10px;
+  background-color: #ffd54f;
+  border-radius: 8px;
+}
+
+.test-container {
+  margin-top: 10px;
+  background-color: #4dd0e1;
+  border-radius: 8px;
+  .access-test-heading {
+    font-size: 16px;
+    text-align: center;
+  }
+  .model-select {
+    border-radius: 8px;
+    background-color: #00bcd4;
+    text-align: center;
+  }
+  .model-tests {
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: #00bcd4;
+    text-align: center;
+    .model-test-header {
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+}

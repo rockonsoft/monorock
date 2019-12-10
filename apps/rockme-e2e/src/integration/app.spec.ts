@@ -4,6 +4,8 @@ describe('rockme', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
-    getGreeting().contains('Welcome to rockme!');
+    const top = cy.get('.top-bar-title');
+    console.log(top);
+    top.contains('Monorock Demo!');
   });
 });

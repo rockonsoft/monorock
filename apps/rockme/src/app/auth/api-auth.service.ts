@@ -12,6 +12,9 @@ export class ApiAuthService {
   private _appUser: BehaviorSubject<AppUser | null> = new BehaviorSubject(null);
   public readonly appUser: Observable<AppUser | null> = this._appUser.asObservable();
 
+  private _localUser: BehaviorSubject<AppUser | null> = new BehaviorSubject(null);
+  public readonly localUser: Observable<AppUser | null> = this._localUser.asObservable();
+
   constructor(private userAuth: UserAuthService, private http: HttpClient) {
     userAuth.oauthUser.subscribe({
       next: (oAuthUser: User) => {
@@ -24,6 +27,17 @@ export class ApiAuthService {
           this._appUser.next(null);
         }
       }
+    });
+  }
+
+  login(username: string, password: string) {
+    this.http.post('/api/login', { username: username, password: password }).subscribe((response: any) => {
+      let appUser: AppUser = {
+        display: username,
+        userId: username,
+        apiToken: response.api_token
+      };
+      this._localUser.next(appUser);
     });
   }
 

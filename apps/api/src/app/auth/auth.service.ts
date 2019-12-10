@@ -17,6 +17,11 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
+  async generateToken(user: any) {
+    const payload = { username: user.username, sub: user.username };
+    return this.jwtService.sign(payload);
+  }
+
   async validateFirebaseToken(token: string) {
     try {
       const decodedToken = await admin.auth().verifyIdToken(token);
