@@ -10,6 +10,7 @@ import { AppModule } from './app/app.module';
 import { HttpExceptionFilter } from './app/shared/https-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { API_BASE } from '@monorock/api-interfaces';
+import { HeaderInterceptor } from './app/auth/required-header.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new HeaderInterceptor());
 
   const options = new DocumentBuilder()
     .setTitle('Monorock API')

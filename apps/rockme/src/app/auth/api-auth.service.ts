@@ -43,8 +43,13 @@ export class ApiAuthService {
 
   loginWithToken(authedUser: User, token: string) {
     this.http.post('/api/tokenlogin', { username: JWT_USER, password: token }).subscribe((response: any) => {
+      console.log(response);
       let headers = new HttpHeaders().set('Authorization', 'Bearer ' + response.api_token);
-      this.http.get<AppUser>('/api/me', { headers }).subscribe({
+      headers = headers.append('tenant-id', response.user.tenantExternalId);
+      headers = headers.append('application-id', `${response.user.applicationId}`);
+      console.log(headers);
+
+      this.http.get<AppUser>('/api/me', { headers: headers }).subscribe({
         next: appUser => {
           if (appUser) {
             console.log(appUser);

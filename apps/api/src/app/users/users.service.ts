@@ -61,10 +61,13 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
 
       user.tenantExternalId = tenantExtId;
       user.tenantId = tenantId;
+      user.applicationId = application.id;
       user.id = (await this.repo.count()) + 1;
       const newUser = await this.repo.save(user);
 
+      // user owns tenant
       // await this.insertOwner(application.id, tenantId, newUser.userId, tenantId, TENANT_MODEL_NAME);
+      // user owns user
       // await this.insertOwner(application.id, tenantId, newUser.userId, newUser.internalId, USER_MODEL_NAME);
 
       //assign Guest role
@@ -221,7 +224,8 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       picture: dbUser.picture,
       isAnonymous: false,
       roles: roles,
-      accessProfile: accessProfile
+      accessProfile: accessProfile,
+      applicationId: dbUser.applicationId
     };
     return appUser;
   }

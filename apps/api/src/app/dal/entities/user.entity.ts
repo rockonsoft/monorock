@@ -24,6 +24,11 @@ export class DbUser implements AppUser {
   @Column({
     nullable: true
   })
+  applicationId: number;
+
+  @Column({
+    nullable: true
+  })
   tenantExternalId: string;
 
   @Column({

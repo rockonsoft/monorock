@@ -13,6 +13,7 @@ export interface AppUser {
   id?: number;
   display: string;
   tenantId?: number;
+  applicationId?: number;
   tenantExternalId?: string;
   tenantName?: string;
   roles?: string[];
