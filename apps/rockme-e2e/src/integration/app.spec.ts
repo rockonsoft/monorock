@@ -5,7 +5,6 @@ describe('rockme', () => {
 
   it('should display welcome message', () => {
     const top = cy.get('.top-bar-title');
-    console.log(top);
     top.contains('Monorock Demo!');
   });
 });

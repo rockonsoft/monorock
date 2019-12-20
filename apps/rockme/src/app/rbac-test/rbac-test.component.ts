@@ -15,6 +15,24 @@ import {
   AppUser
 } from '@monorock/api-interfaces';
 import { RbackTestService } from '../services/rback-test.service';
+import { SuperUserService } from '../services/super-user.service';
+import { ProfileService } from '../services/profile.service';
+import { findIndex } from 'rxjs/operators';
+
+interface ResultOfTest {
+  result?: any;
+  text: string;
+  error?: string;
+  op: string;
+}
+
+const listOp = 'LIST';
+const getOp = 'GET';
+const createOp = 'CREATE';
+const updateOp = 'UPDATE';
+const deleteOp = 'DELETE';
+
+const testSequence: ('LIST' | 'GET' | 'CREATE' | 'UPDATE' | 'DELETE')[] = [listOp, getOp, createOp, updateOp, deleteOp];
 
 @Component({
   selector: 'monorock-rbac-test',
@@ -32,24 +50,12 @@ export class RbacTestComponent implements OnInit {
   selectedModel: ModelMeta = null;
   testPhase = 1;
 
-  //list
-  listTestResult: any[];
-  listTestResultText: string;
+  resultsMap = new Map<string, ResultOfTest>();
+  history = new Array<ResultOfTest>();
 
-  //get
-  getTestResult: any;
-  getTestResultText: string;
-  //create
-  createTestResult: any;
-  createTestResultText: string;
-  //update
-  updateTestResult: any;
-  updateTestResultText: string;
-  //update
-  deleteTestResult: any;
-  deleteTestResultText: string;
   selectedRole: any = null;
   superUser: AppUser = null;
+  currentTest: 'LIST' | 'GET' | 'CREATE' | 'UPDATE' | 'DELETE' = listOp;
 
   constructor(
     private apiAuthService: ApiAuthService,
@@ -57,9 +63,11 @@ export class RbacTestComponent implements OnInit {
     private tenantService: TenantService,
     private roleService: RoleService,
     private router: Router,
-    private testService: RbackTestService
+    private testService: RbackTestService,
+    private superUserService: SuperUserService,
+    private profileService: ProfileService
   ) {
-    apiAuthService.appUser.subscribe({
+    profileService.userProfile.subscribe({
       next: authUser => {
         if (authUser) {
           this.userProperties = [];
@@ -69,8 +77,8 @@ export class RbacTestComponent implements OnInit {
           authUser.roles.forEach(role => {
             this.userProperties.push({ key: 'Role', value: role });
           });
-          this.tenantService.load();
-          this.roleService.load();
+          // this.tenantService.load();
+          // this.roleService.load();
         }
         this.authUser = authUser;
       }
@@ -105,23 +113,102 @@ export class RbacTestComponent implements OnInit {
         }
       }
     });
-    testService.models.subscribe({
+    testService.superUser.models.subscribe({
       next: (models: ModelMeta[]) => {
-        console.log(models);
         if (models) {
           this.models = models;
         }
       }
     });
-    apiAuthService.localUser.subscribe({
+
+    superUserService.localUser.subscribe({
       next: user => {
         if (user) {
           this.superUser = user;
-          console.log('Super user');
-          console.log(this.superUser);
         }
       }
     });
+    this.testService.result.subscribe({
+      next: res => {
+        if (res) {
+          let resText = `Success`;
+          if (this.currentTest === listOp) resText = `Success, Found ${res.length}`;
+          if (this.currentTest === getOp) resText = `Success, Found Id: ${res.id}`;
+
+          const opres = { op: this.currentTest, result: res, text: resText, error: null };
+
+          this.resultsMap.set(this.currentTest, opres);
+          const find = this.history.find(x => x.op == opres.op);
+          if (!find) {
+            this.history.push(opres);
+          } else {
+            find.result = opres.result;
+            find.text = opres.text;
+          }
+          if (this.currentTest === listOp && res.length === 0) this.moveNextOnError();
+          else this.moveNext();
+        }
+      }
+    });
+    this.testService.error.subscribe({
+      next: err => {
+        if (err) {
+          const opres = {
+            op: this.currentTest,
+            result: null,
+            text: err.message,
+            error: err
+          };
+          this.resultsMap.set(this.currentTest, opres);
+          const find = this.history.find(x => x.op == opres.op);
+          if (!find) {
+            this.history.push(opres);
+          } else {
+            find.result = opres.result;
+            find.text = opres.text;
+          }
+          this.moveNextOnError();
+        }
+      }
+    });
+  }
+
+  getHistory() {
+    return this.resultsMap.values();
+  }
+
+  moveNext() {
+    const index = testSequence.indexOf(this.currentTest);
+    this.currentTest = testSequence[index + 1];
+    this.testPhase = index + 1;
+  }
+
+  moveNextOnError() {
+    if (this.currentTest === listOp || this.currentTest === getOp) {
+      //failure on list - no instances
+      //goto create
+      const index = testSequence.indexOf(createOp);
+      this.currentTest = testSequence[index];
+      this.testPhase = index;
+    } else if (this.currentTest === createOp) {
+      //failure on create
+      //goto create
+      const index = testSequence.indexOf(updateOp);
+      this.currentTest = testSequence[index];
+      this.testPhase = index;
+    } else if (this.currentTest === updateOp) {
+      //failure on list - no instances
+      //goto create
+      const index = testSequence.indexOf(deleteOp);
+      this.currentTest = testSequence[index];
+      this.testPhase = index;
+    } else if (this.currentTest === deleteOp) {
+      //failure on list - no instances
+      //goto create
+      const index = testSequence.indexOf(listOp);
+      this.currentTest = testSequence[index];
+      this.testPhase = index;
+    }
   }
 
   getAccessString(acc, model) {
@@ -129,86 +216,47 @@ export class RbacTestComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.apiAuthService.login(SUPER_USER_NAME, SUPER_USER_PWD);
+    this.superUserService.login(SUPER_USER_NAME, SUPER_USER_PWD);
   }
 
   modelSelected($event) {
-    console.log($event.value);
     this.selectedModel = $event.value;
-    this.listTestResult = null;
-    this.getTestResult = null;
-    this.createTestResult = null;
-    this.updateTestResult = null;
-    this.deleteTestResult = null;
+    this.resultsMap.clear();
+    this.history = [];
+    this.currentTest = testSequence[0];
   }
 
-  async doListTest() {
-    try {
-      const res = await this.testService.doListTest(this.selectedModel);
-      console.log(res);
-      this.listTestResult = res;
-      this.listTestResultText = `Found ${this.listTestResult.length}`;
-      if (this.listTestResult.length > 0) this.testPhase = 2;
-      else this.testPhase = 3;
-    } catch (err) {
-      console.error(err);
-      this.listTestResultText = err;
-    }
-  }
-
-  async doGetTest() {
-    try {
-      const res = await this.testService.doGetTest(this.selectedModel, this.listTestResult[0]);
-      console.log(res);
-      this.getTestResult = res;
-      this.getTestResultText = `Found id:${this.getTestResult[this.selectedModel.identityProperty]}`;
-      this.testPhase = 3;
-    } catch (err) {
-      console.error(err);
-      this.getTestResultText = err;
-    }
-  }
-  async doCreateTest() {
-    try {
-      const res = await this.testService.doCreateTest(this.selectedModel);
-      console.log(res);
-      this.createTestResult = res;
-      this.createTestResultText = `created ${this.selectedModel.name}`;
-      this.testPhase = 4;
-    } catch (err) {
-      console.error(err);
-      this.createTestResultText = err;
+  async doTest() {
+    const instances = this.resultsMap.has(listOp) ? this.resultsMap.get(listOp).result : null;
+    switch (this.currentTest) {
+      case listOp:
+        await this.testService.doListTest(this.selectedModel);
+        break;
+      case getOp:
+        await this.testService.doGetTest(this.selectedModel, instances[0]);
+        break;
+      case updateOp:
+        await this.testService.doUpdateTest(this.selectedModel, instances[0]);
+        break;
+      case createOp:
+        await this.testService.doCreateTest(this.selectedModel);
+        break;
+      case deleteOp:
+        await this.testService.doDeleteTest(this.selectedModel, instances[0]);
+        break;
     }
   }
 
-  async doUpdateTest() {
-    let instance = this.listTestResult[this.listTestResult.length - 1];
-    try {
-      const res = await this.testService.doUpdateTest(this.selectedModel, instance);
-      console.log(res);
-      this.updateTestResult = res;
-      this.updateTestResultText = `update ${this.selectedModel.name}`;
-      this.testPhase = 5;
-    } catch (err) {
-      console.error(err);
-      this.createTestResultText = err;
-    }
+  getResult() {
+    return this.resultsMap.has(this.currentTest) ? this.resultsMap.get(this.currentTest) : null;
   }
 
-  async doDeleteTest() {
-    let instance = this.listTestResult[this.listTestResult.length - 1];
-    try {
-      const res = await this.testService.doDeleteTest(this.selectedModel, instance);
-      console.log(res);
-      this.deleteTestResult = { deleted: 'ok' };
-      this.deleteTestResultText = `deleted ${this.selectedModel.name}`;
-      this.testPhase = 6;
-    } catch (err) {
-      console.error(err);
-      this.createTestResultText = err;
-    }
-  }
   selectedRoleChanged(role) {
     this.selectedRole = role;
+  }
+
+  async retryTest(op) {
+    this.currentTest = op.op;
+    await this.doTest();
   }
 }

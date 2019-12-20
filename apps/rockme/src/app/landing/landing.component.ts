@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { TenantService } from '../services/tenant.service';
 import { RoleService } from '../services/role.service';
-import { Tenant, Role, getFriendlyAccessName, TENANT_ADMIN_ROLE, AppUser } from '@monorock/api-interfaces';
+import { Tenant, Role, getFriendlyAccessName, TENANT_ADMIN_ROLE, AppUser, UserProfile } from '@monorock/api-interfaces';
 import { ApiAuthService } from '../auth/api-auth.service';
 import { UserAuthService } from '../auth/user-auth.service';
 import { Router } from '@angular/router';
+import { ProfileService } from '../services/profile.service';
+import { User } from 'firebase';
 
 @Component({
   selector: 'monorock-landing',
@@ -12,7 +14,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
-  authUser: AppUser = null;
+  oAuthUser: User = null;
+  apiAuthUser: AppUser = null;
+  userProfile: UserProfile = null;
   tenants: Tenant[] = null;
   tenantError: string;
   roles: Role[] = null;
@@ -21,56 +25,29 @@ export class LandingComponent implements OnInit {
   showDetail = false;
 
   constructor(
-    private apiAuthService: ApiAuthService,
     private userAuthService: UserAuthService,
-    private tenantService: TenantService,
-    private roleService: RoleService,
-    private router: Router
+    private router: Router,
+    private profileService: ProfileService,
+    private apiAuthService: ApiAuthService
   ) {
-    apiAuthService.appUser.subscribe({
-      next: authUser => {
-        if (authUser) {
+    this.userAuthService.oauthUser.subscribe({
+      next: user => {
+        this.oAuthUser = user;
+      }
+    });
+    this.apiAuthService.appUser.subscribe({ next: user => (this.apiAuthUser = user) });
+    this.profileService.userProfile.subscribe({
+      next: userProfile => {
+        if (userProfile) {
           this.userProperties = [];
-          this.userProperties.push({ key: 'Name', value: authUser.display });
-          this.userProperties.push({ key: 'Id', value: authUser.userId });
-          this.userProperties.push({ key: 'Tenant', value: authUser.tenantName });
-          authUser.roles.forEach(role => {
+          this.userProperties.push({ key: 'Name', value: userProfile.display });
+          this.userProperties.push({ key: 'Id', value: userProfile.userId });
+          this.userProperties.push({ key: 'Tenant', value: userProfile.tenantName });
+          userProfile.roles.forEach(role => {
             this.userProperties.push({ key: 'Role', value: role });
           });
-          this.tenantService.load();
-          this.roleService.load();
         }
-        this.authUser = authUser;
-      }
-    });
-    tenantService.tenants.subscribe({
-      next: tenants => {
-        if (tenants) {
-          this.tenants = tenants;
-        }
-      }
-    });
-    tenantService.error.subscribe({
-      next: error => {
-        if (error) {
-          this.tenantError = error.statusText;
-          this.tenants = [];
-        }
-      }
-    });
-    roleService.roles.subscribe({
-      next: roles => {
-        if (roles) {
-          this.roles = roles;
-        }
-      }
-    });
-    roleService.error.subscribe({
-      next: error => {
-        if (error) {
-          this.rolesError = error.statusText;
-          this.roles = [];
-        }
+        this.userProfile = userProfile;
       }
     });
   }
@@ -94,8 +71,8 @@ export class LandingComponent implements OnInit {
   }
 
   isTenantAdim() {
-    if (this.authUser && this.authUser.roles.length) {
-      return this.authUser.roles.find(x => x === TENANT_ADMIN_ROLE);
+    if (this.userProfile && this.userProfile.roles.length) {
+      return this.userProfile.roles.find(x => x === TENANT_ADMIN_ROLE);
     }
     return false;
   }

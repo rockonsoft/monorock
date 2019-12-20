@@ -7,59 +7,19 @@
     <button pButton type="button" icon="pi pi-refresh" iconPos="left"></button>
   </div>
 </div>
-<div *ngIf="superUser !== null; else nosuperuser" class="superuser-container">
-  <div class="p-grid super-user-used">
-    <div class="p-col">
-      <span>The following section is executed using the superuser account</span>
-    </div>
-  </div>
-  <div class="p-grid assign-roles-header">
-    <div class="p-col">
-      User
-    </div>
-    <div class="p-col">
-      Role
-    </div>
-    <div class="p-col">
-      Assign
-    </div>
-  </div>
-  <div class="p-grid assign-roles">
-    <div *ngIf="authUser !== null" class="p-col">
-      {{ authUser.display }}
-    </div>
-    <div *ngIf="authUser == null" class="p-col">
-      Loading user...
-    </div>
-    <div *ngIf="roles && roles.length" class="p-col">
-      <p-dropdown
-        placeholder="Select a role"
-        [options]="roles"
-        optionLabel="name"
-        (onChange)="selectedRoleChanged($event)"
-      ></p-dropdown>
-    </div>
-    <div class="p-col" *ngIf="selectedRole !== null">
-      <button pButton type="button" label="Assign Role" class="ui-button-success" (click)="assignRole()"></button>
-    </div>
-    <div class="p-col" *ngIf="selectedRole === null">
-      Select a role
-    </div>
-  </div>
-</div>
-
+<monorock-super-user [user]="superUser"></monorock-super-user>
 <div *ngIf="authUser !== null" class="roles-container">
   <div class="p-grid">
-    <div class="p-col">
-      <span>You have the following roles</span>
+    <div class="p-col-3">
+      <span>The signed in user has the following roles:</span>
     </div>
-    <div *ngFor="let role of authUser.roles" class="p-col">
+    <div *ngFor="let role of authUser.roles" class="p-col-2">
       <span>{{ role }}</span>
     </div>
   </div>
   <div>
     <div class="p-grid profile-access-title">
-      <div class="p-col feature">Access Profile</div>
+      <div class="p-col feature">Access Profile of Current User</div>
     </div>
     <p-table [value]="authUser.accessProfile">
       <ng-template pTemplate="header">
@@ -107,73 +67,52 @@
         <div class="p-col-1">
           <span>Operation</span>
         </div>
-        <div class="p-col-4">
+        <div class="p-col-3">
           <span>TEST</span>
         </div>
-        <div class="p-col-4">
+        <div class="p-col-3">
           <span>RESPONSE</span>
         </div>
-      </div>
-      <div *ngIf="testPhase > 0" class="model-test-line p-grid">
-        <div class="p-col-1">
-          <span>List</span>
-        </div>
-        <div class="p-col-4">
-          <button pButton type="button" label="Test List" class="ui-button-success" (click)="doListTest()"></button>
-        </div>
-        <div class="p-col-4">
-          <span *ngIf="listTestResult === null">Not Tested</span>
-          <span *ngIf="listTestResult !== null">{{ listTestResultText }}</span>
+        <div class="p-col-3">
+          <span>RETRY</span>
         </div>
       </div>
-      <div *ngIf="testPhase > 1" class="model-test-line p-grid">
+      <div *ngFor="let hist of history" class="model-test-line p-grid">
         <div class="p-col-1">
-          <span>Get</span>
+          <span>{{ hist.op }}</span>
         </div>
-        <div class="p-col-4">
-          <button pButton type="button" label="Test Get" class="ui-button-success" (click)="doGetTest()"></button>
+        <div class="p-col-3">
+          <span>{{ hist.op }}</span>
         </div>
-        <div class="p-col-4">
-          <span *ngIf="getTestResult === null">Not Tested</span>
-          <span *ngIf="getTestResult !== null">{{ getTestResultText }}</span>
+        <div class="p-col-3">
+          <span>{{ hist.text }}</span>
+        </div>
+        <div class="p-col-3">
+          <button
+            pButton
+            type="button"
+            label="Retry {{ hist.op }}"
+            class="ui-button-success"
+            (click)="retryTest(hist)"
+          ></button>
         </div>
       </div>
-      <div *ngIf="testPhase > 2" class="model-test-line p-grid">
+      <div class="model-test-line p-grid">
         <div class="p-col-1">
-          <span>Create</span>
+          <span>{{ currentTest }}</span>
         </div>
-        <div class="p-col-4">
-          <button pButton type="button" label="Test Create" class="ui-button-success" (click)="doCreateTest()"></button>
+        <div class="p-col-3">
+          <button
+            pButton
+            type="button"
+            label="Test {{ currentTest }}"
+            class="ui-button-success"
+            (click)="doTest()"
+          ></button>
         </div>
-        <div class="p-col-4">
-          <span *ngIf="createTestResult === null">Not Tested</span>
-          <span *ngIf="createTestResult !== null">{{ createTestResultText }}</span>
-        </div>
-      </div>
-      <div *ngIf="testPhase > 3" class="model-test-line p-grid">
-        <div class="p-col-1">
-          <span>Update</span>
-        </div>
-        <div class="p-col-4">
-          <button pButton type="button" label="Test Update" class="ui-button-success" (click)="doUpdateTest()"></button>
-        </div>
-        <div class="p-col-4">
-          <span *ngIf="updateTestResult === null">Not Tested</span>
-          <span *ngIf="updateTestResult !== null">{{ updateTestResultText }}</span>
-          <span *ngIf="listTestResult && listTestResult.length === 0">Do list test first!</span>
-        </div>
-      </div>
-      <div *ngIf="testPhase > 4" class="model-test-line p-grid">
-        <div class="p-col-1">
-          <span>Delete</span>
-        </div>
-        <div class="p-col-4">
-          <button pButton type="button" label="Test Delete" class="ui-button-success" (click)="doDeleteTest()"></button>
-        </div>
-        <div class="p-col-4">
-          <span *ngIf="deleteTestResult === null">Not Tested</span>
-          <span *ngIf="deleteTestResult !== null">{{ deleteTestResultText }}</span>
-          <span *ngIf="listTestResult && listTestResult.length === 0">Do list test first!</span>
+        <div class="p-col-3">
+          <span *ngIf="getResult() === null">Not Tested</span>
+          <span *ngIf="getResult() !== null">{{ getResult().text }}</span>
         </div>
       </div>
     </div>
@@ -182,10 +121,5 @@
 <ng-template #nouser>
   <div class="no-user">
     You are being signed in and details fetched from the api.
-  </div>
-</ng-template>
-<ng-template #nosuperuser>
-  <div class="no-user superuser-container">
-    Superuser is being signed in...
   </div>
 </ng-template>

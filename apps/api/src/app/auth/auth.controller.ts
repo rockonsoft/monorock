@@ -2,7 +2,6 @@ import { Controller, Get, UseGuards, Req, Res, Post, Request, Body, Logger } fro
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AccessCheckResult } from '@monorock/api-interfaces';
-
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -22,7 +21,7 @@ export class AuthController {
     Logger.log(`generated ${newToken} for user:${req.user.userId}`);
     return {
       api_token: newToken,
-      user: req.user.user
+      user: req.user
     };
   }
 
@@ -30,8 +29,6 @@ export class AuthController {
   @Post('tokenlogin')
   async login(@Request() req) {
     Logger.log('Received request on api/tokenlogin');
-    //req.user contains decode JWT from google
-    Logger.log('got this user from hacked local strategy');
     Logger.log(req.user);
     //should be: {
     //   token: decodedToken,
@@ -44,6 +41,22 @@ export class AuthController {
     return {
       api_token: newToken,
       user: req.user.user
+    };
+  }
+
+  @Post('refresh')
+  async refreshToken(@Request() req) {
+    Logger.log('Received request on api/refresh');
+    //req.user contains decode JWT from google
+    const { token } = req.body;
+    Logger.log(`refreshToken:${req.url}`);
+
+    Logger.log(token);
+
+    const newToken = await this.authService.refreshUserToken(token);
+    Logger.log(`generated ${newToken} for user refresh`);
+    return {
+      api_token: newToken
     };
   }
 

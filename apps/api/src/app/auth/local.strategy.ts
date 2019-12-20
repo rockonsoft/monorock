@@ -1,6 +1,6 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { JWT_USER, AppUser, SUPER_USER_NAME, SUPER_USER_PWD } from '@monorock/api-interfaces';
@@ -38,18 +38,19 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         //not authenticated - throw
       }
     } else if (username === SUPER_USER_NAME && password === SUPER_USER_PWD) {
-      user = {
+      user = this.userService.getSuperUser({
         userId: username,
         display: username,
         picture: null,
         email: null,
         isAnonymous: false,
         id: 0
-      };
+      });
     }
     if (!user) {
       throw new UnauthorizedException();
     }
+    Logger.log(user);
     return user;
   }
 }

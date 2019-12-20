@@ -8,9 +8,15 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app/app.module';
 import { HttpExceptionFilter } from './app/shared/https-exception.filter';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { API_BASE } from '@monorock/api-interfaces';
 import { HeaderInterceptor } from './app/auth/required-header.interceptor';
+
+export function logger(req, res, next) {
+  Logger.log(`Global Logger - request:${req.url}`);
+
+  next();
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +25,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new HeaderInterceptor());
+  app.use(logger);
 
   const options = new DocumentBuilder()
     .setTitle('Monorock API')
@@ -31,7 +38,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3333;
   await app.listen(port, () => {
-    console.log('Listening at http://localhost:' + port + '/' + globalPrefix);
+    Logger.log('Listening on :' + port + '/' + globalPrefix);
   });
 }
 

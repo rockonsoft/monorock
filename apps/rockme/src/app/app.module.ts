@@ -30,6 +30,8 @@ import * as firebase from 'firebase/app';
 import * as firebaseui from 'firebaseui';
 import { RbacTestComponent } from './rbac-test/rbac-test.component';
 import { TenantManagementComponent } from './tenant-management/tenant-management.component';
+import { SuperUserComponent } from './components/super-user/super-user.component';
+import { httpInterceptorProviders } from './http-interceptors';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -44,7 +46,14 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
 };
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, LoginComponent, RbacTestComponent, TenantManagementComponent],
+  declarations: [
+    AppComponent,
+    LandingComponent,
+    LoginComponent,
+    RbacTestComponent,
+    TenantManagementComponent,
+    SuperUserComponent
+  ],
   imports: [
     BrowserAnimationsModule,
     ButtonModule,
@@ -62,7 +71,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AppRoutingModule,
     AuthModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

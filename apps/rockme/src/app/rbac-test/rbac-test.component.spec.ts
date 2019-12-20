@@ -12,6 +12,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FirebaseUIModule } from 'firebaseui-angular';
 import { firebaseUiTestonfig } from '@monorock/api-interfaces';
 import { environment } from '../../environments/environment';
+import { SuperUserComponent } from '../components/super-user/super-user.component';
 
 describe('RbacTestComponent', () => {
   let component: RbacTestComponent;
@@ -19,7 +20,7 @@ describe('RbacTestComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RbacTestComponent],
+      declarations: [RbacTestComponent, SuperUserComponent],
       imports: [
         ButtonModule,
         PanelModule,

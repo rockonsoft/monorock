@@ -66,6 +66,7 @@
     "primeflex": "^1.0.0",
     "primeicons": "^2.0.0",
     "primeng": "^8.1.1",
+    "rand-token": "^0.4.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.4.0",
     "swagger-ui-express": "^4.0.7",

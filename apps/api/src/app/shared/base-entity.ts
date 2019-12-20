@@ -4,9 +4,9 @@ export class DbBaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({ nullable: true })
+  @CreateDateColumn({ type: 'timestamp', nullable: true, default: () => 'LOCALTIMESTAMP' })
   createdAt?: Date;
 
-  @UpdateDateColumn({ nullable: true })
+  @UpdateDateColumn({ type: 'timestamp', nullable: true, default: () => 'LOCALTIMESTAMP' })
   updatedAt?: Date;
 }

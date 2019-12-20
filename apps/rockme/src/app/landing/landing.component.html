@@ -1,4 +1,9 @@
-<div *ngIf="authUser !== null; else nouser" class="profile-container">
+<div class="status-container p-grid">
+  <div *ngIf="oAuthUser !== null; else nooauthuser" class="p-col">Singed in to OAuth</div>
+  <div *ngIf="apiAuthUser !== null; else noapiuser" class="p-col">Singed in to API</div>
+  <div *ngIf="userProfile !== null; else noprofiler" class="p-col">Profile Loaded</div>
+</div>
+<div *ngIf="userProfile !== null; else nouser" class="profile-container">
   <div class="p-grid">
     <div class="p-col">
       <div class="profile-box profile-box-blue">
@@ -41,11 +46,11 @@
       <div class="profile-box profile-box-yellow">
         <div class="profile-box-header">Authentication and RBAC</div>
         <div class="profile-box-content">
-          <div class="p-grid profile-detail" *ngIf="authUser.isAnonymous">
+          <div class="p-grid profile-detail" *ngIf="userProfile.isAnonymous">
             <div class="p-col feature">You are currently signed in as an anonymous user.</div>
           </div>
           <div class="p-grid">
-            <div class="p-col feature">User:{{ authUser.display }}</div>
+            <div class="p-col feature">User:{{ userProfile.display }}</div>
             <div class="p-col">
               <button
                 type="button"
@@ -94,13 +99,13 @@
         <div class="profile-box-header">Multi-Tenant</div>
 
         <div class="profile-box-content">
-          <div class="p-grid profile-detail" *ngIf="authUser.isAnonymous" class="p-grid profile-detail">
+          <div class="p-grid profile-detail" *ngIf="userProfile.isAnonymous" class="p-grid profile-detail">
             <div class="p-col">
               Sign in with your Google account to create your own tenant and manage users.
             </div>
           </div>
           <monorock-login></monorock-login>
-          <div *ngIf="authUser.isAnonymous === false">
+          <div *ngIf="userProfile.isAnonymous === false">
             <div class="p-grid">
               <div class="p-col" *ngIf="isTenantAdim()">
                 <button
@@ -155,6 +160,24 @@
 </div>
 <ng-template #nouser>
   <div class="no-user">
-    You are being signed in and details fetched from the api.
+    Loading user profile...
+  </div>
+</ng-template>
+
+<ng-template #nooauthuser>
+  <div class="no-user p-col">
+    Logging into OAuth Provider...
+  </div>
+</ng-template>
+
+<ng-template #noapiuser>
+  <div class="no-user p-col">
+    Loggin into API...
+  </div>
+</ng-template>
+
+<ng-template #noprofile>
+  <div class="no-user p-col">
+    Loading user profile...
   </div>
 </ng-template>

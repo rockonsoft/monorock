@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   async generateToken(user: any) {
-    const payload = { username: user.username, sub: user.username };
+    const payload = { username: user.userId, sub: user.userId };
     return this.jwtService.sign(payload);
   }
 
@@ -31,5 +31,13 @@ export class AuthService {
       console.error(error);
     }
     return null;
+  }
+
+  async refreshUserToken(token: string) {
+    const session = await this.usersService.checkRefreshToken(token);
+    if (session) {
+      return this.generateToken({ userId: session.userId });
+    }
+    return Promise.resolve(null);
   }
 }

@@ -13,7 +13,6 @@ export class TenantManagementComponent implements OnInit {
     tenantService.tenants.subscribe({
       next: tenants => {
         if (tenants && tenants.length) {
-          console.log(tenants);
           this.tenant = tenants[0];
         } else {
           tenantService.load();

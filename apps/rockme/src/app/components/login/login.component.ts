@@ -11,10 +11,10 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   successCallback(logingEvent) {
-    console.log(logingEvent);
+    console.debug(logingEvent);
   }
 
   errorCallback($event) {
-    console.log(event);
+    console.debug(event);
   }
 }

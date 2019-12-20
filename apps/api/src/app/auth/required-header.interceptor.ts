@@ -27,10 +27,6 @@ export class HeaderInterceptor implements NestInterceptor {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<Request>();
     const keys = Object.keys(request.headers);
-    keys.forEach(h => {
-      console.log(h);
-    });
-    console.log(request.url);
     const url = request.url;
     const isLogin = url.indexOf('login') > -1;
     if (!isLogin) {

@@ -15,11 +15,16 @@ import {
   TENANT_ADMIN_ROLE,
   USER_ADMIN_ROLE,
   TENANT_MODEL_NAME,
-  USER_MODEL_NAME
+  USER_MODEL_NAME,
+  SUPER_USER_NAME
 } from '@monorock/api-interfaces';
 import { DbApplication } from '../dal/entities/application.entity';
 import { DbModelMeta } from '../dal/entities/model-meta-data.entity';
 import { DbTenant } from '../dal/entities/tenant.entity';
+import * as randtoken from 'rand-token';
+import { DbUserSession } from '../dal/entities/user-session.entity';
+import * as moment from 'moment';
+import { logger } from '../../main';
 
 export type User = any;
 
@@ -49,6 +54,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .getOne();
 
     const tenantId = await this.upsertTenant(tenantExtId, tenantName);
+    const refreshToken = await this.getRefreshToken(user);
 
     const existing = await this.repo
       .createQueryBuilder('appuser')
@@ -64,6 +70,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       user.applicationId = application.id;
       user.id = (await this.repo.count()) + 1;
       const newUser = await this.repo.save(user);
+      newUser.refreshToken = refreshToken;
 
       // user owns tenant
       // await this.insertOwner(application.id, tenantId, newUser.userId, tenantId, TENANT_MODEL_NAME);
@@ -80,7 +87,111 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
         //Todo kick off more tenant initiation stuff here
       }
       return newUser;
-    } else return existing;
+    } else {
+      Logger.log(`User exists`);
+      const retUser: AppUser = existing as AppUser;
+      retUser.refreshToken = refreshToken;
+      Logger.log(retUser);
+
+      return retUser;
+    }
+  }
+
+  async getSuperUser(user: AppUser) {
+    Logger.log('getting supuer user');
+    let tenantExtId = TENANT_ZERO_EXT_ID;
+    //guess tenant name
+    let tenantName = TENANT_ZERO_NAME;
+    if (user.email) {
+      tenantName = user.email.split('@')[1];
+    }
+
+    const entityManager = getManager();
+
+    const application = await entityManager
+      .createQueryBuilder(DbApplication, 'application')
+      .where('application.name = :name', {
+        name: HOST_APPLICATION
+      })
+      .getOne();
+
+    const tenantId = await this.upsertTenant(tenantExtId, tenantName);
+    const refreshToken = await this.getRefreshToken(user);
+    return {
+      userId: user.userId,
+      display: user.userId,
+      picture: null,
+      email: null,
+      isAnonymous: false,
+      id: 0,
+      tenantExternalId: tenantExtId,
+      tenantId: tenantId,
+      applicationId: application.id,
+      refreshToken: refreshToken
+    };
+  }
+
+  async getRefreshToken(user: AppUser) {
+    const entityManager = getManager();
+    //delete stale tokens
+    const delresults = await entityManager
+      .createQueryBuilder(DbUserSession, 'usersession')
+      .delete()
+      .where('updatedAt < :halfhour', {
+        halfhour: moment
+          .utc()
+          .subtract(30, 'minutes')
+          .toDate()
+      })
+      .execute();
+    Logger.log(delresults);
+
+    //check if user has token
+    Logger.log(`getting token for ${user.userId}`);
+    const existing = await entityManager
+      .createQueryBuilder(DbUserSession, 'usersession')
+      .where('usersession.userId = :userId', {
+        userId: user.userId
+      })
+      .getOne();
+    const now = moment.utc().toDate();
+    if (!existing) {
+      //create token if not
+      const token = randtoken.uid(8);
+      Logger.log(`Start insert of token :${token} for user:${user.userId}`);
+      const newResult = await entityManager
+        .createQueryBuilder(DbUserSession, 'usersession')
+        .insert()
+        .into('usersession')
+        .values({ userId: user.userId, refreshToken: token, createdAt: now, updatedAt: now })
+        .execute();
+      Logger.log(newResult);
+      return token;
+    } else {
+      //if token exists, update and return;
+      const token = existing.refreshToken;
+      // const updateQuery = await entityManager
+      //   .createQueryBuilder(DbUserSession, 'usersession')
+      //   .update({ updatedAt: moment.utc().format() })
+      //   .where({ userId: existing.userId });
+      // Logger.log(updateQuery.getSql());
+
+      // const updated = updateQuery.execute();
+      // Logger.log(updated);
+      return token;
+    }
+    //create token if not
+  }
+  async checkRefreshToken(token: string) {
+    //find user with token
+    const entityManager = getManager();
+    const existing = await entityManager
+      .createQueryBuilder(DbUserSession, 'usersession')
+      .where('"refreshToken" = :refreshToken', {
+        refreshToken: token
+      })
+      .getOne();
+    return existing;
   }
 
   // async insertOwner(applicationId: number, tenantId: number, ownerId: string, ownedId: number, modelName: string) {
@@ -167,8 +278,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
   }
 
   async getFullUser(userId: string) {
-    //users lives in firestore
-    //tenants live in firestore
+    if (userId === SUPER_USER_NAME) return await this.getSuperUser({ userId: userId, display: userId });
     const dbUser = await this.repo
       .createQueryBuilder('appuser')
       .where('appuser.userId = :userId', {
@@ -206,7 +316,8 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
         accessProfile.push({
           model: accView.modelName.toLocaleLowerCase(),
           modelId: accView.modelId,
-          access: accView.accessType
+          access: accView.accessType,
+          endpoint: accView.endpoint
         });
       }
     });

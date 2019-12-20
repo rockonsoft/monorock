@@ -4,7 +4,7 @@ import { RolesService } from './roles.service';
 import { DbRole } from '../dal/entities/role.entity';
 import { AuthGuard } from '@nestjs/passport';
 
-//@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Crud({
   model: {
     type: DbRole

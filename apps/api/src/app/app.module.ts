@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -21,13 +21,14 @@ import { DbProduct } from './dal/entities/product.entity';
 import { CommentsModule } from './comments/comments.module';
 import { ModelMetaModule } from './model-meta/model-meta.module';
 import { ProductsModule } from './products/products.module';
+import { DbUserSession } from './dal/entities/user-session.entity';
 
 const PWD = process.env.DB_PWD;
 const connectionName = process.env.CLOUD_SQL_CONNECTION_NAME;
 let dbname = 'tenant0';
 const isCloud = process.env.DB_ENV === 'development' ? false : true;
 
-console.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionName}`);
+Logger.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionName}`);
 
 @Module({
   imports: [
@@ -56,7 +57,8 @@ console.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionNa
         DbApplication,
         DbModelMeta,
         DbAppUserRole,
-        UserAccessView
+        UserAccessView,
+        DbUserSession
       ],
       synchronize: true
     })

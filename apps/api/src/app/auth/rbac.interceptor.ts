@@ -1,4 +1,4 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, ArgumentsHost } from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, ArgumentsHost, Logger } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { IncomingMessage } from 'http';
@@ -18,31 +18,22 @@ interface Outcome {
 export class RbackInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler): Promise<any> {
     const controllerClass = context.getClass();
-    console.log(controllerClass);
 
     const ctx = context.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    console.log('Before...');
     const args = context.getArgs();
-    console.log(`args have -  ${args.length}`);
     const inmsg: any = args[0];
-
-    console.log(`${inmsg.method} -  ${inmsg.url}`);
 
     const url: string = request.url;
     const pieces = url.split('/');
     const model = pieces[2]; // /api/??? /????
     const user: AppUser = inmsg.user;
-    console.log(pieces);
-    console.log(model);
-    console.log(user);
 
     const accessItem = user.accessProfile.find(x => {
       return x.model === model;
     });
-    console.log(accessItem);
     if (!accessItem) return of(null);
 
     let filterId = -1;
@@ -70,8 +61,6 @@ export class RbackInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map(data => {
         if (filterId) {
-          console.log('########### Data ########');
-          console.log(data);
           const dataArray = data as any[];
           const filteredData = dataArray.filter(x => x.id === filterId);
           return of(filteredData);
@@ -87,12 +76,12 @@ export class RbackInterceptor implements NestInterceptor {
     const readAccess = getReadAccess(accessItem.access);
     switch (readAccess) {
       case ActionScope.none: {
-        console.log(`No access to list/get ${accessItem.model}`);
+        Logger.log(`No access to list/get ${accessItem.model}`);
         if (specificGet) return { returnValue: null };
         else return { returnValue: [] };
       }
       case ActionScope.all:
-        console.log(`No restrictions to list/get to ${accessItem.model}`);
+        Logger.log(`No restrictions to list/get to ${accessItem.model}`);
         break;
       case ActionScope.own:
       case ActionScope.ownExcluded: {
@@ -103,12 +92,11 @@ export class RbackInterceptor implements NestInterceptor {
           .andWhere('userowner.modelId=:modelId', { modelId: accessItem.modelId })
           .getOne();
 
-        console.log(userOwned);
         if (readAccess === ActionScope.own) {
-          console.log(`result filtered for own ${accessItem.model}`);
+          Logger.log(`result filtered for own ${accessItem.model}`);
           return { requestIdUpdate: userOwned.id };
         } else {
-          console.log(`result to exclude own ${accessItem.model}`);
+          Logger.log(`result to exclude own ${accessItem.model}`);
           return { excludeFilter: userOwned.id };
         }
       }
