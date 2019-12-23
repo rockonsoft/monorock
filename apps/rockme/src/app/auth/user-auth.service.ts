@@ -14,7 +14,15 @@ export class UserAuthService {
   constructor(private afAuth: AngularFireAuth) {
     this.afAuth.authState.subscribe({
       next: user => {
-        this._oauthUser.next(user);
+        if (user) {
+          this.isLoggedIn = true;
+          this._oauthUser.next(user);
+        } else {
+          //if there is no user - log in anonymously
+          this.signInAnonymously().then(x => {
+            console.debug('Anonymous sign in completed.');
+          });
+        }
       }
     });
   }
@@ -27,7 +35,7 @@ export class UserAuthService {
         return true;
       } else return false;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

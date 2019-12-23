@@ -9,6 +9,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Crud } from '@nestjsx/crud';
 import { DbModelMeta } from '../dal/entities/model-meta-data.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Injectable()
 export class ModelMetaService extends TypeOrmCrudService<DbModelMeta> {
@@ -17,7 +18,7 @@ export class ModelMetaService extends TypeOrmCrudService<DbModelMeta> {
   }
 }
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 @Crud({
   model: {
     type: DbModelMeta

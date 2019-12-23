@@ -20,24 +20,58 @@ import { AuthModule } from './auth/auth.module';
 //prime-ng
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
+import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+
+import { LoginComponent } from './components/login/login.component';
+
+import { FirebaseUIModule } from 'firebaseui-angular';
+import * as firebase from 'firebase/app';
+import * as firebaseui from 'firebaseui';
+import { RbacTestComponent } from './rbac-test/rbac-test.component';
+import { TenantManagementComponent } from './tenant-management/tenant-management.component';
+import { SuperUserComponent } from './components/super-user/super-user.component';
+import { httpInterceptorProviders } from './http-interceptors';
+
+const firebaseUiAuthConfig: firebaseui.auth.Config = {
+  signInFlow: 'popup',
+  signInOptions: [
+    //firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+  ],
+  tosUrl: '/',
+  privacyPolicyUrl: '/privacy',
+  credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
+};
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent],
+  declarations: [
+    AppComponent,
+    LandingComponent,
+    LoginComponent,
+    RbacTestComponent,
+    TenantManagementComponent,
+    SuperUserComponent
+  ],
   imports: [
     BrowserAnimationsModule,
     ButtonModule,
     PanelModule,
+    TableModule,
+    DropdownModule,
     BrowserModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase, 'rockme'),
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFireFunctionsModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig),
     RouterModule,
     AppRoutingModule,
     AuthModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

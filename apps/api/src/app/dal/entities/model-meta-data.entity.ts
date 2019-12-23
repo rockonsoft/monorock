@@ -14,4 +14,13 @@ export class DbModelMeta implements ModelMeta {
 
   @Column({ type: 'int' })
   applicationId: number; //fk for application
+
+  @Column()
+  endpoint: string; //fk for application
+
+  @Column()
+  identityProperty: string; //fk for application
+
+  @Column({ nullable: true })
+  parentName: string; //fk for application
 }

@@ -1,9 +1,9 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
-import { JWT_USER, AppUser } from '@monorock/api-interfaces';
+import { JWT_USER, AppUser, SUPER_USER_NAME, SUPER_USER_PWD } from '@monorock/api-interfaces';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -25,7 +25,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
           userId: decodedToken.user_id,
           display: anonymous ? decodedToken.provider_id : decodedToken.name,
           picture: anonymous ? null : decodedToken.picture,
-          email: anonymous ? null : decodedToken.email
+          email: anonymous ? null : decodedToken.email,
+          isAnonymous: anonymous,
+          id: 0
         };
         const upsertedUser = await this.userService.upsertUser(savedUser);
         return {
@@ -35,10 +37,20 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       } else {
         //not authenticated - throw
       }
+    } else if (username === SUPER_USER_NAME && password === SUPER_USER_PWD) {
+      user = this.userService.getSuperUser({
+        userId: username,
+        display: username,
+        picture: null,
+        email: null,
+        isAnonymous: false,
+        id: 0
+      });
     }
     if (!user) {
       throw new UnauthorizedException();
     }
+    Logger.log(user);
     return user;
   }
 }

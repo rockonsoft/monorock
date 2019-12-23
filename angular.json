@@ -27,6 +27,7 @@
               "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
+              "node_modules/firebaseui/dist/firebaseui.css",
               "apps/rockme/src/styles.scss"
             ],
             "scripts": []
@@ -67,7 +68,9 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "rockme:build",
-            "proxyConfig": "apps/rockme/proxy.conf.json"
+            "proxyConfig": "apps/rockme/proxy.conf.json",
+            "port": 4200,
+            "host": "0.0.0.0"
           },
           "configurations": {
             "production": {

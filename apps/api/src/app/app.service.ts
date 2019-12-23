@@ -5,9 +5,7 @@ import { Message } from '@monorock/api-interfaces';
 export class AppService {
   getData(): Message {
     return {
-      message: `Welcome to api, version:${
-        process.env.BUILD_ID ? process.env.BUILD_ID : 'local build'
-      }`
+      message: `Welcome from api, build:${process.env.BUILD_ID ? process.env.BUILD_ID : 'local build'}`
     };
   }
 }

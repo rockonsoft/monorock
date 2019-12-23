@@ -2,13 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as admin from 'firebase-admin';
-const creds = admin.credential.applicationDefault();
 
-console.log(creds);
-console.log(process.env.FIREBASE_CONFIG);
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-  databaseURL: 'https://monorock.firebaseio.com'
+  credential: admin.credential.applicationDefault()
 });
 
 @Injectable()
@@ -21,6 +17,11 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
+  async generateToken(user: any) {
+    const payload = { username: user.userId, sub: user.userId };
+    return this.jwtService.sign(payload);
+  }
+
   async validateFirebaseToken(token: string) {
     try {
       const decodedToken = await admin.auth().verifyIdToken(token);
@@ -30,5 +31,13 @@ export class AuthService {
       console.error(error);
     }
     return null;
+  }
+
+  async refreshUserToken(token: string) {
+    const session = await this.usersService.checkRefreshToken(token);
+    if (session) {
+      return this.generateToken({ userId: session.userId });
+    }
+    return Promise.resolve(null);
   }
 }

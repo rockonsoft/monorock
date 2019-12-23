@@ -1,8 +1,16 @@
-<div style="text-align:center">
-  <h1>Welcome to monorock!</h1>
-  <h3>({{ greeting }})</h3>
-  <img height="200px" src="assets/images/rockonsoft-cat-white.svg" />
-  <h3>A deployable monorepo demo application from Rockonsoft</h3>
+<div class="app-container">
+  <div class="p-grid app-top-bar">
+    <div class="p-col-1"><img src="assets/images/rockonsoft-cat-white.svg" /></div>
+    <div class="p-col-9">
+      <div class="top-bar-heading">
+        <div class="top-bar-title">Monorock Demo!</div>
+        <div class="top-bar-byline">A deployable monorepo stack from Rockonsoft</div>
+      </div>
+    </div>
+    <div class="p-col-2 get-started">
+      <button pButton type="button" label="Get Started" class="ui-button-secondary" (click)="logout()"></button>
+    </div>
+  </div>
   <div class="content-container">
     <router-outlet></router-outlet>
   </div>

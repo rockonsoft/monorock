@@ -1,0 +1,125 @@
+<div class="p-grid list-bar">
+  <div class="p-col-1 list-bar-hamburger">
+    <button pButton type="button" icon="pi pi-home" iconPos="left"></button>
+  </div>
+  <div class="p-col-10 list-bar-title">Roles & RBAC</div>
+  <div class="p-col-1 list-bar-action">
+    <button pButton type="button" icon="pi pi-refresh" iconPos="left"></button>
+  </div>
+</div>
+<monorock-super-user [user]="superUser"></monorock-super-user>
+<div *ngIf="authUser !== null" class="roles-container">
+  <div class="p-grid">
+    <div class="p-col-3">
+      <span>The signed in user has the following roles:</span>
+    </div>
+    <div *ngFor="let role of authUser.roles" class="p-col-2">
+      <span>{{ role }}</span>
+    </div>
+  </div>
+  <div>
+    <div class="p-grid profile-access-title">
+      <div class="p-col feature">Access Profile of Current User</div>
+    </div>
+    <p-table [value]="authUser.accessProfile">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Model</th>
+          <th>Access</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-access>
+        <tr>
+          <td>{{ access.model }}</td>
+          <td>{{ getAccessString(access.access, access.model) }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<div *ngIf="authUser !== null" class="test-container">
+  <div class="access-test-heading p-grid">
+    <div class="p-col">
+      <span>Test current user's access</span>
+    </div>
+  </div>
+  <div *ngIf="models !== null">
+    <div class="model-select p-grid">
+      <div class="p-col">
+        <span>To test the user's access, select a model</span>
+      </div>
+      <div class="p-col">
+        <span>Current selected model: {{ selectedModel ? selectedModel.name : 'Not Selected' }}</span>
+      </div>
+      <div class="p-col">
+        <p-dropdown
+          placeholder="Select a model"
+          [options]="models"
+          optionLabel="name"
+          (onChange)="modelSelected($event)"
+        ></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="models !== null">
+    <div *ngIf="selectedModel !== null" class="model-tests">
+      <div class="model-test-header p-grid">
+        <div class="p-col-1">
+          <span>Operation</span>
+        </div>
+        <div class="p-col-3">
+          <span>TEST</span>
+        </div>
+        <div class="p-col-3">
+          <span>RESPONSE</span>
+        </div>
+        <div class="p-col-3">
+          <span>RETRY</span>
+        </div>
+      </div>
+      <div *ngFor="let hist of history" class="model-test-line p-grid">
+        <div class="p-col-1">
+          <span>{{ hist.op }}</span>
+        </div>
+        <div class="p-col-3">
+          <span>{{ hist.op }}</span>
+        </div>
+        <div class="p-col-3">
+          <span>{{ hist.text }}</span>
+        </div>
+        <div class="p-col-3">
+          <button
+            pButton
+            type="button"
+            label="Retry {{ hist.op }}"
+            class="ui-button-success"
+            (click)="retryTest(hist)"
+          ></button>
+        </div>
+      </div>
+      <div class="model-test-line p-grid">
+        <div class="p-col-1">
+          <span>{{ currentTest }}</span>
+        </div>
+        <div class="p-col-3">
+          <button
+            pButton
+            type="button"
+            label="Test {{ currentTest }}"
+            class="ui-button-success"
+            (click)="doTest()"
+          ></button>
+        </div>
+        <div class="p-col-3">
+          <span *ngIf="getResult() === null">Not Tested</span>
+          <span *ngIf="getResult() !== null">{{ getResult().text }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #nouser>
+  <div class="no-user">
+    You are being signed in and details fetched from the api.
+  </div>
+</ng-template>

@@ -1,14 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LandingComponent } from './landing.component';
-import { AuthModule } from '../auth/auth.module';
-import { AngularFireModule } from '@angular/fire';
-import { environment } from '../../environments/environment';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { TenantService } from '../services/tenant.service';
-import { RoleService } from '../services/role.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonModule } from 'primeng/button';
+import { PanelModule } from 'primeng/panel';
+import { TableModule } from 'primeng/table';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { FirebaseUIModule } from 'firebaseui-angular';
+import { firebaseUiTestonfig } from '@monorock/api-interfaces';
+import { DropdownModule } from 'primeng/dropdown';
+import { environment } from '../../environments/environment';
+import { LoginComponent } from '../components/login/login.component';
 
 describe('LandingComponent', () => {
   let component: LandingComponent;
@@ -16,15 +20,32 @@ describe('LandingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LandingComponent],
+      declarations: [LandingComponent, LoginComponent],
       imports: [
         ButtonModule,
+        PanelModule,
+        TableModule,
+        DropdownModule,
         HttpClientTestingModule,
-        AuthModule,
+        RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase, 'firestarter'),
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        FirebaseUIModule.forRoot(firebaseUiTestonfig)
       ],
-      providers: [TenantService, RoleService]
+      providers: [
+        {
+          provide: 'TenantService',
+          useValue: {
+            // Your mock
+          }
+        },
+        {
+          provide: 'RoleService',
+          useValue: {
+            // Your mock
+          }
+        }
+      ]
     }).compileComponents();
   }));
 

@@ -1,39 +1,183 @@
-<div *ngIf="authUser !== null; else nouser" class="profile-container">
-  <div class="profile-box profile-box-yellow">
-    <div class="profile-box-header">Welcome, {{ authUser.display }}</div>
+<div class="status-container p-grid">
+  <div *ngIf="oAuthUser !== null; else nooauthuser" class="p-col">Singed in to OAuth</div>
+  <div *ngIf="apiAuthUser !== null; else noapiuser" class="p-col">Singed in to API</div>
+  <div *ngIf="userProfile !== null; else noprofiler" class="p-col">Profile Loaded</div>
+</div>
+<div *ngIf="userProfile !== null; else nouser" class="profile-container">
+  <div class="p-grid">
+    <div class="p-col">
+      <div class="profile-box profile-box-blue">
+        <div class="profile-box-header">The Stack</div>
+        <div class="profile-box-content">
+          <div class="p-grid">
+            <div class="p-col-4 feature">Monorepo from Nrwl</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Centralized dependency management with tooling.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">Angular Front-end</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Fast, reliable front-end framework.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">API by NestJs</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Modern typescript back-end with tooling .</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">PostGreSQL and TypeOrm</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Best-of-breed cloud base SQL database used for CRUD and RBAC</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">Authentication</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Front-end and back-end authentication.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">Serverless</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Front-end, back-end and database using GCP SaaS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-col">
+      <div class="profile-box profile-box-yellow">
+        <div class="profile-box-header">Authentication and RBAC</div>
+        <div class="profile-box-content">
+          <div class="p-grid profile-detail" *ngIf="userProfile.isAnonymous">
+            <div class="p-col feature">You are currently signed in as an anonymous user.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col feature">User:{{ userProfile.display }}</div>
+            <div class="p-col">
+              <button
+                type="button"
+                pButton
+                label="{{ showDetail ? 'Hide User Detail' : 'Show User Detail' }}"
+                icon="pi {{ showDetail ? 'pi-chevron-up' : 'pi-chevron-down' }} "
+                (click)="showDetail = !showDetail"
+                style="color:#FFF"
+                class="ui-button-warning"
+              ></button>
+            </div>
+          </div>
+          <p-table *ngIf="showDetail" [value]="userProperties">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Property</th>
+                <th>Value</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-prop>
+              <tr>
+                <td>{{ prop.key }}</td>
+                <td>{{ prop.value }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <div class="p-grid profile-row-button">
+            <div class="p-col feature">Live demo of RBAC and Roles</div>
+            <div class="p-col">
+              <button
+                pButton
+                type="button"
+                label="Test RBAC"
+                class="ui-button-success"
+                (click)="gotoRbackTest()"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col">
+      <div class="profile-box profile-box-grey">
+        <div class="profile-box-header">Multi-Tenant</div>
 
-    <div class="profile-box-content">
-      <div class="p-grid profile-detail" *ngIf="authUser.isAnonymous" class="p-grid profile-detail">
-        <div class="p-col">This is an anonymous account created for you.</div>
+        <div class="profile-box-content">
+          <div class="p-grid profile-detail" *ngIf="userProfile.isAnonymous" class="p-grid profile-detail">
+            <div class="p-col">
+              Sign in with your Google account to create your own tenant and manage users.
+            </div>
+          </div>
+          <monorock-login></monorock-login>
+          <div *ngIf="userProfile.isAnonymous === false">
+            <div class="p-grid">
+              <div class="p-col" *ngIf="isTenantAdim()">
+                <button
+                  pButton
+                  type="button"
+                  label="Manage Tenant"
+                  class="ui-button-success"
+                  (click)="gotoTenantManagement()"
+                ></button>
+              </div>
+              <div class="p-col">
+                <button pButton type="button" label="Logout" class="ui-button-secondary" (click)="logout()"></button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="p-grid profile-detail">
-        <div class="p-col right">Id:</div>
-        <div class="p-col left">{{ authUser.userId }}</div>
-      </div>
-      <div class="p-grid profile-detail">
-        <div class="p-col  right">You are associated with the tenant:</div>
-        <div class="p-col  left">{{ authUser.tenantExternalId }}</div>
-      </div>
-      <div class="p-grid profile-detail">
-        <div class="p-col right">You have the following roles:</div>
-        <div *ngFor="let role of authUser.roles" class="p-col left">{{ role }}</div>
-      </div>
-      <div class="p-grid profile-access-title">
-        <div class="p-col">You have the following access</div>
-      </div>
-      <div class="p-grid profile-access-header">
-        <div class="p-col">Model</div>
-        <div class="p-col">Access</div>
-      </div>
-      <div *ngFor="let accProf of authUser.accessProfile" class="p-grid profile-access-detail">
-        <div class="p-col">{{ accProf.model }}</div>
-        <div class="p-col">{{ getAccessString(accProf.access, accProf.model) }}</div>
+    </div>
+    <div class="p-col">
+      <div class="profile-box profile-box-red">
+        <div class="profile-box-header">CI/CD</div>
+        <div class="profile-box-content">
+          <div class="p-grid">
+            <div class="p-col-4 feature">Google Cloud Build</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Docker based build pipeline.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">Firebase Deployment</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Deploys Front-end to Firebase.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">Google Cloud Run</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Deploys back-end to Cloud Run.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">Secure</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Encrypted secrets with security best-practices.</div>
+          </div>
+          <div class="p-grid">
+            <div class="p-col-4 feature">Sass</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Build stylesheets with SASS</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <ng-template #nouser>
   <div class="no-user">
-    The user is being signed in and infation fetched from the api.
+    Loading user profile...
+  </div>
+</ng-template>
+
+<ng-template #nooauthuser>
+  <div class="no-user p-col">
+    Logging into OAuth Provider...
+  </div>
+</ng-template>
+
+<ng-template #noapiuser>
+  <div class="no-user p-col">
+    Loggin into API...
+  </div>
+</ng-template>
+
+<ng-template #noprofile>
+  <div class="no-user p-col">
+    Loading user profile...
   </div>
 </ng-template>
