@@ -22,6 +22,7 @@ import { CommentsModule } from './comments/comments.module';
 import { ModelMetaModule } from './model-meta/model-meta.module';
 import { ProductsModule } from './products/products.module';
 import { DbUserSession } from './dal/entities/user-session.entity';
+import { DbUserOwner } from './dal/entities/user-owner.entity';
 
 const PWD = process.env.DB_PWD;
 const connectionName = process.env.CLOUD_SQL_CONNECTION_NAME;
@@ -58,7 +59,8 @@ Logger.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionNam
         DbModelMeta,
         DbAppUserRole,
         UserAccessView,
-        DbUserSession
+        DbUserSession,
+        DbUserOwner
       ],
       synchronize: true
     })

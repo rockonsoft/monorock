@@ -1,22 +1,14 @@
 import { Injectable, CanActivate, ExecutionContext, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
-import {
-  SUPER_USER_NAME,
-  getCreateAccess,
-  getUpdateAccess,
-  getDeleteAccess,
-  getFriendlyAccessName
-} from '@monorock/api-interfaces';
-import { AppUser, getReadAccess, AccessItem, ActionScope } from '@monorock/api-interfaces';
-import { Any } from 'typeorm';
+import { SUPER_USER_NAME, getCreateAccess, getUpdateAccess, getDeleteAccess } from '@monorock/api-interfaces';
+import { getReadAccess, AccessItem, ActionScope } from '@monorock/api-interfaces';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   private hasAccess(method: string, accessItem: any): boolean {
-    Logger.log(getFriendlyAccessName(accessItem.access, accessItem.model));
     switch (method) {
       case 'GET':
         return getReadAccess(accessItem.access) !== ActionScope.none;

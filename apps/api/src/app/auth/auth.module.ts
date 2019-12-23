@@ -9,6 +9,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { HeaderInterceptor } from './required-header.interceptor';
 import { RolesGuard } from './roles.guard';
+import { OwnerInterceptor } from './owner.interceptor';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { RolesGuard } from './roles.guard';
     {
       provide: APP_INTERCEPTOR,
       useClass: HeaderInterceptor
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: OwnerInterceptor
     }
   ]
 })

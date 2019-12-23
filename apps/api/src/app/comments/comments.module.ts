@@ -14,7 +14,7 @@ export class CommentsService extends TypeOrmCrudService<DbComment> {
   }
 }
 
-//@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Crud({
   model: {
     type: DbComment

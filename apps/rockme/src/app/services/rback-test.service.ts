@@ -14,7 +14,9 @@ const sampleObject = {
   Comment: {
     commentBody: 'new comment body',
     rating: 5
-  }
+  },
+  User: { display: 'Test User', email: 'test@test.test' },
+  Tenant: { description: 'Test New Tenant', name: 'newsampletenant' }
 };
 
 @Injectable({
@@ -82,20 +84,6 @@ export class RbackTestService {
       }
     });
   }
-
-  // private handleError(error: HttpErrorResponse) {
-  //   if (error.error instanceof ErrorEvent) {
-  //     // A client-side or network error occurred. Handle it accordingly.
-  //     console.error('An error occurred:', error.error.message);
-  //   } else {
-  //     // The backend returned an unsuccessful response code.
-  //     // The response body may contain clues as to what went wrong,
-  //     console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
-  //     this._error.next(`Backend returned code ${error.status}`);
-  //   }
-  //   // return an observable with a user-facing error message
-  //   return throwError('Something bad happened; please try again later.');
-  // }
 
   async doCreateTest(selectedModel: ModelMeta): Promise<any> {
     const instance = sampleObject[selectedModel.name];

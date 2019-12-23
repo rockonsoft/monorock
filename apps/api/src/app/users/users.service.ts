@@ -25,12 +25,13 @@ import * as randtoken from 'rand-token';
 import { DbUserSession } from '../dal/entities/user-session.entity';
 import * as moment from 'moment';
 import { logger } from '../../main';
+import { OwnerService } from './owner.service';
 
 export type User = any;
 
 @Injectable()
 export class UsersService extends TypeOrmCrudService<DbUser> {
-  constructor(@InjectRepository(DbUser) repo) {
+  constructor(@InjectRepository(DbUser) repo, private ownerService: OwnerService) {
     super(repo);
   }
 
@@ -73,9 +74,10 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       newUser.refreshToken = refreshToken;
 
       // user owns tenant
-      // await this.insertOwner(application.id, tenantId, newUser.userId, tenantId, TENANT_MODEL_NAME);
+      await this.ownerService.setOwnerByModeName(newUser, TENANT_MODEL_NAME, tenantId);
+
       // user owns user
-      // await this.insertOwner(application.id, tenantId, newUser.userId, newUser.internalId, USER_MODEL_NAME);
+      await this.ownerService.setOwnerByModeName(newUser, USER_MODEL_NAME, newUser.id);
 
       //assign Guest role
       if (user.isAnonymous) {
@@ -193,33 +195,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .getOne();
     return existing;
   }
-
-  // async insertOwner(applicationId: number, tenantId: number, ownerId: string, ownedId: number, modelName: string) {
-  //   const entityManager = getManager();
-
-  //   const existingModel = await entityManager
-  //     .createQueryBuilder(DbModelMeta, 'model')
-  //     .where('model.applicationId = :appId', {
-  //       appId: applicationId
-  //     })
-  //     .andWhere('model.name = :modelName', {
-  //       modelName: modelName
-  //     })
-  //     .getOne();
-
-  //   return await entityManager
-  //     .createQueryBuilder()
-  //     .insert()
-  //     .into('userowned')
-  //     .values({
-  //       applicationId: applicationId,
-  //       tenantId: tenantId,
-  //       ownerId: ownerId,
-  //       ownedId: ownedId,
-  //       modelId: existingModel.id
-  //     })
-  //     .execute();
-  // }
 
   async upsertTenant(tenantExtId: string, tenantName: string) {
     const entityManager = getManager();
