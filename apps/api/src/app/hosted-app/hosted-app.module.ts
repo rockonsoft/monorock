@@ -102,7 +102,6 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
     //guest user
     await this.upsertAccessRight(guestRoleId, userModelId, getAccessType(ActionType.read, ActionScope.own));
     await this.upsertAccessRight(guestRoleId, tenantModelId, getAccessType(ActionType.read, ActionScope.own));
-    await this.upsertAccessRight(guestRoleId, roleModelId, getAccessType(ActionType.read, ActionScope.own));
     await this.upsertAccessRight(guestRoleId, productModelId, getAccessType(ActionType.read, ActionScope.all));
 
     const userCommentAccess =

@@ -22,7 +22,7 @@ export class ProfileService {
   }
 
   getProfile() {
-    return this.http.get<UserProfile>('/api/me').subscribe({
+    return this.http.get<UserProfile>('/api/profile').subscribe({
       next: profile => {
         if (profile) {
           this._userProfile.next(profile);

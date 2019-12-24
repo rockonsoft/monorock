@@ -3,7 +3,7 @@ describe('rockme-api', () => {
 
   it('should wait for me', () => {
     cy.server();
-    cy.route('**/api/me').as('me');
+    cy.route('**/api/profile').as('profile');
     cy.visit('/');
     cy.wait(['@me'], { requestTimeout: 10000 }).then(xhr => {
       // we can now access the low level xhr

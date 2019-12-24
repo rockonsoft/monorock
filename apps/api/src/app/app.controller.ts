@@ -10,9 +10,9 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('me')
+  @Get('profile')
   getProfile(@Request() req) {
-    Logger.log('Received request on api/me');
+    Logger.log('Received request on api/profile');
     return req.user;
   }
 

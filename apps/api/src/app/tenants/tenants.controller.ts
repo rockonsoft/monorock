@@ -3,8 +3,9 @@ import { TenantsService } from './tenants.service';
 import { Crud } from '@nestjsx/crud';
 import { AuthGuard } from '@nestjs/passport';
 import { DbTenant } from '../dal/entities/tenant.entity';
+import { RolesGuard } from '../auth/roles.guard';
 
-//@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 @Crud({
   model: {
     type: DbTenant
@@ -18,7 +19,6 @@ import { DbTenant } from '../dal/entities/tenant.entity';
     }
   }
 })
-//@UseInterceptors(RbackInterceptor)
 @Controller('tenants')
 export class TenantsController {
   constructor(public service: TenantsService) {}
