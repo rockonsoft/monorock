@@ -220,6 +220,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
   }
 
   async assignRoleByUserId(roleName: string, userId: string) {
+    Logger.log(`Assign role:${roleName} to user:${userId}`);
     const dbUser = await this.repo
       .createQueryBuilder('appuser')
       .where('appuser.userId = :userId', {
