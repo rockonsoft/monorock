@@ -233,7 +233,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
     }
     await this.removeAllRoles(dbUser);
 
-    return this.assignRole(roleName, dbUser, dbUser.tenantId);
+    return await this.assignRole(roleName, dbUser, dbUser.tenantId);
   }
 
   async assignRole(roleName: string, newUser: DbUser, tenantId: number) {
