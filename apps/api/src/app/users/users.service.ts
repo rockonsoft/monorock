@@ -260,12 +260,15 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       userId: newUser.userId
     };
 
+    Logger.log(dbAppUserRole);
+
     const res = await entityManager
       .createQueryBuilder(DbAppUserRole, 'appuserrole')
       .insert()
       .into('appuserrole')
       .values(dbAppUserRole)
       .execute();
+    Logger.log(res);
     return res;
   }
 
