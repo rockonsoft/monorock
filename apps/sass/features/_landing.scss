@@ -1,0 +1,29 @@
+.status-container {
+  .noauth-user {
+    background: repeating-linear-gradient(45deg, #606dbc, #606dbc 5px, #465298 5px, #465298 10px);
+  }
+  .noapi-user {
+    background: repeating-linear-gradient(45deg, #606dbc, #606dbc 5px, #465298 5px, #465298 10px);
+  }
+  .no-profile {
+    background: repeating-linear-gradient(45deg, #606dbc, #606dbc 5px, #465298 5px, #465298 10px);
+  }
+  .oauth-completed {
+    margin-top: 12px;
+    background-color: green;
+    text-align: center;
+    border-radius: 25px;
+  }
+  .api-auth-completed {
+    margin-top: 12px;
+    background-color: green;
+    text-align: center;
+    border-radius: 25px;
+  }
+  .profile-loaded {
+    margin-top: 12px;
+    background-color: green;
+    text-align: center;
+    border-radius: 25px;
+  }
+}

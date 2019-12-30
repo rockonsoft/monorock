@@ -1,7 +1,13 @@
 <div class="status-container p-grid">
-  <div *ngIf="oAuthUser !== null; else nooauthuser" class="p-col">Singed in to OAuth</div>
-  <div *ngIf="apiAuthUser !== null; else noapiuser" class="p-col">Singed in to API</div>
-  <div *ngIf="userProfile !== null; else noprofiler" class="p-col">Profile Loaded</div>
+  <div *ngIf="oAuthUser !== null; else nooauthuser" class="p-col oauth-completed">
+    <span> Signed in to OAuth</span> <i class="pi pi-check"></i>
+  </div>
+  <div *ngIf="apiAuthUser !== null; else noapiuser" class="p-col api-auth-completed">
+    <span> Singed in to API</span><i class="pi pi-check"></i>
+  </div>
+  <div *ngIf="userProfile !== null; else noprofile" class="p-col profile-loaded">
+    <span> Profile Loaded</span><i class="pi pi-check"></i>
+  </div>
 </div>
 <div *ngIf="userProfile !== null; else nouser" class="profile-container">
   <div class="p-grid">
@@ -96,7 +102,7 @@
   <div class="p-grid">
     <div class="p-col">
       <div class="profile-box profile-box-grey">
-        <div class="profile-box-header">Multi-Tenant</div>
+        <div class="profile-box-header">Multi-Tenant Ready</div>
 
         <div class="profile-box-content">
           <div class="p-grid profile-detail" *ngIf="userProfile.isAnonymous" class="p-grid profile-detail">
@@ -165,19 +171,19 @@
 </ng-template>
 
 <ng-template #nooauthuser>
-  <div class="no-user p-col">
+  <div class="noauth-user p-col-4">
     Logging into OAuth Provider...
   </div>
 </ng-template>
 
 <ng-template #noapiuser>
-  <div class="no-user p-col">
+  <div class="noapi-user p-col-4">
     Loggin into API...
   </div>
 </ng-template>
 
 <ng-template #noprofile>
-  <div class="no-user p-col">
+  <div class="no-profile p-col-4">
     Loading user profile...
   </div>
 </ng-template>

@@ -1,0 +1,46 @@
+<div class="profile-container">
+  <div class="p-grid">
+    <div *ngIf="showTenant" class="p-col">
+      <div class="profile-box profile-box-blue">
+        <div class="profile-box-header">Tenant</div>
+        <div class="profile-box-content">
+          <button
+            pButton
+            type="button"
+            label="Manage"
+            class="ui-button-success"
+            (click)="gotoTenantManagement()"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showUsers" class="p-col">
+      <div class="profile-box profile-box-yellow">
+        <div class="profile-box-header">Users</div>
+        <div class="profile-box-content">
+          <button
+            pButton
+            type="button"
+            label="Manage"
+            class="ui-button-success"
+            (click)="gotoUserManagement()"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showRoles" class="p-col">
+      <div class="profile-box profile-box-grey">
+        <div class="profile-box-header">Roles</div>
+        <div class="profile-box-content">
+          <button
+            pButton
+            type="button"
+            label="Manage"
+            class="ui-button-success"
+            (click)="gotoRoleManagement()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

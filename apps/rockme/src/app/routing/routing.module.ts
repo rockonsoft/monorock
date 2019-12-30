@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AnonymousGuard } from '../auth/anonymous.guard';
 import { LandingComponent } from '../landing/landing.component';
 import { RbacTestComponent } from '../rbac-test/rbac-test.component';
-import { TenantManagementComponent } from '../tenant-management/tenant-management.component';
 
 const routes: Routes = [
   {
@@ -14,10 +13,6 @@ const routes: Routes = [
   {
     path: 'rbactest',
     component: RbacTestComponent
-  },
-  {
-    path: 'tenant',
-    component: TenantManagementComponent
   }
 ];
 

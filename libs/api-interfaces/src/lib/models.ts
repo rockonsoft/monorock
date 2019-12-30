@@ -56,13 +56,33 @@ export function getDeleteAccess(access: number): ActionScope {
   return ActionScope.none;
 }
 
-function getScopeText(scope: number) {
+export function getScopeText(scope: number) {
   if (scope & ActionScope.all) return 'All';
   if (scope & ActionScope.none) return 'Not Allowed';
   if (scope & ActionScope.ownExcluded) return 'Except Own';
   if (scope & ActionScope.own) return 'Own';
 
   return 'Not allowed';
+}
+
+export function getScopeFromText(scopeText: string) {
+  switch (scopeText) {
+    case 'All': {
+      return ActionScope.all;
+    }
+    case 'Not Allowed': {
+      return ActionScope.none;
+    }
+    case 'Except Own': {
+      return ActionScope.ownExcluded;
+    }
+    case 'Own': {
+      return ActionScope.own;
+    }
+    default: {
+      return ActionScope.none;
+    }
+  }
 }
 
 export function getFriendlyAccessName(accessType: number, model: string) {
@@ -88,7 +108,20 @@ export interface ModelMeta {
   identityProperty: string;
   parentName?: string;
 }
-export interface Role {}
+export interface AccessRight {
+  id?: number;
+  modelId: number;
+  propertyId?: number;
+  roleId?: number;
+  accessType: number;
+  modelName?: string;
+}
+
+export interface Role {
+  id: number;
+  name: string;
+  accessRights?: AccessRight[];
+}
 export interface Tenant {}
 export interface Product {}
 export interface UserComment {}
@@ -96,4 +129,10 @@ export interface UserComment {}
 export interface TestResult {
   statusCode: string;
   error: string;
+}
+
+export interface RoleAssignment {
+  userId: string;
+  roleName: string;
+  status?: string;
 }

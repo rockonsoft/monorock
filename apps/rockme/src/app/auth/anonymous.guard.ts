@@ -32,6 +32,10 @@ export class AnonymousGuard implements CanActivate, CanActivateChild {
   }
 
   checkLogin(url: string): Promise<boolean> {
-    return Promise.resolve(this.authService.isLoggedIn);
+    if (this.authService.isLoggedIn) {
+      return Promise.resolve(true);
+    } else {
+      return this.authService.signInAnonymously();
+    }
   }
 }

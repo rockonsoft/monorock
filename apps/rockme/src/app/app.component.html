@@ -8,8 +8,12 @@
       </div>
     </div>
     <div class="p-col-2 get-started">
-      <button pButton type="button" label="Get Started" class="ui-button-secondary" (click)="logout()"></button>
+      <a href="https://github.com/rockonsoft/monorock" target="_blank">Get Started</a>
     </div>
+  </div>
+  <!-- <p-progressBar *ngIf="busy" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar> -->
+  <div *ngIf="busy" class="top-progress">
+    <p-progressBar mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
   </div>
   <div class="content-container">
     <router-outlet></router-outlet>

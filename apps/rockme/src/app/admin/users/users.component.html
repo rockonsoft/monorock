@@ -1,0 +1,30 @@
+<div class="p-grid list-bar">
+  <div class="p-col-1 list-bar-title">User</div>
+  <div class="p-col-12"></div>
+</div>
+<div *ngIf="profile">
+  <div class="p-grid profile-detail-input">
+    <div class="p-col-1">
+      <label for="profile-name">Name</label>
+    </div>
+    <div class="p-col-1">
+      <input disabled id="profile-name" type="text" size="30" pInputText [(ngModel)]="profile.display" />
+    </div>
+  </div>
+  <div class="p-grid profile-detail-input">
+    <div class="p-col-1">
+      <label for="profile-userid">UserId</label>
+    </div>
+    <div class="p-col-1">
+      <input disabled id="profile-userid" type="text" size="30" pInputText [(ngModel)]="profile.userId" />
+    </div>
+  </div>
+  <div class="p-grid profile-detail-input">
+    <div class="p-col-1">
+      <label for="profile-tenant">User's Tenant</label>
+    </div>
+    <div class="p-col-1">
+      <input disabled id="profile-tenant" type="text" size="30" pInputText [(ngModel)]="profile.tenantName" />
+    </div>
+  </div>
+</div>

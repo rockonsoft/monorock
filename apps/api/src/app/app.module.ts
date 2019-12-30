@@ -23,6 +23,9 @@ import { ModelMetaModule } from './model-meta/model-meta.module';
 import { ProductsModule } from './products/products.module';
 import { DbUserSession } from './dal/entities/user-session.entity';
 import { DbUserOwner } from './dal/entities/user-owner.entity';
+import { UsersModule } from './users/users.module';
+import { UserroleModule } from './userrole/userrole.module';
+import { AccessRightsModule } from './accessrights/accessrights.module';
 
 const PWD = process.env.DB_PWD;
 const connectionName = process.env.CLOUD_SQL_CONNECTION_NAME;
@@ -40,6 +43,9 @@ Logger.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionNam
     ModelMetaModule,
     ProductsModule,
     CommentsModule,
+    UsersModule,
+    UserroleModule,
+    AccessRightsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       username: 'postgres',
@@ -50,11 +56,11 @@ Logger.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionNam
       entities: [
         DbProduct,
         DbComment,
+        DbRole,
+        DbAccessRight,
         DbUser,
         DbTenant,
-        DbRole,
         DbBilling,
-        DbAccessRight,
         DbApplication,
         DbModelMeta,
         DbAppUserRole,

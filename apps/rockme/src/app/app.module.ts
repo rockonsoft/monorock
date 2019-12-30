@@ -22,6 +22,7 @@ import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 import { LoginComponent } from './components/login/login.component';
 
@@ -29,9 +30,9 @@ import { FirebaseUIModule } from 'firebaseui-angular';
 import * as firebase from 'firebase/app';
 import * as firebaseui from 'firebaseui';
 import { RbacTestComponent } from './rbac-test/rbac-test.component';
-import { TenantManagementComponent } from './tenant-management/tenant-management.component';
 import { SuperUserComponent } from './components/super-user/super-user.component';
 import { httpInterceptorProviders } from './http-interceptors';
+import { AdminModule } from './admin/admin.module';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -46,20 +47,14 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LandingComponent,
-    LoginComponent,
-    RbacTestComponent,
-    TenantManagementComponent,
-    SuperUserComponent
-  ],
+  declarations: [AppComponent, LandingComponent, LoginComponent, RbacTestComponent, SuperUserComponent],
   imports: [
     BrowserAnimationsModule,
     ButtonModule,
     PanelModule,
     TableModule,
     DropdownModule,
+    ProgressBarModule,
     BrowserModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase, 'rockme'),
@@ -69,7 +64,8 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
     RouterModule,
     AppRoutingModule,
-    AuthModule
+    AuthModule,
+    AdminModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

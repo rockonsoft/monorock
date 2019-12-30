@@ -37,6 +37,8 @@ export const COMMENT_MODEL_NAME = 'Comment';
 export const COMMENT_MODEL_DESC = 'User reaction and views on products';
 export const COMMENT_MODEL_ENDPOINT = 'products/:parentId/comments';
 
+export const STATUS_OK = 'OK';
+
 export interface Message {
   message: string;
 }

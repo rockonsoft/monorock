@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryColumn, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { Role } from '@monorock/api-interfaces';
+import { Entity, Column, PrimaryColumn, Index, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { DbAccessRight } from './access-right.entity';
+import { Role } from 'libs/api-interfaces/src/lib/models';
 
 @Entity('role')
 export class DbRole implements Role {
@@ -17,4 +18,6 @@ export class DbRole implements Role {
 
   @Column()
   description: string;
+
+  accessRights: DbAccessRight[];
 }

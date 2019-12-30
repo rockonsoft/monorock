@@ -18,7 +18,7 @@ export class ModelMetaService extends TypeOrmCrudService<DbModelMeta> {
   }
 }
 
-@UseGuards(AuthGuard('jwt'), RolesGuard)
+@UseGuards(AuthGuard('jwt'))
 @Crud({
   model: {
     type: DbModelMeta

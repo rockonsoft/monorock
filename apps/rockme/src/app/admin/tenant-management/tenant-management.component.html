@@ -1,0 +1,44 @@
+<div class="p-grid list-bar">
+  <div class="p-col-1 list-bar-title">Tenant</div>
+  <div class="p-col-12"></div>
+</div>
+<div class="p-grid tenant-detail-input">
+  <div class="p-col-1">
+    <label for="tenant-name">Name</label>
+  </div>
+  <div class="p-col-1">
+    <input id="tenant-name" type="text" size="30" pInputText [(ngModel)]="tenant.name" />
+  </div>
+</div>
+<div class="p-grid tenant-detail-input">
+  <div class="p-col-1">
+    <label for="tenant-desc">Description</label>
+  </div>
+  <div class="p-col-1">
+    <input id="tenant-desc" type="text" size="30" pInputText [(ngModel)]="tenant.description" />
+  </div>
+</div>
+<div class="p-grid tenant-detail-input">
+  <div class="p-col-1">
+    <label for="tenant-ext-id">External Id</label>
+  </div>
+  <div class="p-col-1">
+    <input
+      disabled
+      id="tenant-ext-id"
+      type="text"
+      size="30"
+      pInputText
+      placeholder="{{ tenant.externalId }}"
+      [(ngModel)]="tenant.externalId"
+    />
+  </div>
+</div>
+<div class="p-grid tenant-detail-input">
+  <div class="p-col-1">
+    <label for="tenant-created">Created</label>
+  </div>
+  <div class="p-col-1">
+    <input disabled id="tenant-created" type="text" size="30" pInputText [(ngModel)]="tenant.createdAt" />
+  </div>
+</div>

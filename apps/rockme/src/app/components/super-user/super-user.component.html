@@ -1,7 +1,7 @@
 <div *ngIf="superUser !== null; else nosuperuser" class="superuser-container">
   <div class="p-grid super-user-used">
     <div class="p-col">
-      <span>The following section is executed using the superuser account</span>
+      <span>This section is executed using the superuser account</span>
     </div>
   </div>
   <div class="p-grid assign-roles-header">
@@ -30,7 +30,17 @@
         (onChange)="selectedRoleChanged($event)"
       ></p-dropdown>
     </div>
-    <div class="p-col" *ngIf="selectedRole !== null">
+    <div class="p-col" *ngIf="selectedRole !== null && disableRoleAssign">
+      <button
+        pButton
+        type="button"
+        label="Assign Role"
+        class="ui-button-success"
+        (click)="assignRole()"
+        disabled
+      ></button>
+    </div>
+    <div class="p-col" *ngIf="selectedRole !== null && !disableRoleAssign">
       <button pButton type="button" label="Assign Role" class="ui-button-success" (click)="assignRole()"></button>
     </div>
     <div class="p-col" *ngIf="selectedRole === null">

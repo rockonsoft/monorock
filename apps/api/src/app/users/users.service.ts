@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger, BadRequestException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DbUser } from '../dal/entities/user.entity';
@@ -219,6 +219,22 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
     return id;
   }
 
+  async assignRoleByUserId(roleName: string, userId: string) {
+    const dbUser = await this.repo
+      .createQueryBuilder('appuser')
+      .where('appuser.userId = :userId', {
+        userId: userId
+      })
+      .getOne();
+
+    if (!dbUser) {
+      throw new BadRequestException();
+    }
+    await this.removeAllRoles(dbUser);
+
+    return this.assignRole(roleName, dbUser, dbUser.tenantId);
+  }
+
   async assignRole(roleName: string, newUser: DbUser, tenantId: number) {
     const entityManager = getManager();
 
@@ -248,6 +264,17 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .insert()
       .into('appuserrole')
       .values(dbAppUserRole)
+      .execute();
+    return res;
+  }
+
+  async removeAllRoles(user: DbUser) {
+    const entityManager = getManager();
+
+    const res = await entityManager
+      .createQueryBuilder(DbAppUserRole, 'appuserrole')
+      .delete()
+      .where('userId = :id', { id: user.userId })
       .execute();
     return res;
   }

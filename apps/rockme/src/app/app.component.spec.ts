@@ -16,6 +16,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FirebaseUIModule } from 'firebaseui-angular';
 import { firebaseUiTestonfig } from '@monorock/api-interfaces';
 import { LoginComponent } from './components/login/login.component';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -26,6 +27,7 @@ describe('AppComponent', () => {
         PanelModule,
         TableModule,
         DropdownModule,
+        ProgressBarModule,
         HttpClientModule,
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase, 'firestarter'),

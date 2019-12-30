@@ -1,11 +1,8 @@
 <div class="p-grid list-bar">
   <div class="p-col-1 list-bar-hamburger">
-    <button pButton type="button" icon="pi pi-home" iconPos="left"></button>
+    <button pButton type="button" icon="pi pi-home" iconPos="left" (click)="goHome()"></button>
   </div>
-  <div class="p-col-10 list-bar-title">Roles & RBAC</div>
-  <div class="p-col-1 list-bar-action">
-    <button pButton type="button" icon="pi pi-refresh" iconPos="left"></button>
-  </div>
+  <div class="p-col-11 list-bar-title">Roles & RBAC</div>
 </div>
 <monorock-super-user [user]="superUser"></monorock-super-user>
 <div *ngIf="authUser !== null" class="roles-container">
@@ -25,13 +22,19 @@
       <ng-template pTemplate="header">
         <tr>
           <th>Model</th>
-          <th>Access</th>
+          <th>Create</th>
+          <th>Read</th>
+          <th>Update</th>
+          <th>Delete</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-access>
         <tr>
           <td>{{ access.model }}</td>
-          <td>{{ getAccessString(access.access, access.model) }}</td>
+          <td>{{ getCreateAccessString(access.access, access.model) }}</td>
+          <td>{{ getReadAccessString(access.access, access.model) }}</td>
+          <td>{{ getUpdateAccessString(access.access, access.model) }}</td>
+          <td>{{ getDeleteAccessString(access.access, access.model) }}</td>
         </tr>
       </ng-template>
     </p-table>

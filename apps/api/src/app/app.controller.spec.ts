@@ -13,11 +13,8 @@ describe('AppController', () => {
     }).compile();
   });
 
-  describe('getData', () => {
-    it('should return "Welcome from api!"', () => {
-      const appController = app.get<AppController>(AppController);
-      const data = appController.getData();
-      expect(data.message).toContain('Welcome from api');
-    });
+  it('should be defined', () => {
+    const appController = app.get<AppController>(AppController);
+    expect(appController).toBeDefined();
   });
 });

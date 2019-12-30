@@ -43,6 +43,7 @@ export interface UserProfile {
   oathToken?: string;
   refreshToken?: string;
   accessProfile?: AccessItem[];
+  permissions?: any;
   isAnonymous?: boolean;
   email?: string;
   firstname?: string;

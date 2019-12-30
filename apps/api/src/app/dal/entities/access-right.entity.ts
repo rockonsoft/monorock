@@ -1,7 +1,18 @@
-import { Entity, Column, PrimaryColumn, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { AccessRight } from '@monorock/api-interfaces';
+import { DbRole } from './role.entity';
+
+// export class LikeDBRole implements DbRole {
+//   id: number;
+//   applicationId: number;
+//   tenantId: number;
+//   name: string;
+//   description: string;
+//   accessRights: DbAccessRight[];
+// }
 
 @Entity('accessright')
-export class DbAccessRight {
+export class DbAccessRight implements AccessRight {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -12,8 +23,11 @@ export class DbAccessRight {
   propertyId: number; //fk for either
 
   @Column({ type: 'int' })
-  roleId: number;
+  roleId?: number;
 
   @Column({ type: 'int' })
   accessType: number;
+
+  @ManyToOne(type => DbRole, r => r.accessRights, { onDelete: 'CASCADE' })
+  role?: DbRole;
 }

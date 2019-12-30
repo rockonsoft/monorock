@@ -1,0 +1,126 @@
+<div class="p-grid list-bar">
+  <div class="p-col-1 list-bar-title">Roles</div>
+  <div class="p-col-10"></div>
+  <div class="p-col-1" *ngIf="canCreate">
+    <button pButton type="button" icon="pi pi-plus" class="ui-button-secondary" (click)="addNewRole()"></button>
+  </div>
+  <div class="p-col-1" *ngIf="!canCreate">
+    <button disabled pButton type="button" icon="pi pi-plus" class="ui-button-secondary"></button>
+  </div>
+</div>
+<div class="p-grid roles-table-header">
+  <div class="p-col">Name</div>
+  <div class="p-col">Description</div>
+  <div class="p-col">Action</div>
+</div>
+<div *ngFor="let role of roles" class="roles-table-body">
+  <div class="p-grid roles-row">
+    <div *ngIf="!role.editing" class="p-col">{{ role.name }}</div>
+    <div *ngIf="!role.editing" class="p-col">{{ role.description }}</div>
+    <div *ngIf="role.editing" class="p-col">
+      <span class="ui-float-label">
+        <input id="float-input" type="text" size="30" pInputText [(ngModel)]="role.name" />
+        <label for="float-input">Name</label>
+      </span>
+    </div>
+    <div *ngIf="role.editing" class="p-col">
+      <span class="ui-float-label">
+        <input id="float-input" type="text" size="30" pInputText [(ngModel)]="role.description" />
+        <label for="float-input">Description</label>
+      </span>
+    </div>
+    <div *ngIf="role.system" class="p-col">
+      <button pButton type="button" icon="pi pi-eye" iconPos="left" (click)="viewRole(role)"></button>
+    </div>
+    <div *ngIf="!role.system" class="p-col">
+      <button pButton type="button" icon="pi pi-pencil" iconPos="left" (click)="editRole(role)"></button>
+    </div>
+  </div>
+  <div *ngIf="role.editing" class="p-grid roles-edit-row">
+    <p-table [value]="editAccessProfile">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Model</th>
+          <th>Create</th>
+          <th>Read</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-access>
+        <tr>
+          <td>{{ access.modelName }}</td>
+          <td>
+            <p-dropdown
+              placeholder="{{ getCreateAccessString(access.accessType) }}"
+              [options]="scopes"
+              optionLabel="name"
+              (onChange)="accessChanged($event, 'create', access)"
+            ></p-dropdown>
+          </td>
+          <td>
+            <p-dropdown
+              placeholder="{{ getReadAccessString(access.accessType) }}"
+              [options]="scopes"
+              optionLabel="name"
+              (onChange)="accessChanged($event, 'read', access)"
+            ></p-dropdown>
+          </td>
+          <td>
+            <p-dropdown
+              placeholder="{{ getUpdateAccessString(access.accessType) }}"
+              [options]="scopes"
+              optionLabel="name"
+              (onChange)="accessChanged($event, 'update', access)"
+            ></p-dropdown>
+          </td>
+          <td>
+            <p-dropdown
+              placeholder="{{ getDeleteAccessString(access.accessType) }}"
+              [options]="scopes"
+              optionLabel="name"
+              (onChange)="accessChanged($event, 'delete', access)"
+            ></p-dropdown>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div *ngIf="role.editing" class="p-grid roles-edit-action">
+    <div class="p-col-10"></div>
+    <div class="p-col-1">
+      <button label="Save" pButton type="button" iconPos="left" (click)="saveEdit(role)"></button>
+    </div>
+    <div class="p-col-1">
+      <button label="Cancel" pButton type="button" iconPos="left" (click)="cancelEdit(role)"></button>
+    </div>
+  </div>
+  <div *ngIf="role.viewing" class="p-grid roles-view-row">
+    <p-table [value]="accessProfile">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Model</th>
+          <th>Create</th>
+          <th>Read</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-access>
+        <tr>
+          <td>{{ access.modelName }}</td>
+          <td>{{ getCreateAccessString(access.accessType) }}</td>
+          <td>{{ getReadAccessString(access.accessType) }}</td>
+          <td>{{ getUpdateAccessString(access.accessType) }}</td>
+          <td>{{ getDeleteAccessString(access.accessType) }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div *ngIf="role.viewing" class="p-grid roles-edit-action">
+    <div class="p-col-11"></div>
+    <div class="p-col-1">
+      <button label="Close" pButton type="button" iconPos="left" (click)="role.viewing = !role.viewing"></button>
+    </div>
+  </div>
+</div>

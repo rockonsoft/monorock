@@ -16,7 +16,16 @@
     }
   }
   .get-started {
-    padding-top: 25px;
-    padding-left: 45px;
+    margin-top: 25px;
+    a {
+      padding: 10px 10px 30px 10px;
+      height: 20px;
+      border-radius: 4px;
+      background-color: $primaryLightColor;
+      color: $primaryTextColor;
+      float: right;
+      cursor: pointer;
+      margin-right: 25px;
+    }
   }
 }

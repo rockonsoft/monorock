@@ -57,7 +57,6 @@ export class OwnerService {
       .select('userowner.ownedId')
       .where('userowner.ownerId=:userId', { userId: user.userId })
       .andWhere('userowner.modelId=:modelId', { modelId: modelId });
-    console.log(userOwnedSql.getSql());
 
     return userOwnedSql.getMany();
   }

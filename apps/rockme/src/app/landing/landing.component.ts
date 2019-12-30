@@ -67,7 +67,7 @@ export class LandingComponent implements OnInit {
   }
 
   gotoTenantManagement() {
-    this.router.navigateByUrl(`/tenant`);
+    this.router.navigateByUrl(`/admin/dashboard`);
   }
 
   isTenantAdim() {

@@ -12,7 +12,12 @@ import {
   TestResult,
   SUPER_USER_NAME,
   SUPER_USER_PWD,
-  AppUser
+  AppUser,
+  getScopeText,
+  getCreateAccess,
+  getReadAccess,
+  getUpdateAccess,
+  getDeleteAccess
 } from '@monorock/api-interfaces';
 import { RbackTestService } from '../services/rback-test.service';
 import { SuperUserService } from '../services/super-user.service';
@@ -77,8 +82,6 @@ export class RbacTestComponent implements OnInit {
           authUser.roles.forEach(role => {
             this.userProperties.push({ key: 'Role', value: role });
           });
-          // this.tenantService.load();
-          // this.roleService.load();
         }
         this.authUser = authUser;
       }
@@ -215,6 +218,19 @@ export class RbacTestComponent implements OnInit {
     return getFriendlyAccessName(acc, model);
   }
 
+  getCreateAccessString(acc, model) {
+    return getScopeText(getCreateAccess(acc));
+  }
+  getReadAccessString(acc, model) {
+    return getScopeText(getReadAccess(acc));
+  }
+  getUpdateAccessString(acc, model) {
+    return getScopeText(getUpdateAccess(acc));
+  }
+  getDeleteAccessString(acc, model) {
+    return getScopeText(getDeleteAccess(acc));
+  }
+
   ngOnInit() {
     this.superUserService.login(SUPER_USER_NAME, SUPER_USER_PWD);
   }
@@ -258,5 +274,9 @@ export class RbacTestComponent implements OnInit {
   async retryTest(op) {
     this.currentTest = op.op;
     await this.doTest();
+  }
+
+  goHome() {
+    this.router.navigateByUrl('/');
   }
 }
