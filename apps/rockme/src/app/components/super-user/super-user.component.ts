@@ -72,7 +72,11 @@ export class SuperUserComponent implements OnInit {
       .pipe(
         map(res => {
           console.log(`role-service:assignRole`, res);
-          if (!this.otherUser) this.profileService.getProfile();
+          this.profileService.getProfile().subscribe({
+            next: profile => {
+              console.log(profile);
+            }
+          });
         })
       )
       .subscribe();

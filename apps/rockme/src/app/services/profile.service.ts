@@ -11,6 +11,7 @@ import {
   getDeleteAccess
 } from '@monorock/api-interfaces';
 import { ApiAuthService } from '../auth/api-auth.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,21 +24,21 @@ export class ProfileService {
     apiAuthService.appUser.subscribe({
       next: user => {
         if (user) {
-          this.getProfile();
+          this.getProfile().subscribe();
         }
       }
     });
   }
 
   getProfile() {
-    return this.http.get<UserProfile>('/api/profile').subscribe({
-      next: profile => {
+    return this.http.get<UserProfile>('/api/profile').pipe(
+      map(profile => {
         if (profile) {
           profile.permissions = this.getPermissions(profile);
           this._userProfile.next(profile);
         }
-      }
-    });
+      })
+    );
   }
 
   getUserProfile() {
