@@ -3,6 +3,7 @@ import { AppUser, Role, Tenant } from '@monorock/api-interfaces';
 import { SuperUserService } from '../../services/super-user.service';
 import { ProfileService } from '../../services/profile.service';
 import { RoleService } from '../../services/role.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'monorock-super-user',
@@ -45,6 +46,7 @@ export class SuperUserComponent implements OnInit {
     profileService.userProfile.subscribe({
       next: user => {
         if (user) {
+          console.log(`Received other user in super user component`);
           this.otherUser = user;
           if (this.otherUser.roles && this.selectedRole) {
             const findex = this.otherUser.roles.findIndex(x => x === this.selectedRole.name);
@@ -65,11 +67,15 @@ export class SuperUserComponent implements OnInit {
 
   assignRole() {
     const headers = this.superUserService.getHeaders();
-    this.roleService.assignRole(headers, this.otherUser, this.selectedRole).subscribe({
-      next: res => {
-        this.profileService.getProfile();
-      }
-    });
+    this.roleService
+      .assignRole(headers, this.otherUser, this.selectedRole)
+      .pipe(
+        map(res => {
+          console.log(`role-service:assignRole`, res);
+          if (!this.otherUser) this.profileService.getProfile();
+        })
+      )
+      .subscribe();
   }
 
   ngOnInit() {}

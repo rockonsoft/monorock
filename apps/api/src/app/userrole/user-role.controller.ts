@@ -10,13 +10,14 @@ export class UserRoleController {
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('assign')
-  async login(@Request() req) {
+  async assignRole(@Request() req) {
     Logger.log('Received request on api/userrole/assign');
     Logger.log(req.user);
 
     const roleAssignment: RoleAssignment = req.body;
     await this.userService.assignRoleByUserId(roleAssignment.roleName, roleAssignment.userId);
     roleAssignment.status = STATUS_OK;
+    Logger.log(`assignRole::completed`);
     return roleAssignment;
   }
 }

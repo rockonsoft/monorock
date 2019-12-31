@@ -233,7 +233,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
     }
     await this.removeAllRoles(dbUser);
 
-    return await this.assignRole(roleName, dbUser, dbUser.tenantId);
+    await this.assignRole(roleName, dbUser, dbUser.tenantId);
   }
 
   async assignRole(roleName: string, newUser: DbUser, tenantId: number) {
@@ -268,6 +268,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .into('appuserrole')
       .values(dbAppUserRole)
       .execute();
+    Logger.log('Insert result for user-role');
     Logger.log(res);
     return res;
   }
@@ -280,6 +281,8 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .delete()
       .where('userId = :id', { id: user.userId })
       .execute();
+    Logger.log('Delete Result');
+    Logger.log(res);
     return res;
   }
 
