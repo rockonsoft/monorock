@@ -24,7 +24,7 @@ export class ProfileService {
     apiAuthService.appUser.subscribe({
       next: user => {
         if (user) {
-          this.getProfile().subscribe();
+          this.getProfile();
         }
       }
     });
@@ -32,15 +32,18 @@ export class ProfileService {
 
   getProfile() {
     this._userProfile.next(null);
-    return this.http.get<UserProfile>('/api/profile').pipe(
-      map(profile => {
-        if (profile) {
-          profile.permissions = this.getPermissions(profile);
+    this.http
+      .get<UserProfile>('/api/profile')
+      .pipe(
+        map(profile => {
+          if (profile) {
+            profile.permissions = this.getPermissions(profile);
+          }
           console.log(profile);
           this._userProfile.next(profile);
-        }
-      })
-    );
+        })
+      )
+      .subscribe();
   }
 
   getUserProfile() {
