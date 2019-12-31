@@ -36,6 +36,7 @@ export class ProfileService {
       map(profile => {
         if (profile) {
           profile.permissions = this.getPermissions(profile);
+          console.log(profile);
           this._userProfile.next(profile);
         }
       })

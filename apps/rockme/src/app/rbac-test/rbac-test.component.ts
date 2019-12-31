@@ -83,6 +83,7 @@ export class RbacTestComponent implements OnInit {
             this.userProperties.push({ key: 'Role', value: role });
           });
         }
+        console.log(authUser);
         this.authUser = authUser;
       }
     });
