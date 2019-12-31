@@ -31,6 +31,7 @@ export class ProfileService {
   }
 
   getProfile() {
+    this._userProfile.next(null);
     return this.http.get<UserProfile>('/api/profile').pipe(
       map(profile => {
         if (profile) {
