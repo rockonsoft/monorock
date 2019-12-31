@@ -347,6 +347,8 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       accessProfile: accessProfile,
       applicationId: dbUser.applicationId
     };
+    Logger.log('getFullUser');
+    Logger.log(appUser);
     return appUser;
   }
 }
