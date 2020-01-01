@@ -30,20 +30,29 @@ export class ProfileService {
     });
   }
 
-  getProfile() {
+  async getProfile() {
     this._userProfile.next(null);
-    this.http
-      .get<UserProfile>('/api/profile')
-      .pipe(
-        map(profile => {
-          if (profile) {
-            profile.permissions = this.getPermissions(profile);
-          }
-          console.log(profile);
-          this._userProfile.next(profile);
-        })
-      )
-      .subscribe();
+    this.http.get<UserProfile>('/api/profile').subscribe({
+      next: profile => {
+        if (profile) {
+          profile.permissions = this.getPermissions(profile);
+        }
+        console.log(profile);
+        this._userProfile.next(profile);
+      }
+    });
+    // this.http
+    //   .get<UserProfile>('/api/profile')
+    //   .pipe(
+    //     map(profile => {
+    //       if (profile) {
+    //         profile.permissions = this.getPermissions(profile);
+    //       }
+    //       console.log(profile);
+    //       this._userProfile.next(profile);
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   getUserProfile() {
