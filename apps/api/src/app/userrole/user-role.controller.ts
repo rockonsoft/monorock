@@ -12,7 +12,6 @@ export class UserRoleController {
   @Post('assign')
   async assignRole(@Request() req) {
     Logger.log('Received request on api/userrole/assign');
-    Logger.log(req.user);
 
     const roleAssignment: RoleAssignment = req.body;
     await this.userService.assignRoleByUserId(roleAssignment.roleName, roleAssignment.userId);

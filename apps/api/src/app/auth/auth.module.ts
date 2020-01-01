@@ -17,7 +17,7 @@ import { OwnerInterceptor } from './owner.interceptor';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.API_JWT_TOKEN ? process.env.API_JWT_TOKEN : 'TEST_TOKEN',
-      signOptions: { expiresIn: '300s' }
+      signOptions: { expiresIn: '900s' }
     })
   ],
   controllers: [AuthController],

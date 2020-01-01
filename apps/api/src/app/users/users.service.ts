@@ -93,7 +93,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       Logger.log(`User exists`);
       const retUser: AppUser = existing as AppUser;
       retUser.refreshToken = refreshToken;
-      Logger.log(retUser);
 
       return retUser;
     }
@@ -146,7 +145,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
           .toDate()
       })
       .execute();
-    Logger.log(delresults);
 
     //check if user has token
     Logger.log(`getting token for ${user.userId}`);
@@ -167,19 +165,9 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
         .into('usersession')
         .values({ userId: user.userId, refreshToken: token, createdAt: now, updatedAt: now })
         .execute();
-      Logger.log(newResult);
       return token;
     } else {
-      //if token exists, update and return;
       const token = existing.refreshToken;
-      // const updateQuery = await entityManager
-      //   .createQueryBuilder(DbUserSession, 'usersession')
-      //   .update({ updatedAt: moment.utc().format() })
-      //   .where({ userId: existing.userId });
-      // Logger.log(updateQuery.getSql());
-
-      // const updated = updateQuery.execute();
-      // Logger.log(updated);
       return token;
     }
     //create token if not
@@ -260,8 +248,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       userId: newUser.userId
     };
 
-    Logger.log(dbAppUserRole);
-
     const res = await entityManager
       .createQueryBuilder(DbAppUserRole, 'appuserrole')
       .insert()
@@ -269,7 +255,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .values(dbAppUserRole)
       .execute();
     Logger.log('Insert result for user-role');
-    Logger.log(res);
     return res;
   }
 
@@ -282,7 +267,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .where('userId = :id', { id: user.userId })
       .execute();
     Logger.log('Delete Result');
-    Logger.log(res);
     return res;
   }
 
@@ -317,6 +301,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       })
       .getMany();
     let accessProfile = [];
+    Logger.log(res);
     res.forEach(accView => {
       const findModel = accessProfile.find(x => x.model === accView.modelName.toLocaleLowerCase());
       if (findModel) {
@@ -331,8 +316,21 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       }
     });
 
-    const roles = [...new Set(res.map(accView => accView.roleName))];
+    //const roles = [...new Set(res.map(accView => accView.roleName))];
 
+    const userrolesq = entityManager
+      .createQueryBuilder(DbAppUserRole, 'appuserrole')
+      .leftJoinAndSelect(DbRole, 'role', 'appuserrole.roleId = role.id')
+      .where('appuserrole.userId =  :userId', {
+        userId: userId
+      });
+
+    Logger.log(userrolesq.getSql());
+
+    const userroles = await userrolesq.getRawMany();
+
+    Logger.log('roles');
+    Logger.log(userroles);
     const appUser: AppUser = {
       userId: userId,
       id: dbUser.id,
@@ -343,7 +341,7 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       email: dbUser.email,
       picture: dbUser.picture,
       isAnonymous: false,
-      roles: roles,
+      roles: userroles.map(x => x.role_name),
       accessProfile: accessProfile,
       applicationId: dbUser.applicationId
     };

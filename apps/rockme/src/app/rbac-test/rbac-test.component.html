@@ -4,8 +4,12 @@
   </div>
   <div class="p-col-11 list-bar-title">Roles & RBAC</div>
 </div>
-<monorock-super-user [user]="superUser"></monorock-super-user>
-<div *ngIf="authUser !== null" class="roles-container">
+<monorock-super-user
+  [user]="superUser"
+  [managedUser]="authUser"
+  (roleAssigned)="onRoleAssigned($event)"
+></monorock-super-user>
+<div *ngIf="authUser" class="roles-container">
   <div class="p-grid">
     <div class="p-col-3">
       <span>The signed in user has the following roles:</span>

@@ -1,16 +1,18 @@
 import { Controller, Get, UseGuards, Request, Logger } from '@nestjs/common';
-
-import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
+import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
-  getProfile(@Request() req) {
+  async getProfile(@Request() req) {
     Logger.log('Received request on api/profile');
-    return req.user;
+    Logger.log(req.user);
+    //this is potentially the second call to the same function
+    const fullUser = await this.usersService.getFullUser(req.user.userId);
+    return fullUser;
   }
 }

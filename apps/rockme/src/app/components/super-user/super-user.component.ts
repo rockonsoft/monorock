@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AppUser, Role, Tenant } from '@monorock/api-interfaces';
 import { SuperUserService } from '../../services/super-user.service';
 import { ProfileService } from '../../services/profile.service';
@@ -24,6 +24,19 @@ export class SuperUserComponent implements OnInit {
       this.superUser = _user;
     }
   }
+
+  @Input() set managedUser(_user: AppUser) {
+    if (_user) {
+      this.otherUser = _user;
+      if (this.selectedRole) {
+        const findex = this.otherUser.roles.findIndex(x => x === this.selectedRole.name);
+        this.disableRoleAssign = findex > -1; //do not assign current roles
+      }
+    }
+  }
+
+  @Output() roleAssigned = new EventEmitter<Role>();
+
   constructor(
     private superUserService: SuperUserService,
     private profileService: ProfileService,
@@ -36,25 +49,25 @@ export class SuperUserComponent implements OnInit {
         }
       }
     });
-    superUserService.tenants.subscribe({
-      next: tenants => {
-        if (tenants) {
-          this.tenants = tenants;
-        }
-      }
-    });
-    profileService.userProfile.subscribe({
-      next: user => {
-        if (user) {
-          console.log(`Received other user in super user component`);
-          this.otherUser = user;
-          if (this.otherUser.roles && this.selectedRole) {
-            const findex = this.otherUser.roles.findIndex(x => x === this.selectedRole.name);
-            this.disableRoleAssign = findex > -1; //do not assign current roles
-          }
-        }
-      }
-    });
+    // superUserService.tenants.subscribe({
+    //   next: tenants => {
+    //     if (tenants) {
+    //       this.tenants = tenants;
+    //     }
+    //   }
+    // });
+    // profileService.userProfile.subscribe({
+    //   next: user => {
+    //     if (user) {
+    //       console.log(`Received other user in super user component`);
+    //       this.otherUser = user;
+    //       if (this.otherUser.roles && this.selectedRole) {
+    //         const findex = this.otherUser.roles.findIndex(x => x === this.selectedRole.name);
+    //         this.disableRoleAssign = findex > -1; //do not assign current roles
+    //       }
+    //     }
+    //   }
+    // });
   }
 
   selectedRoleChanged(event) {
@@ -66,16 +79,17 @@ export class SuperUserComponent implements OnInit {
   }
 
   assignRole() {
-    const headers = this.superUserService.getHeaders();
-    this.roleService
-      .assignRole(headers, this.otherUser, this.selectedRole)
-      .pipe(
-        map(res => {
-          console.log(`role-service:assignRole`, res);
-          this.profileService.getProfile();
-        })
-      )
-      .subscribe();
+    this.roleAssigned.emit(this.selectedRole);
+    // const headers = this.superUserService.getHeaders();
+    // this.roleService
+    //   .assignRole(headers, this.otherUser, this.selectedRole)
+    //   .pipe(
+    //     map(res => {
+    //       console.log(`role-service:assignRole`, res);
+    //       this.profileService.getProfile();
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   ngOnInit() {}

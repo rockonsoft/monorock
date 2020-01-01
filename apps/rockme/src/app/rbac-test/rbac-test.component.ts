@@ -280,4 +280,11 @@ export class RbacTestComponent implements OnInit {
   goHome() {
     this.router.navigateByUrl('/');
   }
+
+  async onRoleAssigned(event) {
+    console.log(event);
+    const headers = this.superUserService.getHeaders();
+    await this.roleService.assignRole(headers, this.authUser, event).toPromise();
+    await this.profileService.getProfile();
+  }
 }
