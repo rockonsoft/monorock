@@ -2,7 +2,10 @@
   <div class="p-col-1 list-bar-hamburger">
     <button pButton type="button" icon="pi pi-home" iconPos="left" (click)="goHome()"></button>
   </div>
-  <div class="p-col-11 list-bar-title">Roles & RBAC</div>
+  <div class="p-col-10 list-bar-title">Roles & RBAC</div>
+  <div class="p-col-1 list-bar-refresh">
+    <button pButton type="button" icon="pi pi-refresh" iconPos="left" (click)="refresh()"></button>
+  </div>
 </div>
 <monorock-super-user
   [user]="superUser"

@@ -287,4 +287,8 @@ export class RbacTestComponent implements OnInit {
     await this.roleService.assignRole(headers, this.authUser, event).toPromise();
     await this.profileService.getProfile();
   }
+
+  async refresh() {
+    await this.profileService.getProfile();
+  }
 }
