@@ -12,6 +12,7 @@ import {
 } from '@monorock/api-interfaces';
 import { ApiAuthService } from '../auth/api-auth.service';
 import { map, tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class ProfileService {
               console.log('getProfile observable returned:', p);
             }
           });
+          this.getEnv().subscribe();
         }
       }
     });
@@ -45,7 +47,8 @@ export class ProfileService {
     //     this._userProfile.next(profile);
     //   }
     // });
-    return this.http.get<UserProfile>('/api/profile').pipe(
+    moment.now();
+    return this.http.get(`/api/profile?${moment.now()}`).pipe(
       tap(profile => {
         if (profile) {
           profile.permissions = this.getPermissions(profile);
@@ -73,5 +76,17 @@ export class ProfileService {
       };
     });
     return ret;
+  }
+
+  getEnv() {
+    return this.http.get<UserProfile>('/api/environment').pipe(
+      tap(profile => {
+        if (profile) {
+          profile.permissions = this.getPermissions(profile);
+        }
+        console.log(profile);
+        this._userProfile.next(profile);
+      })
+    );
   }
 }

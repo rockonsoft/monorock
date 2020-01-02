@@ -15,4 +15,11 @@ export class AppController {
     const fullUser = await this.usersService.getFullUser(req.user.userId);
     return fullUser;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('environment')
+  async getEnv(@Request() req) {
+    Logger.log('Received request on api/environment');
+    return process.env;
+  }
 }

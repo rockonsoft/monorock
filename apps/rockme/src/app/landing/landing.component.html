@@ -9,7 +9,7 @@
     <span> Profile Loaded</span><i class="pi pi-check"></i>
   </div>
 </div>
-<div *ngIf="userProfile !== null; else nouser" class="profile-container">
+<div *ngIf="userProfile !== null" class="profile-container">
   <div class="p-grid">
     <div class="p-col">
       <div class="profile-box profile-box-blue">
@@ -164,11 +164,6 @@
     </div>
   </div>
 </div>
-<ng-template #nouser>
-  <div class="no-user">
-    Loading user profile...
-  </div>
-</ng-template>
 
 <ng-template #nooauthuser>
   <div class="noauth-user p-col-4">
