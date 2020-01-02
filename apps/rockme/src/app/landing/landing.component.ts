@@ -43,9 +43,11 @@ export class LandingComponent implements OnInit {
           this.userProperties.push({ key: 'Name', value: userProfile.display });
           this.userProperties.push({ key: 'Id', value: userProfile.userId });
           this.userProperties.push({ key: 'Tenant', value: userProfile.tenantName });
-          userProfile.roles.forEach(role => {
-            this.userProperties.push({ key: 'Role', value: role });
-          });
+          if (userProfile.roles) {
+            userProfile.roles.forEach(role => {
+              this.userProperties.push({ key: 'Role', value: role });
+            });
+          }
         }
         this.userProfile = userProfile;
       }
