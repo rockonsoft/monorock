@@ -38,17 +38,8 @@ export class ProfileService {
 
   getProfile(): Observable<any> {
     this._userProfile.next(null);
-    // await this.http.get<UserProfile>('/api/profile').subscribe({
-    //   next: profile => {
-    //     if (profile) {
-    //       profile.permissions = this.getPermissions(profile);
-    //     }
-    //     console.log(profile);
-    //     this._userProfile.next(profile);
-    //   }
-    // });
     moment.now();
-    return this.http.get(`/api/profile?${moment.now()}`).pipe(
+    return this.http.get(`/api/profile/${moment.now()}`).pipe(
       tap(profile => {
         if (profile) {
           profile.permissions = this.getPermissions(profile);

@@ -254,7 +254,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .into('appuserrole')
       .values(dbAppUserRole)
       .execute();
-    Logger.log('Insert result for user-role');
     return res;
   }
 
@@ -266,7 +265,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       .delete()
       .where('userId = :id', { id: user.userId })
       .execute();
-    Logger.log('Delete Result');
     return res;
   }
 
@@ -301,7 +299,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       })
       .getMany();
     let accessProfile = [];
-    Logger.log(res);
     res.forEach(accView => {
       const findModel = accessProfile.find(x => x.model === accView.modelName.toLocaleLowerCase());
       if (findModel) {
@@ -325,12 +322,8 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
         userId: userId
       });
 
-    Logger.log(userrolesq.getSql());
-
     const userroles = await userrolesq.getRawMany();
 
-    Logger.log('roles');
-    Logger.log(userroles);
     const appUser: AppUser = {
       userId: userId,
       id: dbUser.id,
@@ -345,8 +338,6 @@ export class UsersService extends TypeOrmCrudService<DbUser> {
       accessProfile: accessProfile,
       applicationId: dbUser.applicationId
     };
-    Logger.log('getFullUser');
-    Logger.log(appUser);
     return appUser;
   }
 }

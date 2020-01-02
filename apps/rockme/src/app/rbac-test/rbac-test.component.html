@@ -123,7 +123,7 @@
               (click)="doTest()"
             ></button>
           </div>
-          <div class="p-col-3">
+          <div class="p-col-3" *ngIf="$currentOp | async as op">
             <span *ngIf="getResult() === null">Not Tested</span>
             <span *ngIf="getResult() !== null">{{ getResult().text }}</span>
           </div>

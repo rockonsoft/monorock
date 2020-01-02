@@ -61,6 +61,8 @@ export class RbacTestComponent implements OnInit {
   $roleAssign: Observable<any> = null;
   $profileGet: Observable<any> = null;
 
+  $currentOp: Observable<any> = null;
+
   constructor(
     private apiAuthService: ApiAuthService,
     private userAuthService: UserAuthService,
@@ -201,19 +203,19 @@ export class RbacTestComponent implements OnInit {
     const instances = this.resultsMap.has(listOp) ? this.resultsMap.get(listOp).result : null;
     switch (this.currentTest) {
       case listOp:
-        await this.testService.doListTest(this.selectedModel);
+        this.$currentOp = await this.testService.doListTest(this.selectedModel);
         break;
       case getOp:
-        await this.testService.doGetTest(this.selectedModel, instances[0]);
+        this.$currentOp = await this.testService.doGetTest(this.selectedModel, instances[0]);
         break;
       case updateOp:
-        await this.testService.doUpdateTest(this.selectedModel, instances[0]);
+        this.$currentOp = await this.testService.doUpdateTest(this.selectedModel, instances[0]);
         break;
       case createOp:
-        await this.testService.doCreateTest(this.selectedModel);
+        this.$currentOp = await this.testService.doCreateTest(this.selectedModel);
         break;
       case deleteOp:
-        await this.testService.doDeleteTest(this.selectedModel, instances[0]);
+        this.$currentOp = await this.testService.doDeleteTest(this.selectedModel, instances[0]);
         break;
     }
   }

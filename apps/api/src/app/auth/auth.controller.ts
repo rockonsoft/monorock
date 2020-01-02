@@ -11,7 +11,6 @@ export class AuthController {
   async loginUser(@Request() req) {
     Logger.log('Received request on api/login');
     Logger.log('got this user from local strategy');
-    Logger.log(req.user);
     //should be: {
     //   token: decodedToken,
     //   user: upsertedUser
@@ -29,7 +28,6 @@ export class AuthController {
   @Post('tokenlogin')
   async login(@Request() req) {
     Logger.log('Received request on api/tokenlogin');
-    Logger.log(req.user);
     //should be: {
     //   token: decodedToken,
     //   user: upsertedUser
@@ -50,8 +48,6 @@ export class AuthController {
     //req.user contains decode JWT from google
     const { token } = req.body;
     Logger.log(`refreshToken:${req.url}`);
-
-    Logger.log(token);
 
     const newToken = await this.authService.refreshUserToken(token);
     Logger.log(`generated ${newToken} for user refresh`);

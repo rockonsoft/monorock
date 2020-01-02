@@ -4,7 +4,7 @@ import { ModelMeta, TestResult, API_BASE } from '@monorock/api-interfaces';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { ApiAuthService } from '../auth/api-auth.service';
 import { SuperUserService } from './super-user.service';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, tap } from 'rxjs/operators';
 
 const sampleObject = {
   Product: {
@@ -59,45 +59,51 @@ export class RbackTestService {
     }
   }
 
-  async doListTest(selectedModel: ModelMeta): Promise<any> {
+  async doListTest(selectedModel: ModelMeta): Promise<Observable<any>> {
     const url = await this.getApiEndpoint(selectedModel);
-    await this.http.get(url).subscribe({
-      next: res => {
-        this._result.next(res);
-      },
-      error: err => {
-        console.error(err);
-        this._error.next(err);
-      }
-    });
+    return this.http.get(url).pipe(
+      tap({
+        next: res => {
+          this._result.next(res);
+        },
+        error: err => {
+          console.error(err);
+          this._error.next(err);
+        }
+      })
+    );
   }
 
   async doGetTest(selectedModel: ModelMeta, instance: any) {
     const url = await this.getApiEndpoint(selectedModel);
-    await this.http.get(`${url}/${instance.id}`).subscribe({
-      next: res => {
-        this._result.next(res);
-      },
-      error: err => {
-        console.error(err);
-        this._error.next(err);
-      }
-    });
+    return this.http.get(`${url}/${instance.id}`).pipe(
+      tap({
+        next: res => {
+          this._result.next(res);
+        },
+        error: err => {
+          console.error(err);
+          this._error.next(err);
+        }
+      })
+    );
   }
 
   async doCreateTest(selectedModel: ModelMeta): Promise<any> {
     const instance = sampleObject[selectedModel.name];
 
     const url = await this.getApiEndpoint(selectedModel);
-    await this.http.post(`${url}`, instance).subscribe({
-      next: res => {
-        this._result.next(res);
-      },
-      error: err => {
-        console.error(err);
-        this._error.next(err);
-      }
-    });
+    return this.http.post(`${url}`, instance).pipe(
+      tap({
+        next: res => {
+          this._result.next(res);
+        },
+        error: err => {
+          console.error(err);
+          this._error.next(err);
+        }
+      })
+    );
   }
 
   async doUpdateTest(selectedModel: ModelMeta, instance: any) {
@@ -106,30 +112,31 @@ export class RbackTestService {
     instance[firstKey] = instance[firstKey] + '_updated';
 
     const url = await this.getApiEndpoint(selectedModel);
-    await this.http.patch(`${url}/${instance.id}`, instance).subscribe({
-      next: res => {
-        this._result.next(res);
-      },
-      error: err => {
-        console.error(err);
-        this._error.next(err);
-      }
-    });
+    return this.http.patch(`${url}/${instance.id}`, instance).pipe(
+      tap({
+        next: res => {
+          this._result.next(res);
+        },
+        error: err => {
+          console.error(err);
+          this._error.next(err);
+        }
+      })
+    );
   }
 
   async doDeleteTest(selectedModel: ModelMeta, instance: any) {
-    const apiToken = this.apiAuth.getToken();
-    let headers = new HttpHeaders().set('Authorization', 'Bearer ' + apiToken);
-
     const url = await this.getApiEndpoint(selectedModel);
-    await this.http.delete(`${url}/${instance.id}`).subscribe({
-      next: res => {
-        this._result.next(res);
-      },
-      error: err => {
-        console.error(err);
-        this._error.next(err);
-      }
-    });
+    return this.http.delete(`${url}/${instance.id}`).pipe(
+      tap({
+        next: res => {
+          this._result.next(res);
+        },
+        error: err => {
+          console.error(err);
+          this._error.next(err);
+        }
+      })
+    );
   }
 }
