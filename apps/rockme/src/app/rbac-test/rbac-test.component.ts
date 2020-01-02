@@ -45,12 +45,8 @@ const testSequence: ('LIST' | 'GET' | 'CREATE' | 'UPDATE' | 'DELETE')[] = [listO
   styleUrls: ['./rbac-test.component.scss']
 })
 export class RbacTestComponent implements OnInit {
-  authUser: any = null;
-  tenants: Tenant[] = null;
-  tenantError: string;
   roles: Role[] = null;
   rolesError: string;
-  userProperties: any[] = [];
   models: any[] = null;
   selectedModel: ModelMeta = null;
   testPhase = 1;
@@ -72,51 +68,6 @@ export class RbacTestComponent implements OnInit {
     private superUserService: SuperUserService,
     private profileService: ProfileService
   ) {
-    profileService.userProfile.subscribe({
-      next: authUser => {
-        if (authUser) {
-          this.userProperties = [];
-          this.userProperties.push({ key: 'Name', value: authUser.display });
-          this.userProperties.push({ key: 'Id', value: authUser.userId });
-          this.userProperties.push({ key: 'Tenant', value: authUser.tenantExternalId });
-          authUser.roles.forEach(role => {
-            this.userProperties.push({ key: 'Role', value: role });
-          });
-        }
-        console.log(authUser);
-        this.authUser = authUser;
-      }
-    });
-    tenantService.tenants.subscribe({
-      next: tenants => {
-        if (tenants) {
-          this.tenants = tenants;
-        }
-      }
-    });
-    tenantService.error.subscribe({
-      next: error => {
-        if (error) {
-          this.tenantError = error.statusText;
-          this.tenants = [];
-        }
-      }
-    });
-    roleService.roles.subscribe({
-      next: roles => {
-        if (roles) {
-          this.roles = roles;
-        }
-      }
-    });
-    roleService.error.subscribe({
-      next: error => {
-        if (error) {
-          this.rolesError = error.statusText;
-          this.roles = [];
-        }
-      }
-    });
     testService.superUser.models.subscribe({
       next: (models: ModelMeta[]) => {
         if (models) {
@@ -284,7 +235,7 @@ export class RbacTestComponent implements OnInit {
   async onRoleAssigned(event) {
     console.log(event);
     const headers = this.superUserService.getHeaders();
-    await this.roleService.assignRole(headers, this.authUser, event).toPromise();
+    await this.roleService.assignRole(headers, this.profileService.getUserProfile(), event).toPromise();
     await this.profileService.getProfile();
   }
 
