@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
         'tenant-id': this.user.tenantExternalId,
         'application-id': `${this.user.applicationId}`,
         'user-id': this.user.userId,
-        'Cache-Control': 'public,max-age=1,s-maxage=1'
+        'Cache-Control': 'public, max-age=0, s-maxage=0'
       }
     });
   }
