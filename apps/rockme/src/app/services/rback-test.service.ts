@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { ApiAuthService } from '../auth/api-auth.service';
 import { SuperUserService } from './super-user.service';
 import { catchError, retry, tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 const sampleObject = {
   Product: {
@@ -61,7 +62,7 @@ export class RbackTestService {
 
   async doListTest(selectedModel: ModelMeta): Promise<Observable<any>> {
     const url = await this.getApiEndpoint(selectedModel);
-    return this.http.get(url).pipe(
+    return this.http.get(`${url}?${moment.now()}`).pipe(
       tap({
         next: res => {
           this._result.next(res);
@@ -76,7 +77,7 @@ export class RbackTestService {
 
   async doGetTest(selectedModel: ModelMeta, instance: any) {
     const url = await this.getApiEndpoint(selectedModel);
-    return this.http.get(`${url}/${instance.id}`).pipe(
+    return this.http.get(`${url}/${instance.id}?${moment.now()}`).pipe(
       tap({
         next: res => {
           this._result.next(res);

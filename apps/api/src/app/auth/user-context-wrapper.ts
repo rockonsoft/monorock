@@ -38,6 +38,7 @@ export class UserContextWrapper {
   }
 
   setModelAndInstanceId(url: string) {
+    url = url.indexOf('?') > -1 ? url.split('?')[0] : url;
     const pieces = url.split('/');
     const last = pieces[pieces.length - 1];
     const secondLast = pieces[pieces.length - 2];
