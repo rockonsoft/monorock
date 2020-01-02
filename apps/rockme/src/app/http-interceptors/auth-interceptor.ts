@@ -19,7 +19,8 @@ export class AuthInterceptor implements HttpInterceptor {
       setHeaders: {
         'tenant-id': this.user.tenantExternalId,
         'application-id': `${this.user.applicationId}`,
-        'user-id': this.user.userId
+        'user-id': this.user.userId,
+        'Cache-Control': 'no-cache'
       }
     });
   }
