@@ -22,7 +22,8 @@ import {
 import { RbackTestService } from '../services/rback-test.service';
 import { SuperUserService } from '../services/super-user.service';
 import { ProfileService } from '../services/profile.service';
-import { findIndex } from 'rxjs/operators';
+import { findIndex, first, take, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 interface ResultOfTest {
   result?: any;
@@ -57,6 +58,8 @@ export class RbacTestComponent implements OnInit {
   selectedRole: any = null;
   superUser: AppUser = null;
   currentTest: 'LIST' | 'GET' | 'CREATE' | 'UPDATE' | 'DELETE' = listOp;
+  $roleAssign: Observable<any> = null;
+  $profileGet: Observable<any> = null;
 
   constructor(
     private apiAuthService: ApiAuthService,
@@ -235,11 +238,14 @@ export class RbacTestComponent implements OnInit {
   async onRoleAssigned(event) {
     console.log(event);
     const headers = this.superUserService.getHeaders();
-    await this.roleService.assignRole(headers, this.profileService.getUserProfile(), event).toPromise();
-    await this.profileService.getProfile();
+    this.$roleAssign = this.roleService.assignRole(headers, this.profileService.getUserProfile(), event).pipe(
+      tap(x => {
+        this.$profileGet = this.profileService.getProfile();
+      })
+    );
   }
 
   async refresh() {
-    await this.profileService.getProfile();
+    this.$profileGet = this.profileService.getProfile();
   }
 }

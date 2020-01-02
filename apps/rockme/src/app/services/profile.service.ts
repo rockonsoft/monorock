@@ -11,7 +11,7 @@ import {
   getDeleteAccess
 } from '@monorock/api-interfaces';
 import { ApiAuthService } from '../auth/api-auth.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -24,34 +24,36 @@ export class ProfileService {
     apiAuthService.appUser.subscribe({
       next: user => {
         if (user) {
-          this.getProfile();
+          this.getProfile().subscribe({
+            next: p => {
+              console.log('getProfile observable returned:', p);
+            }
+          });
         }
       }
     });
   }
 
-  async getProfile() {
+  getProfile(): Observable<any> {
     this._userProfile.next(null);
-    this.http.get<UserProfile>('/api/profile').subscribe({
-      next: profile => {
+    // await this.http.get<UserProfile>('/api/profile').subscribe({
+    //   next: profile => {
+    //     if (profile) {
+    //       profile.permissions = this.getPermissions(profile);
+    //     }
+    //     console.log(profile);
+    //     this._userProfile.next(profile);
+    //   }
+    // });
+    return this.http.get<UserProfile>('/api/profile').pipe(
+      tap(profile => {
         if (profile) {
           profile.permissions = this.getPermissions(profile);
         }
         console.log(profile);
         this._userProfile.next(profile);
-      }
-    });
-    // this.http
-    //   .get<UserProfile>('/api/profile')
-    //   .pipe(
-    //     map(profile => {
-    //       if (profile) {
-    //         profile.permissions = this.getPermissions(profile);
-    //       }
-    //       console.log(profile);
-    //       this._userProfile.next(profile);
-    //     })
-    //   )
+      })
+    );
     //   .subscribe();
   }
 

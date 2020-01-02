@@ -7,6 +7,10 @@
     <button pButton type="button" icon="pi pi-refresh" iconPos="left" (click)="refresh()"></button>
   </div>
 </div>
+<ng-container *ngIf="{ roleState: $roleAssign | async, profileState: $profileGet | async } as data">
+  <div *ngIf="data.roleState">Role assignment completed.</div>
+  <div *ngIf="data.profileState">Profile get completed.</div>
+</ng-container>
 <div *ngIf="profileService.userProfile | async as authUser" class="roles-container">
   <monorock-super-user
     [user]="superUser"
