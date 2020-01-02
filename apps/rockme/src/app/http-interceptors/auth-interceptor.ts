@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
 import { ApiAuthService } from '../auth/api-auth.service';
 import { AppUser } from '@monorock/api-interfaces';
-
+import * as moment from 'moment';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   user: AppUser;
@@ -20,7 +20,9 @@ export class AuthInterceptor implements HttpInterceptor {
         'tenant-id': this.user.tenantExternalId,
         'application-id': `${this.user.applicationId}`,
         'user-id': this.user.userId,
-        'Cache-Control': 'public, max-age=0, s-maxage=0'
+        'Cache-Control': 'public, max-age=1, s-maxage=1',
+        Vary: 'Accept-Encoding, Cache-Buster-Header',
+        'Cache-Buster-Header': `${moment.now()}`
       }
     });
   }
