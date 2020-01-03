@@ -6,6 +6,8 @@ import { ApiAuthService } from './auth/api-auth.service';
 import { ProgressService } from './services/progress.service';
 import { tap, delay } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ProfileService } from './services/profile.service';
 
 @Component({
   selector: 'monorock-root',
@@ -14,7 +16,8 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   busy = true;
-  constructor(public progress: ProgressService, private router: Router) {}
+  getEnv$: Observable<any> = null;
+  constructor(private progress: ProgressService) {}
 
   ngOnInit() {
     this.progress.busy

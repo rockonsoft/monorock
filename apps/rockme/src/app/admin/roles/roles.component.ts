@@ -13,9 +13,10 @@ import {
   ActionType,
   getScopeFromText
 } from 'libs/api-interfaces/src/lib/models';
-import { map } from 'rxjs/operators';
+import { map, tap, first } from 'rxjs/operators';
 import { ProfileService } from '../../services/profile.service';
-import { GUEST_ROLE, TENANT_ADMIN_ROLE, USER_ADMIN_ROLE, getAccessType } from '@monorock/api-interfaces';
+import { GUEST_ROLE, TENANT_ADMIN_ROLE, USER_ADMIN_ROLE, getAccessType, UserProfile } from '@monorock/api-interfaces';
+import { Observable, Subject } from 'rxjs';
 
 const SCOPE_ALL = ActionScope.all;
 
@@ -49,7 +50,8 @@ export class RolesComponent implements OnInit {
     { name: 'Own', value: ActionScope.own },
     { name: 'All', value: ActionScope.all }
   ];
-  roles: UiRole[];
+  roles$: Observable<UiRole[]>;
+  userProfile$: Observable<UserProfile>;
   accessProfile: AccessRight[] = [];
   editAccessProfile: AccessRight[] = [];
 
@@ -63,30 +65,33 @@ export class RolesComponent implements OnInit {
     update: ActionScope.none,
     delete: ActionScope.none
   };
+  editRole$: Observable<any>;
+  viewRole$: Observable<any>;
+  roleDeleting$: Observable<any>;
+  private unsubscribe$ = new Subject<void>();
+
   constructor(private profileService: ProfileService, private roleService: RoleService) {
-    profileService.userProfile
-      .pipe(
-        map(p => {
-          if (p) {
-            if (p.permissions && p.permissions['role']) {
-              this.permissions = p.permissions['role'];
-              this.canCreate = this.permissions.create === ActionScope.all;
-            }
-            this.roleService.loadModelMeta();
-            this.roleService.load();
+    this.userProfile$ = profileService.userProfile.pipe(
+      tap(p => {
+        if (p) {
+          if (p.permissions && p.permissions['role']) {
+            this.permissions = p.permissions['role'];
+            this.canCreate = this.permissions.create === ActionScope.all;
           }
-        })
-      )
-      .subscribe();
-    this.roleService.roles.subscribe({
-      next: roles => {
+          this.roleService.loadModelMeta();
+          this.roleService.load();
+        }
+      })
+    );
+    this.roles$ = this.roleService.roles.pipe(
+      map(roles => {
         if (roles) {
-          this.roles = roles.map(x => {
-            return { ...x, system: this.isSystemRole(x) };
+          return roles.map(x => {
+            return { ...x, system: this.isSystemRole(x) } as UiRole;
           });
         }
-      }
-    });
+      })
+    );
   }
 
   isSystemRole(role: Role): boolean {
@@ -100,42 +105,36 @@ export class RolesComponent implements OnInit {
   }
 
   editRole(role: UiRole) {
-    this.roles.forEach(x => {
-      x.editing = false;
-    });
     role.editing = true;
-    this.roleService
-      .getAccessRights(role)
-      .pipe(
-        map(data => {
-          if (data) {
-            const neweditAccessProfile = data.map(ac => {
-              const model = this.roleService.models.value.find(m => m.id === ac.modelId);
-              return { ...ac, modelName: model ? model.name : 'not found' };
-            });
-            this.roleService.models.value.forEach(model => {
-              const ac = neweditAccessProfile.find(x => x.modelName === model.name);
-              if (!ac) {
-                neweditAccessProfile.push({
-                  modelName: model.name,
-                  modelId: model.id,
-                  accessType: getAccessType(ActionType.read, ActionScope.none)
-                });
-              }
-            });
-            this.editAccessProfile = neweditAccessProfile.sort((a, b) => {
-              if (a.modelName > b.modelName) {
-                return -1;
-              }
-              if (a.modelName < b.modelName) {
-                return 1;
-              }
-              return 0;
-            });
-          }
-        })
-      )
-      .subscribe();
+    this.editRole$ = this.roleService.getAccessRights(role).pipe(
+      tap(data => {
+        if (data) {
+          const neweditAccessProfile = data.map(ac => {
+            const model = this.roleService.models.value.find(m => m.id === ac.modelId);
+            return { ...ac, modelName: model ? model.name : 'not found' };
+          });
+          this.roleService.models.value.forEach(model => {
+            const ac = neweditAccessProfile.find(x => x.modelName === model.name);
+            if (!ac) {
+              neweditAccessProfile.push({
+                modelName: model.name,
+                modelId: model.id,
+                accessType: getAccessType(ActionType.read, ActionScope.none)
+              });
+            }
+          });
+          this.editAccessProfile = neweditAccessProfile.sort((a, b) => {
+            if (a.modelName > b.modelName) {
+              return -1;
+            }
+            if (a.modelName < b.modelName) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+      })
+    );
   }
   getAccessString(acc, model) {
     return getFriendlyAccessName(acc, model);
@@ -155,23 +154,17 @@ export class RolesComponent implements OnInit {
   }
 
   viewRole(role: UiRole) {
-    this.roles.forEach(x => {
-      x.viewing = false;
-    });
     role.viewing = true;
-    this.roleService
-      .getAccessRights(role)
-      .pipe(
-        map(data => {
-          if (data) {
-            this.accessProfile = data.map(ac => {
-              const model = this.roleService.models.value.find(m => m.id === ac.modelId);
-              return { ...ac, modelName: model ? model.name : 'not found' };
-            });
-          }
-        })
-      )
-      .subscribe();
+    this.viewRole$ = this.roleService.getAccessRights(role).pipe(
+      tap(data => {
+        if (data) {
+          this.accessProfile = data.map(ac => {
+            const model = this.roleService.models.value.find(m => m.id === ac.modelId);
+            return { ...ac, modelName: model ? model.name : 'not found' };
+          });
+        }
+      })
+    );
   }
 
   accessChanged(event, crud, access: AccessRight) {
@@ -212,9 +205,10 @@ export class RolesComponent implements OnInit {
     });
   }
 
+  deleteRole(role) {
+    this.roleDeleting$ = this.roleService.deleteRole(role);
+  }
   cancelEdit(role) {
-    this.roles.forEach(x => {
-      x.editing = false;
-    });
+    role.editing = false;
   }
 }

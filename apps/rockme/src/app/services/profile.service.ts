@@ -25,12 +25,7 @@ export class ProfileService {
     apiAuthService.appUser.subscribe({
       next: user => {
         if (user) {
-          this.getProfile().subscribe({
-            next: p => {
-              console.log('getProfile observable returned:', p);
-            }
-          });
-          this.getEnv().subscribe();
+          this.getProfile().subscribe();
         }
       }
     });
@@ -44,7 +39,6 @@ export class ProfileService {
         if (profile) {
           profile.permissions = this.getPermissions(profile);
         }
-        console.log(profile);
         this._userProfile.next(profile);
       })
     );
@@ -70,14 +64,6 @@ export class ProfileService {
   }
 
   getEnv() {
-    return this.http.get<UserProfile>('/api/environment').pipe(
-      tap(profile => {
-        if (profile) {
-          profile.permissions = this.getPermissions(profile);
-        }
-        console.log(profile);
-        this._userProfile.next(profile);
-      })
-    );
+    return this.http.get<UserProfile>('/api/environment');
   }
 }

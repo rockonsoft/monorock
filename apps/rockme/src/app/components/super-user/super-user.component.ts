@@ -49,25 +49,6 @@ export class SuperUserComponent implements OnInit {
         }
       }
     });
-    // superUserService.tenants.subscribe({
-    //   next: tenants => {
-    //     if (tenants) {
-    //       this.tenants = tenants;
-    //     }
-    //   }
-    // });
-    // profileService.userProfile.subscribe({
-    //   next: user => {
-    //     if (user) {
-    //       console.log(`Received other user in super user component`);
-    //       this.otherUser = user;
-    //       if (this.otherUser.roles && this.selectedRole) {
-    //         const findex = this.otherUser.roles.findIndex(x => x === this.selectedRole.name);
-    //         this.disableRoleAssign = findex > -1; //do not assign current roles
-    //       }
-    //     }
-    //   }
-    // });
   }
 
   selectedRoleChanged(event) {
@@ -80,16 +61,6 @@ export class SuperUserComponent implements OnInit {
 
   assignRole() {
     this.roleAssigned.emit(this.selectedRole);
-    // const headers = this.superUserService.getHeaders();
-    // this.roleService
-    //   .assignRole(headers, this.otherUser, this.selectedRole)
-    //   .pipe(
-    //     map(res => {
-    //       console.log(`role-service:assignRole`, res);
-    //       this.profileService.getProfile();
-    //     })
-    //   )
-    //   .subscribe();
   }
 
   ngOnInit() {}

@@ -159,6 +159,11 @@
             <div class="p-col-1 feature">-</div>
             <div class="p-col-7 feature-description">Build stylesheets with SASS</div>
           </div>
+          <div *ngIf="getEnv$ | async as env" class="p-grid">
+            <div class="p-col-4 feature">Current Build</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Commit:{{ env.build }}</div>
+          </div>
         </div>
       </div>
     </div>

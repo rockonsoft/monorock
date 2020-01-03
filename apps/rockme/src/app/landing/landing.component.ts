@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ProfileService } from '../services/profile.service';
 import { User } from 'firebase';
 import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'monorock-landing',
@@ -21,7 +22,7 @@ export class LandingComponent implements OnInit {
   rolesError: string;
   userProperties: any[] = [];
   showDetail = false;
-
+  getEnv$: Observable<any> = null;
   constructor(
     private userAuthService: UserAuthService,
     private router: Router,
@@ -41,6 +42,7 @@ export class LandingComponent implements OnInit {
                 this.userProperties.push({ key: 'Role', value: role });
               });
             }
+            this.getEnv$ = this.profileService.getEnv();
           }
         })
       )

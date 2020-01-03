@@ -238,7 +238,6 @@ export class RbacTestComponent implements OnInit {
   }
 
   async onRoleAssigned(event) {
-    console.log(event);
     const headers = this.superUserService.getHeaders();
     this.$roleAssign = this.roleService.assignRole(headers, this.profileService.getUserProfile(), event).pipe(
       tap(x => {

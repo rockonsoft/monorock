@@ -20,6 +20,6 @@ export class AppController {
   @Get('environment')
   async getEnv() {
     Logger.log(`Received request on api/environment`);
-    return process.env;
+    return { build: process.env.BUILD_ID ? process.env.BUILD_ID : 'local', db_env: process.env.DB_ENV };
   }
 }

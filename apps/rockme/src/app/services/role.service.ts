@@ -81,10 +81,20 @@ export class RoleService {
   createAccess(role: any, ac: AccessRight): any {
     return this.http.post(`api/roles/${role.id}/accessrights`, ac).toPromise();
   }
+
   updateAccess(role: any, ac: AccessRight): any {
     return this.http.patch(`api/roles/${role.id}/accessrights/${ac.id}`, ac).toPromise();
   }
+
   updateRole(role: any) {
     return this.http.patch(`api/roles/${role.id}`, role).toPromise();
+  }
+
+  deleteRole(role: any): any {
+    return this.http.delete(`api/roles/${role.id}`).pipe(
+      tap(x => {
+        this.load();
+      })
+    );
   }
 }
