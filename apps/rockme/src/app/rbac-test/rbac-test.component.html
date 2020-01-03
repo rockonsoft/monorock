@@ -2,10 +2,21 @@
   <div class="p-col-1 list-bar-hamburger">
     <button pButton type="button" icon="pi pi-home" iconPos="left" (click)="goHome()"></button>
   </div>
-  <div class="p-col-11 list-bar-title">Roles & RBAC</div>
+  <div class="p-col-10 list-bar-title">Roles & RBAC</div>
+  <div class="p-col-1 list-bar-refresh">
+    <button pButton type="button" icon="pi pi-refresh" iconPos="left" (click)="refresh()"></button>
+  </div>
 </div>
-<monorock-super-user [user]="superUser"></monorock-super-user>
-<div *ngIf="authUser !== null" class="roles-container">
+<ng-container *ngIf="{ roleState: $roleAssign | async, profileState: $profileGet | async } as data">
+  <div *ngIf="data.roleState">Role assignment completed.</div>
+  <div *ngIf="data.profileState">Profile get completed.</div>
+</ng-container>
+<div *ngIf="profileService.userProfile | async as authUser" class="roles-container">
+  <monorock-super-user
+    [user]="superUser"
+    [managedUser]="authUser"
+    (roleAssigned)="onRoleAssigned($event)"
+  ></monorock-super-user>
   <div class="p-grid">
     <div class="p-col-3">
       <span>The signed in user has the following roles:</span>
@@ -39,83 +50,83 @@
       </ng-template>
     </p-table>
   </div>
-</div>
-<div *ngIf="authUser !== null" class="test-container">
-  <div class="access-test-heading p-grid">
-    <div class="p-col">
-      <span>Test current user's access</span>
-    </div>
-  </div>
-  <div *ngIf="models !== null">
-    <div class="model-select p-grid">
+  <div class="test-container">
+    <div class="access-test-heading p-grid">
       <div class="p-col">
-        <span>To test the user's access, select a model</span>
-      </div>
-      <div class="p-col">
-        <span>Current selected model: {{ selectedModel ? selectedModel.name : 'Not Selected' }}</span>
-      </div>
-      <div class="p-col">
-        <p-dropdown
-          placeholder="Select a model"
-          [options]="models"
-          optionLabel="name"
-          (onChange)="modelSelected($event)"
-        ></p-dropdown>
+        <span>Test current user's access</span>
       </div>
     </div>
-  </div>
-  <div *ngIf="models !== null">
-    <div *ngIf="selectedModel !== null" class="model-tests">
-      <div class="model-test-header p-grid">
-        <div class="p-col-1">
-          <span>Operation</span>
+    <div *ngIf="models !== null">
+      <div class="model-select p-grid">
+        <div class="p-col">
+          <span>To test the user's access, select a model</span>
         </div>
-        <div class="p-col-3">
-          <span>TEST</span>
+        <div class="p-col">
+          <span>Current selected model: {{ selectedModel ? selectedModel.name : 'Not Selected' }}</span>
         </div>
-        <div class="p-col-3">
-          <span>RESPONSE</span>
-        </div>
-        <div class="p-col-3">
-          <span>RETRY</span>
-        </div>
-      </div>
-      <div *ngFor="let hist of history" class="model-test-line p-grid">
-        <div class="p-col-1">
-          <span>{{ hist.op }}</span>
-        </div>
-        <div class="p-col-3">
-          <span>{{ hist.op }}</span>
-        </div>
-        <div class="p-col-3">
-          <span>{{ hist.text }}</span>
-        </div>
-        <div class="p-col-3">
-          <button
-            pButton
-            type="button"
-            label="Retry {{ hist.op }}"
-            class="ui-button-success"
-            (click)="retryTest(hist)"
-          ></button>
+        <div class="p-col">
+          <p-dropdown
+            placeholder="Select a model"
+            [options]="models"
+            optionLabel="name"
+            (onChange)="modelSelected($event)"
+          ></p-dropdown>
         </div>
       </div>
-      <div class="model-test-line p-grid">
-        <div class="p-col-1">
-          <span>{{ currentTest }}</span>
+    </div>
+    <div *ngIf="models !== null">
+      <div *ngIf="selectedModel !== null" class="model-tests">
+        <div class="model-test-header p-grid">
+          <div class="p-col-1">
+            <span>Operation</span>
+          </div>
+          <div class="p-col-3">
+            <span>TEST</span>
+          </div>
+          <div class="p-col-3">
+            <span>RESPONSE</span>
+          </div>
+          <div class="p-col-3">
+            <span>RETRY</span>
+          </div>
         </div>
-        <div class="p-col-3">
-          <button
-            pButton
-            type="button"
-            label="Test {{ currentTest }}"
-            class="ui-button-success"
-            (click)="doTest()"
-          ></button>
+        <div *ngFor="let hist of history" class="model-test-line p-grid">
+          <div class="p-col-1">
+            <span>{{ hist.op }}</span>
+          </div>
+          <div class="p-col-3">
+            <span>{{ hist.op }}</span>
+          </div>
+          <div class="p-col-3">
+            <span>{{ hist.text }}</span>
+          </div>
+          <div class="p-col-3">
+            <button
+              pButton
+              type="button"
+              label="Retry {{ hist.op }}"
+              class="ui-button-success"
+              (click)="retryTest(hist)"
+            ></button>
+          </div>
         </div>
-        <div class="p-col-3">
-          <span *ngIf="getResult() === null">Not Tested</span>
-          <span *ngIf="getResult() !== null">{{ getResult().text }}</span>
+        <div class="model-test-line p-grid">
+          <div class="p-col-1">
+            <span>{{ currentTest }}</span>
+          </div>
+          <div class="p-col-3">
+            <button
+              pButton
+              type="button"
+              label="Test {{ currentTest }}"
+              class="ui-button-success"
+              (click)="doTest()"
+            ></button>
+          </div>
+          <div class="p-col-3" *ngIf="$currentOp | async as op">
+            <span *ngIf="getResult() === null">Not Tested</span>
+            <span *ngIf="getResult() !== null">{{ getResult().text }}</span>
+          </div>
         </div>
       </div>
     </div>

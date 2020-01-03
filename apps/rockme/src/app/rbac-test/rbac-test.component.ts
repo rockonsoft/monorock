@@ -22,7 +22,8 @@ import {
 import { RbackTestService } from '../services/rback-test.service';
 import { SuperUserService } from '../services/super-user.service';
 import { ProfileService } from '../services/profile.service';
-import { findIndex } from 'rxjs/operators';
+import { findIndex, first, take, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 interface ResultOfTest {
   result?: any;
@@ -45,12 +46,8 @@ const testSequence: ('LIST' | 'GET' | 'CREATE' | 'UPDATE' | 'DELETE')[] = [listO
   styleUrls: ['./rbac-test.component.scss']
 })
 export class RbacTestComponent implements OnInit {
-  authUser: any = null;
-  tenants: Tenant[] = null;
-  tenantError: string;
   roles: Role[] = null;
   rolesError: string;
-  userProperties: any[] = [];
   models: any[] = null;
   selectedModel: ModelMeta = null;
   testPhase = 1;
@@ -61,6 +58,10 @@ export class RbacTestComponent implements OnInit {
   selectedRole: any = null;
   superUser: AppUser = null;
   currentTest: 'LIST' | 'GET' | 'CREATE' | 'UPDATE' | 'DELETE' = listOp;
+  $roleAssign: Observable<any> = null;
+  $profileGet: Observable<any> = null;
+
+  $currentOp: Observable<any> = null;
 
   constructor(
     private apiAuthService: ApiAuthService,
@@ -72,50 +73,6 @@ export class RbacTestComponent implements OnInit {
     private superUserService: SuperUserService,
     private profileService: ProfileService
   ) {
-    profileService.userProfile.subscribe({
-      next: authUser => {
-        if (authUser) {
-          this.userProperties = [];
-          this.userProperties.push({ key: 'Name', value: authUser.display });
-          this.userProperties.push({ key: 'Id', value: authUser.userId });
-          this.userProperties.push({ key: 'Tenant', value: authUser.tenantExternalId });
-          authUser.roles.forEach(role => {
-            this.userProperties.push({ key: 'Role', value: role });
-          });
-        }
-        this.authUser = authUser;
-      }
-    });
-    tenantService.tenants.subscribe({
-      next: tenants => {
-        if (tenants) {
-          this.tenants = tenants;
-        }
-      }
-    });
-    tenantService.error.subscribe({
-      next: error => {
-        if (error) {
-          this.tenantError = error.statusText;
-          this.tenants = [];
-        }
-      }
-    });
-    roleService.roles.subscribe({
-      next: roles => {
-        if (roles) {
-          this.roles = roles;
-        }
-      }
-    });
-    roleService.error.subscribe({
-      next: error => {
-        if (error) {
-          this.rolesError = error.statusText;
-          this.roles = [];
-        }
-      }
-    });
     testService.superUser.models.subscribe({
       next: (models: ModelMeta[]) => {
         if (models) {
@@ -246,19 +203,19 @@ export class RbacTestComponent implements OnInit {
     const instances = this.resultsMap.has(listOp) ? this.resultsMap.get(listOp).result : null;
     switch (this.currentTest) {
       case listOp:
-        await this.testService.doListTest(this.selectedModel);
+        this.$currentOp = await this.testService.doListTest(this.selectedModel);
         break;
       case getOp:
-        await this.testService.doGetTest(this.selectedModel, instances[0]);
+        this.$currentOp = await this.testService.doGetTest(this.selectedModel, instances[0]);
         break;
       case updateOp:
-        await this.testService.doUpdateTest(this.selectedModel, instances[0]);
+        this.$currentOp = await this.testService.doUpdateTest(this.selectedModel, instances[0]);
         break;
       case createOp:
-        await this.testService.doCreateTest(this.selectedModel);
+        this.$currentOp = await this.testService.doCreateTest(this.selectedModel);
         break;
       case deleteOp:
-        await this.testService.doDeleteTest(this.selectedModel, instances[0]);
+        this.$currentOp = await this.testService.doDeleteTest(this.selectedModel, instances[0]);
         break;
     }
   }
@@ -278,5 +235,18 @@ export class RbacTestComponent implements OnInit {
 
   goHome() {
     this.router.navigateByUrl('/');
+  }
+
+  async onRoleAssigned(event) {
+    const headers = this.superUserService.getHeaders();
+    this.$roleAssign = this.roleService.assignRole(headers, this.profileService.getUserProfile(), event).pipe(
+      tap(x => {
+        this.$profileGet = this.profileService.getProfile();
+      })
+    );
+  }
+
+  async refresh() {
+    this.$profileGet = this.profileService.getProfile();
   }
 }

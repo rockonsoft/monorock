@@ -13,8 +13,7 @@ import { API_BASE } from '@monorock/api-interfaces';
 import { HeaderInterceptor } from './app/auth/required-header.interceptor';
 
 export function logger(req, res, next) {
-  Logger.log(`Global Logger - request:${req.url}`);
-
+  Logger.log(`API - request:${req.url}`);
   next();
 }
 

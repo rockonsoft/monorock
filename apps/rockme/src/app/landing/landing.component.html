@@ -1,15 +1,15 @@
 <div class="status-container p-grid">
-  <div *ngIf="oAuthUser !== null; else nooauthuser" class="p-col oauth-completed">
+  <div *ngIf="userAuthService.oauthUser | async as oauthUser; else nooauthuser" class="p-col oauth-completed">
     <span> Signed in to OAuth</span> <i class="pi pi-check"></i>
   </div>
-  <div *ngIf="apiAuthUser !== null; else noapiuser" class="p-col api-auth-completed">
+  <div *ngIf="apiAuthService.appUser | async as apiAuthUser; else noapiuser" class="p-col api-auth-completed">
     <span> Singed in to API</span><i class="pi pi-check"></i>
   </div>
-  <div *ngIf="userProfile !== null; else noprofile" class="p-col profile-loaded">
+  <div *ngIf="profileService.userProfile | async as userProfile; else noprofile" class="p-col profile-loaded">
     <span> Profile Loaded</span><i class="pi pi-check"></i>
   </div>
 </div>
-<div *ngIf="userProfile !== null; else nouser" class="profile-container">
+<div *ngIf="profileService.userProfile | async as userProfile" class="profile-container">
   <div class="p-grid">
     <div class="p-col">
       <div class="profile-box profile-box-blue">
@@ -159,26 +159,26 @@
             <div class="p-col-1 feature">-</div>
             <div class="p-col-7 feature-description">Build stylesheets with SASS</div>
           </div>
+          <div *ngIf="getEnv$ | async as env" class="p-grid">
+            <div class="p-col-4 feature">Current Build</div>
+            <div class="p-col-1 feature">-</div>
+            <div class="p-col-7 feature-description">Commit:{{ env.build }}</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<ng-template #nouser>
-  <div class="no-user">
-    Loading user profile...
-  </div>
-</ng-template>
 
 <ng-template #nooauthuser>
   <div class="noauth-user p-col-4">
-    Logging into OAuth Provider...
+    Authenticating with OAuth Provider...
   </div>
 </ng-template>
 
 <ng-template #noapiuser>
   <div class="noapi-user p-col-4">
-    Loggin into API...
+    Authenticating with API...
   </div>
 </ng-template>
 
