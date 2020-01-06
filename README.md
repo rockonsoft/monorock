@@ -1,5 +1,40 @@
 # Monorock
 
+[Demo](https://monorock.web.app/)
+
+A deployable monorepo by [Rockonsoft](https://rockonsoft.com/)
+
+## Getting Started:
+
+- You have a google cloud account with billing
+- You are familiar with Google Cloud console and CLI
+
+### Local development
+
+- [`$ git clone https://github.com/rockonsoft/monorock.git`]
+- [`$ npm install`]
+- Create PostgresSQL Database using console or CLI
+- Create .env file and add database credentials:
+- - DB_ENV=development
+- - DB_PWD=HldGOpq5ev4G15G1
+- Download key file App Engine default service account from GCP IAMS|Service Accounts:
+- - Set GOOGLE_APPLICATION_CREDENTIALS=key.json in .env
+- Create Firebase application and create a web app
+- Get Client Id and secret from Cloud Console:
+- - CLIENT_ID=
+- - CLIENT_SECRET= in .env
+- Create database tenant0 in Google Cloud Platform | SQL
+- Install and Run cloud_sql_proxy
+- (Uncomment lines 59-61 in apps\api\src\app\hosted-app\hosted-app.module.ts on the first run - this is to allow TypeOrm to create data tables before trying to seed database)
+- In firebase console, enable anonymous and Google Authentication
+- ng serve api to start api
+- create apps\rockme\src\environments\environment.ts from sample provided and firebase web app config.
+- build stylesheets with sass apps/sass/theme.scss .\apps\rockme\src\assets\theme.css
+- ng serve rockme to start front end
+- browse to localhost:4200 to see application
+
+## Documentation
+
 Monorock is a monorepo that features:
 
 - Nestjs API deployable to Google Cloud Run
@@ -193,6 +228,8 @@ Run `nx affected:test` to execute the unit tests affected by a change.
 Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
 
 Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+
+What worked for me:`ng e2e rockme-e2e --no-exit`
 
 ## Understand your workspace
 

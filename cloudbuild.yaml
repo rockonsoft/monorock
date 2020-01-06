@@ -93,11 +93,6 @@ steps:
     args: ['use', '$PROJECT_ID']
     secretEnv: ['FIREBASE_TOKEN']
 
-  # deploy to firebase
-  - name: 'gcr.io/$PROJECT_ID/firebase'
-    args: ['deploy', '--only', 'hosting']
-    secretEnv: ['FIREBASE_TOKEN']
-
   # build api image with arguments
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'dist/apps/api'
@@ -130,6 +125,11 @@ steps:
         '--update-env-vars',
         'DB_ENV=production,CLOUD_SQL_CONNECTION_NAME=${_SQL_CONNECTION}',
       ]
+  # deploy to firebase
+  - name: 'gcr.io/$PROJECT_ID/firebase'
+    args: ['deploy', '--only', 'hosting']
+    secretEnv: ['FIREBASE_TOKEN']
+
 substitutions:
   _API_SERVICE_NAME: monorockapi
   _API_IMAGE_NAME: monorock-api
