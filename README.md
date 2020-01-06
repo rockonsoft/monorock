@@ -16,7 +16,7 @@ A deployable monorepo by [Rockonsoft](https://rockonsoft.com/)
 - Create PostgresSQL Database using console or CLI
 - Create .env file and add database credentials:
 - - DB_ENV=development
-- - DB_PWD=HldGOpq5ev4G15G1
+- - DB_PWD={{password}}
 - Download key file App Engine default service account from GCP IAMS|Service Accounts:
 - - Set GOOGLE_APPLICATION_CREDENTIALS=key.json in .env
 - Create Firebase application and create a web app
