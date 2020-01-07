@@ -51,7 +51,7 @@ steps:
     args:
       - kms
       - decrypt
-      - --ciphertext-file=monorock_key.enc
+      - --ciphertext-file=key.enc
       - --plaintext-file=key.json
       - --location=global
       - --keyring=${_ENC_KEY_RING}
@@ -93,11 +93,6 @@ steps:
     args: ['use', '$PROJECT_ID']
     secretEnv: ['FIREBASE_TOKEN']
 
-  # deploy to firebase
-  - name: 'gcr.io/$PROJECT_ID/firebase'
-    args: ['deploy', '--only', 'hosting']
-    secretEnv: ['FIREBASE_TOKEN']
-
   # build api image with arguments
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'dist/apps/api'
@@ -128,13 +123,19 @@ steps:
         'managed',
         '--allow-unauthenticated',
         '--update-env-vars',
-        'DB_ENV=production,CLOUD_SQL_CONNECTION_NAME=monorock:us-east1:monorock',
+        'DB_ENV=production,CLOUD_SQL_CONNECTION_NAME=${_SQL_CONNECTION}',
       ]
+  # deploy to firebase
+  - name: 'gcr.io/$PROJECT_ID/firebase'
+    args: ['deploy', '--only', 'hosting']
+    secretEnv: ['FIREBASE_TOKEN']
+
 substitutions:
   _API_SERVICE_NAME: monorockapi
   _API_IMAGE_NAME: monorock-api
   _ENC_KEY_RING: monorock-integration-secrets
   _ENC_KEY: monorock-firebase-token
+  _SQL_CONNECTION: monorock:us-east1:monorock
 
 secrets:
   - kmsKeyName: projects/monorock/locations/global/keyRings/monorock-integration-secrets/cryptoKeys/monorock-firebase-token
