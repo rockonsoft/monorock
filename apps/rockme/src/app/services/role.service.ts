@@ -1,8 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Role, AppUser, RoleAssignment, UserProfile, AccessRight, ModelMeta } from '@monorock/api-interfaces';
+import {
+  Role,
+  AppUser,
+  RoleAssignment,
+  UserProfile,
+  AccessRight,
+  ModelMeta,
+  API_BASE,
+  ROLE_MODEL_ENDPOINT
+} from '@monorock/api-interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +42,8 @@ export class RoleService {
   }
 
   load() {
-    this.http.get<Role[]>('/api/roles').subscribe({
+    //GET's are cached by default by firebase, to get around that we are currently using a timestamp query parameter
+    this.http.get<Role[]>(`/${API_BASE}/${ROLE_MODEL_ENDPOINT}?${moment.now()}`).subscribe({
       next: roles => {
         if (roles) {
           this._roles.next(roles);
@@ -46,13 +57,13 @@ export class RoleService {
   }
 
   loadForUser(headers: any) {
-    return this.http.get<Role[]>('/api/roles', { headers });
+    return this.http.get<Role[]>(`/${API_BASE}/${ROLE_MODEL_ENDPOINT}?${moment.now()}`, { headers });
   }
 
   addNewRole(profile: UserProfile) {
     const name = `New Role ${this._roles.value.length + 1}`;
     this.http
-      .post('/api/roles', {
+      .post(`/${API_BASE}/${ROLE_MODEL_ENDPOINT}`, {
         name: name,
         description: name,
         applicationId: profile.applicationId,
@@ -75,19 +86,19 @@ export class RoleService {
   }
 
   getAccessRights(role: Role) {
-    return this.http.get<AccessRight[]>(`api/roles/${role.id}/accessrights`);
+    return this.http.get<AccessRight[]>(`/${API_BASE}/${ROLE_MODEL_ENDPOINT}/${role.id}/accessrights`);
   }
 
   createAccess(role: any, ac: AccessRight): any {
-    return this.http.post(`api/roles/${role.id}/accessrights`, ac).toPromise();
+    return this.http.post(`/${API_BASE}/${ROLE_MODEL_ENDPOINT}/${role.id}/accessrights`, ac).toPromise();
   }
 
   updateAccess(role: any, ac: AccessRight): any {
-    return this.http.patch(`api/roles/${role.id}/accessrights/${ac.id}`, ac).toPromise();
+    return this.http.patch(`/${API_BASE}/${ROLE_MODEL_ENDPOINT}/${role.id}/accessrights/${ac.id}`, ac).toPromise();
   }
 
   updateRole(role: any) {
-    return this.http.patch(`api/roles/${role.id}`, role).toPromise();
+    return this.http.patch(`/${API_BASE}/${ROLE_MODEL_ENDPOINT}/${role.id}`, role).toPromise();
   }
 
   deleteRole(role: any): any {
