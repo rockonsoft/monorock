@@ -13,7 +13,7 @@ A deployable monorepo by [Rockonsoft](https://rockonsoft.com/)
 
 - [`$ git clone https://github.com/rockonsoft/monorock.git`]
 - [`$ npm install`]
-- Create PostgresSQL Database using console or CLI
+- Create PostgresSQL (Version 11) Database using console or CLI. Alternatively you can run PostgreSQL locally or with the V11 docker image.
 - Create .env file and add database credentials:
 - - DB_ENV=development
 - - DB_PWD={{password}}
@@ -21,8 +21,8 @@ A deployable monorepo by [Rockonsoft](https://rockonsoft.com/)
 - - Set GOOGLE_APPLICATION_CREDENTIALS=key.json in .env
 - Create Firebase application and create a web app
 - Get Client Id and secret from Cloud Console:
-- - CLIENT_ID=
-- - CLIENT_SECRET= in .env
+  - CLIENT_ID=
+  - CLIENT_SECRET= in .env
 - Create database tenant0 in Google Cloud Platform | SQL
 - Install and Run cloud_sql_proxy
 - (Uncomment lines 59-61 in apps\api\src\app\hosted-app\hosted-app.module.ts on the first run - this is to allow TypeOrm to create data tables before trying to seed database)
