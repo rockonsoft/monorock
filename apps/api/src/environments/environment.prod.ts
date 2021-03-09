@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  DB_PWD: 'changeme',
+  DB_ENV: 'development'
 };
