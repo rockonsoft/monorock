@@ -26,11 +26,19 @@ import { DbUserOwner } from './dal/entities/user-owner.entity';
 import { UsersModule } from './users/users.module';
 import { UserroleModule } from './userrole/userrole.module';
 import { AccessRightsModule } from './accessrights/accessrights.module';
+import { environment } from '../environments/environment';
 
-const PWD = process.env.DB_PWD;
+let PWD = process.env.DB_PWD;
 const connectionName = process.env.CLOUD_SQL_CONNECTION_NAME;
-let dbname = 'tenant0';
-const isCloud = process.env.DB_ENV === 'development' ? false : true;
+let dbname = 'testapi';
+let isCloud = false;
+
+if (environment.production === true) {
+  isCloud = true;
+} else {
+  PWD = environment.DB_PWD;
+}
+Logger.log(`connecting to db:${dbname} - ${PWD} - ${connectionName}`);
 
 Logger.log(`connecting to db:${dbname} - ${process.env.DB_ENV} - ${connectionName}`);
 
