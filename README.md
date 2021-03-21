@@ -8,6 +8,7 @@ A deployable monorepo by [Rockonsoft](https://rockonsoft.com/)
 
 - You have a google cloud account with billing
 - You are familiar with Google Cloud console and CLI
+- You have node installed
 
 ### Local development
 
