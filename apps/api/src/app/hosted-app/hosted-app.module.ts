@@ -37,7 +37,7 @@ import {
   ROLE_MODEL_ENDPOINT,
   PRODUCT_MODEL_ENDPOINT,
   COMMENT_MODEL_ENDPOINT,
-  TENANT_MODEL_ENDPOINT
+  TENANT_MODEL_ENDPOINT,
 } from '@monorock/api-interfaces';
 import { DbTenant } from '../dal/entities/tenant.entity';
 import { getManager } from 'typeorm';
@@ -79,7 +79,12 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
       TENANT_MODEL_DESC,
       TENANT_MODEL_ENDPOINT
     );
-    const roleModelId = await this.upsertModel(applicationId, ROLE_MODEL_NAME, ROLE_MODEL_DESC, ROLE_MODEL_ENDPOINT);
+    const roleModelId = await this.upsertModel(
+      applicationId,
+      ROLE_MODEL_NAME,
+      ROLE_MODEL_DESC,
+      ROLE_MODEL_ENDPOINT
+    );
     const productModelId = await this.upsertModel(
       applicationId,
       PRODUCT_MODEL_NAME,
@@ -95,21 +100,52 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
       PRODUCT_MODEL_NAME
     );
 
-    const guestRoleId = await this.upsertRole(GUEST_ROLE, GUEST_ROLE_DESC, applicationId, tenantId);
-    const userAdminRoleId = await this.upsertRole(USER_ADMIN_ROLE, USER_ADMIN_ROLE_DESC, applicationId, tenantId);
-    const tenantAdminRoleId = await this.upsertRole(TENANT_ADMIN_ROLE, TENANT_ADMIN_ROLE_DESC, applicationId, tenantId);
+    const guestRoleId = await this.upsertRole(
+      GUEST_ROLE,
+      GUEST_ROLE_DESC,
+      applicationId,
+      tenantId
+    );
+    const userAdminRoleId = await this.upsertRole(
+      USER_ADMIN_ROLE,
+      USER_ADMIN_ROLE_DESC,
+      applicationId,
+      tenantId
+    );
+    const tenantAdminRoleId = await this.upsertRole(
+      TENANT_ADMIN_ROLE,
+      TENANT_ADMIN_ROLE_DESC,
+      applicationId,
+      tenantId
+    );
 
     //guest user
-    await this.upsertAccessRight(guestRoleId, userModelId, getAccessType(ActionType.read, ActionScope.own));
-    await this.upsertAccessRight(guestRoleId, tenantModelId, getAccessType(ActionType.read, ActionScope.own));
-    await this.upsertAccessRight(guestRoleId, productModelId, getAccessType(ActionType.read, ActionScope.all));
+    await this.upsertAccessRight(
+      guestRoleId,
+      userModelId,
+      getAccessType(ActionType.read, ActionScope.own)
+    );
+    await this.upsertAccessRight(
+      guestRoleId,
+      tenantModelId,
+      getAccessType(ActionType.read, ActionScope.own)
+    );
+    await this.upsertAccessRight(
+      guestRoleId,
+      productModelId,
+      getAccessType(ActionType.read, ActionScope.all)
+    );
 
     const userCommentAccess =
       getAccessType(ActionType.read, ActionScope.all) |
       getAccessType(ActionType.update, ActionScope.own) |
       getAccessType(ActionType.create, ActionScope.own) |
       getAccessType(ActionType.delete, ActionScope.own);
-    await this.upsertAccessRight(guestRoleId, commentModelId, userCommentAccess);
+    await this.upsertAccessRight(
+      guestRoleId,
+      commentModelId,
+      userCommentAccess
+    );
 
     //user admin
     const userAccess =
@@ -140,14 +176,22 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
       getAccessType(ActionType.update, ActionScope.ownExcluded) |
       getAccessType(ActionType.create, ActionScope.all) |
       getAccessType(ActionType.delete, ActionScope.ownExcluded);
-    await this.upsertAccessRight(tenantAdminRoleId, userModelId, userAccessTenantAdmin);
+    await this.upsertAccessRight(
+      tenantAdminRoleId,
+      userModelId,
+      userAccessTenantAdmin
+    );
 
     const tenantAccessTenantAdmin =
       getAccessType(ActionType.read, ActionScope.own) |
       getAccessType(ActionType.update, ActionScope.own) |
       getAccessType(ActionType.create, ActionScope.none) |
       getAccessType(ActionType.delete, ActionScope.none);
-    await this.upsertAccessRight(tenantAdminRoleId, tenantModelId, tenantAccessTenantAdmin);
+    await this.upsertAccessRight(
+      tenantAdminRoleId,
+      tenantModelId,
+      tenantAccessTenantAdmin
+    );
 
     //tenant admins can create new roles
     const tenantAdmiRoleAccess =
@@ -155,36 +199,58 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
       getAccessType(ActionType.update, ActionScope.ownExcluded) |
       getAccessType(ActionType.create, ActionScope.all) |
       getAccessType(ActionType.delete, ActionScope.ownExcluded);
-    await this.upsertAccessRight(tenantAdminRoleId, roleModelId, tenantAdmiRoleAccess);
+    await this.upsertAccessRight(
+      tenantAdminRoleId,
+      roleModelId,
+      tenantAdmiRoleAccess
+    );
 
     const tenantAdmiProductAccess =
       getAccessType(ActionType.read, ActionScope.all) |
       getAccessType(ActionType.update, ActionScope.all) |
       getAccessType(ActionType.create, ActionScope.all) |
       getAccessType(ActionType.delete, ActionScope.all);
-    await this.upsertAccessRight(tenantAdminRoleId, productModelId, tenantAdmiProductAccess);
+    await this.upsertAccessRight(
+      tenantAdminRoleId,
+      productModelId,
+      tenantAdmiProductAccess
+    );
 
     const tenantAdmiCommentAccess =
       getAccessType(ActionType.read, ActionScope.all) |
       getAccessType(ActionType.update, ActionScope.all) |
       getAccessType(ActionType.create, ActionScope.all) |
       getAccessType(ActionType.delete, ActionScope.all);
-    await this.upsertAccessRight(tenantAdminRoleId, commentModelId, tenantAdmiCommentAccess);
+    await this.upsertAccessRight(
+      tenantAdminRoleId,
+      commentModelId,
+      tenantAdmiCommentAccess
+    );
   }
 
-  async upsertRole(roleName: string, roleDescription: string, applicationId: number, tenantId: number) {
+  async upsertRole(
+    roleName: string,
+    roleDescription: string,
+    applicationId: number,
+    tenantId: number
+  ) {
     let id = null;
     const existing = await this.rolesRepo.findOne({
       applicationId: applicationId,
       name: roleName,
-      tenantId: tenantId
+      tenantId: tenantId,
     });
     if (!existing) {
       const newResult = await this.rolesRepo
         .createQueryBuilder()
         .insert()
         .into('role')
-        .values({ name: roleName, applicationId: applicationId, tenantId: tenantId, description: roleDescription })
+        .values({
+          name: roleName,
+          applicationId: applicationId,
+          tenantId: tenantId,
+          description: roleDescription,
+        })
         .execute();
       id = newResult.identifiers[0]['id'];
     } else {
@@ -194,7 +260,7 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
   }
 
   async upsertApplication() {
-    const existingApplication = await this.repo.findOne({ name: HOST_APPLICATION });
+    const existingApplication = await this.repo.findOne({});
     let applicationId = null;
     if (!existingApplication) {
       const newAppResult = await this.repo
@@ -211,14 +277,20 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
   }
 
   async upsertTenant() {
-    const existing = await this.tenantRepo.findOne({ externalId: TENANT_ZERO_EXT_ID });
+    const existing = await this.tenantRepo.findOne({
+      externalId: TENANT_ZERO_EXT_ID,
+    });
     let id = null;
     if (!existing) {
       const newResult = await this.tenantRepo
         .createQueryBuilder()
         .insert()
         .into('tenant')
-        .values({ externalId: TENANT_ZERO_EXT_ID, name: TENANT_ZERO_NAME, description: TENANT_ZERO_DESCRIPTION })
+        .values({
+          externalId: TENANT_ZERO_EXT_ID,
+          name: TENANT_ZERO_NAME,
+          description: TENANT_ZERO_DESCRIPTION,
+        })
         .execute();
       id = newResult.identifiers[0]['id'];
     } else {
@@ -240,10 +312,10 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
     const existing = await entityManager
       .createQueryBuilder(DbModelMeta, 'model')
       .where('model.applicationId = :appId', {
-        appId: applicationId
+        appId: applicationId,
       })
       .andWhere('model.name = :modelName', {
-        modelName: modelName
+        modelName: modelName,
       })
       .getOne();
 
@@ -258,7 +330,7 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
           applicationId: applicationId,
           endpoint: endpoint,
           identityProperty: identityKey,
-          parentName: parent
+          parentName: parent,
         })
         .execute();
       id = newResult.identifiers[0]['id'];
@@ -274,10 +346,10 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
     const existing = await entityManager
       .createQueryBuilder(DbAccessRight, 'accessright')
       .where('accessright.modelId = :modelId', {
-        modelId: modelId
+        modelId: modelId,
       })
       .andWhere('accessright.roleId = :roleId', {
-        roleId: roleId
+        roleId: roleId,
       })
       .getOne();
 
@@ -299,8 +371,8 @@ export class HostedApplicationService extends TypeOrmCrudService<DbApplication> 
 @UseGuards(AuthGuard('jwt'))
 @Crud({
   model: {
-    type: DbApplication
-  }
+    type: DbApplication,
+  },
 })
 @Controller('application')
 export class HostedApplicationController {
@@ -310,6 +382,6 @@ export class HostedApplicationController {
 @Module({
   imports: [TypeOrmModule.forFeature([DbApplication, DbRole, DbTenant])],
   providers: [HostedApplicationService],
-  controllers: [HostedApplicationController]
+  controllers: [HostedApplicationController],
 })
 export class HostedApplicationModule {}

@@ -1,24 +1,59 @@
 {
-  "npmScope": "monorock",
-  "implicitDependencies": {
-    "angular.json": "*",
-    "package.json": "*",
-    "tsconfig.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "accessToken": "MGJjNGIyOTUtMzkzNC00NmI5LThmNDEtOGY1NmFjY2MyZGIxfHJlYWQtd3JpdGU="
+      }
+    }
   },
-  "projects": {
-    "rockme-e2e": {
-      "tags": []
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
-    "rockme": {
-      "tags": []
+    "test": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     },
-    "api": {
-      "tags": []
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.eslintignore"
+      ]
     },
-    "api-interfaces": {
-      "tags": []
+    "e2e": {
+      "inputs": ["default", "^production"]
+    }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/.eslintrc.json"
+    ],
+    "sharedGlobals": []
+  },
+  "generators": {
+    "@nx/angular:application": {
+      "style": "sass",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "sass"
     }
   }
 }
