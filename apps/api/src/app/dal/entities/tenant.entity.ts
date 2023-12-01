@@ -3,7 +3,6 @@ import { Tenant } from '@monorock/api-interfaces';
 import { DbBaseEntity } from '../../shared/base-entity';
 import { DbUser } from './user.entity';
 import { DbProduct } from './product.entity';
-import { Type } from 'class-transformer/decorators';
 
 @Entity('tenant')
 export class DbTenant extends DbBaseEntity implements Tenant {

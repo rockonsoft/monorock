@@ -1,8 +1,14 @@
-import { Module, Controller, UseGuards, SetMetadata, ReflectMetadata } from '@nestjs/common';
+import { Module, Controller, UseGuards, SetMetadata } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { Crud, CrudController, Override, ParsedRequest, CrudRequest } from '@nestjsx/crud';
+import {
+  Crud,
+  CrudController,
+  Override,
+  ParsedRequest,
+  CrudRequest,
+} from '@nestjsx/crud';
 import { AuthGuard } from '@nestjs/passport';
 import { DbProduct } from '../dal/entities/product.entity';
 import { RolesGuard } from '../auth/roles.guard';
@@ -19,8 +25,8 @@ export class ProductsService extends TypeOrmCrudService<DbProduct> {
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @Crud({
   model: {
-    type: DbProduct
-  }
+    type: DbProduct,
+  },
 })
 @Model('product')
 @Controller('products')
@@ -31,6 +37,6 @@ export class ProductsController {
 @Module({
   imports: [TypeOrmModule.forFeature([DbProduct])],
   providers: [ProductsService],
-  controllers: [ProductsController]
+  controllers: [ProductsController],
 })
 export class ProductsModule {}
