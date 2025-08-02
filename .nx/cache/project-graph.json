@@ -1,0 +1,429 @@
+{
+  "nodes": {
+    "api-interfaces": {
+      "name": "api-interfaces",
+      "type": "lib",
+      "data": {
+        "root": "libs/api-interfaces",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/api-interfaces/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/api-interfaces/**/*.ts",
+                "libs/api-interfaces/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "name": "api-interfaces",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/api-interfaces/src",
+        "prefix": "monorock",
+        "tags": [],
+        "projectType": "library",
+        "implicitDependencies": []
+      }
+    },
+    "rockme-e2e": {
+      "name": "rockme-e2e",
+      "type": "e2e",
+      "data": {
+        "root": "apps/rockme-e2e",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "apps/rockme-e2e/**/*.{js,ts}"
+              ]
+            },
+            "configurations": {}
+          },
+          "e2e": {
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "executor": "@nx/cypress:cypress",
+            "options": {
+              "cypressConfig": "apps/rockme-e2e/cypress.config.ts",
+              "devServerTarget": "rockme:serve:development",
+              "testingType": "e2e"
+            },
+            "configurations": {
+              "production": {
+                "devServerTarget": "rockme:serve:production"
+              },
+              "ci": {
+                "devServerTarget": "rockme:serve-static"
+              }
+            }
+          }
+        },
+        "name": "rockme-e2e",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/rockme-e2e/src",
+        "projectType": "application",
+        "tags": [],
+        "implicitDependencies": [
+          "rockme"
+        ]
+      }
+    },
+    "api-e2e": {
+      "name": "api-e2e",
+      "type": "lib",
+      "data": {
+        "root": "apps/api-e2e",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "apps/api-e2e/**/*.{js,ts}"
+              ]
+            },
+            "configurations": {}
+          },
+          "e2e": {
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{e2eProjectRoot}"
+            ],
+            "options": {
+              "jestConfig": "apps/api-e2e/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          }
+        },
+        "name": "api-e2e",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "implicitDependencies": [
+          "api"
+        ],
+        "tags": []
+      }
+    },
+    "rockme": {
+      "name": "rockme",
+      "type": "app",
+      "data": {
+        "root": "apps/rockme",
+        "targets": {
+          "build": {
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "executor": "@angular-devkit/build-angular:browser",
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "dist/apps/rockme",
+              "index": "apps/rockme/src/index.html",
+              "main": "apps/rockme/src/main.ts",
+              "polyfills": [
+                "zone.js"
+              ],
+              "tsConfig": "apps/rockme/tsconfig.app.json",
+              "assets": [
+                "apps/rockme/src/favicon.ico",
+                "apps/rockme/src/assets"
+              ],
+              "styles": [
+                "apps/rockme/src/styles.sass"
+              ],
+              "scripts": []
+            },
+            "configurations": {
+              "production": {
+                "budgets": [
+                  {
+                    "type": "initial",
+                    "maximumWarning": "500kb",
+                    "maximumError": "1mb"
+                  },
+                  {
+                    "type": "anyComponentStyle",
+                    "maximumWarning": "2kb",
+                    "maximumError": "4kb"
+                  }
+                ],
+                "outputHashing": "all"
+              },
+              "development": {
+                "buildOptimizer": false,
+                "optimization": false,
+                "vendorChunk": true,
+                "extractLicenses": false,
+                "sourceMap": true,
+                "namedChunks": true
+              }
+            },
+            "defaultConfiguration": "production"
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "apps/rockme/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "apps/rockme/**/*.ts",
+                "apps/rockme/**/*.html"
+              ]
+            },
+            "configurations": {}
+          },
+          "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+              "production": {
+                "browserTarget": "rockme:build:production"
+              },
+              "development": {
+                "browserTarget": "rockme:build:development"
+              }
+            },
+            "defaultConfiguration": "development",
+            "options": {}
+          },
+          "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+              "browserTarget": "rockme:build"
+            },
+            "configurations": {}
+          },
+          "serve-static": {
+            "executor": "@nx/web:file-server",
+            "options": {
+              "buildTarget": "rockme:build"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "rockme",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "application",
+        "prefix": "monorock",
+        "sourceRoot": "apps/rockme/src",
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "api": {
+      "name": "api",
+      "type": "app",
+      "data": {
+        "root": "apps/api",
+        "targets": {
+          "build": {
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+              "target": "node",
+              "compiler": "tsc",
+              "outputPath": "dist/apps/api",
+              "main": "apps/api/src/main.ts",
+              "tsConfig": "apps/api/tsconfig.app.json",
+              "assets": [
+                "apps/api/src/assets"
+              ],
+              "isolatedConfig": true,
+              "webpackConfig": "apps/api/webpack.config.js"
+            },
+            "configurations": {
+              "development": {},
+              "production": {}
+            }
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "apps/api/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "apps/api/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "serve": {
+            "executor": "@nx/js:node",
+            "defaultConfiguration": "development",
+            "options": {
+              "buildTarget": "api:build"
+            },
+            "configurations": {
+              "development": {
+                "buildTarget": "api:build:development"
+              },
+              "production": {
+                "buildTarget": "api:build:production"
+              }
+            }
+          }
+        },
+        "name": "api",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/api/src",
+        "projectType": "application",
+        "tags": [],
+        "implicitDependencies": []
+      }
+    }
+  },
+  "externalNodes": {},
+  "dependencies": {
+    "api-interfaces": [],
+    "rockme-e2e": [
+      {
+        "source": "rockme-e2e",
+        "target": "rockme",
+        "type": "implicit"
+      }
+    ],
+    "api-e2e": [
+      {
+        "source": "api-e2e",
+        "target": "api",
+        "type": "implicit"
+      }
+    ],
+    "rockme": [
+      {
+        "source": "rockme",
+        "target": "api-interfaces",
+        "type": "static"
+      }
+    ],
+    "api": [
+      {
+        "source": "api",
+        "target": "api-interfaces",
+        "type": "static"
+      }
+    ]
+  },
+  "version": "6.0"
+}

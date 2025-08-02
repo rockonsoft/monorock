@@ -1,0 +1,1814 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.3.0",
+  "deps": {
+    "@angular/animations": "~17.3.0",
+    "@angular/common": "~17.3.0",
+    "@angular/compiler": "~17.3.0",
+    "@angular/core": "~17.3.0",
+    "@angular/fire": "^17.0.0",
+    "@angular/forms": "~17.3.0",
+    "@angular/platform-browser": "~17.3.0",
+    "@angular/platform-browser-dynamic": "~17.3.0",
+    "@angular/router": "~17.3.0",
+    "@nestjs/common": "^10.0.2",
+    "@nestjs/core": "^10.0.2",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/passport": "^10.0.2",
+    "@nestjs/platform-express": "^10.3.7",
+    "@nestjs/swagger": "^7.1.16",
+    "@nestjs/typeorm": "^10.0.1",
+    "@nestjsx/crud": "^5.0.0-alpha.3",
+    "@nestjsx/crud-typeorm": "^5.0.0-alpha.3",
+    "@nx/angular": "^17.3.0",
+    "axios": "^1.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "firebase": "^10.7.0",
+    "firebase-admin": "^11.11.1",
+    "moment": "^2.29.4",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "rand-token": "^1.0.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.0",
+    "@angular-devkit/build-angular": "~17.3.0",
+    "@angular-devkit/core": "~17.3.0",
+    "@angular-devkit/schematics": "~17.3.0",
+    "@angular-eslint/eslint-plugin": "~17.0.0",
+    "@angular-eslint/eslint-plugin-template": "~17.0.0",
+    "@angular-eslint/template-parser": "~17.0.0",
+    "@angular/cli": "~17.3.0",
+    "@angular/compiler-cli": "~17.3.0",
+    "@angular/language-service": "~17.3.0",
+    "@nestjs/schematics": "^10.0.1",
+    "@nestjs/testing": "^10.0.2",
+    "@nx/cypress": "17.3.0",
+    "@nx/eslint-plugin": "17.3.0",
+    "@nx/jest": "17.3.0",
+    "@nx/js": "17.3.0",
+    "@nx/linter": "17.3.0",
+    "@nx/nest": "17.3.0",
+    "@nx/node": "17.3.0",
+    "@nx/web": "17.3.0",
+    "@nx/webpack": "17.3.0",
+    "@nx/workspace": "17.3.0",
+    "@schematics/angular": "~17.3.0",
+    "@types/jest": "^29.4.0",
+    "@types/node": "~18.7.1",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "cypress": "^12.16.0",
+    "eslint": "~8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^2.13.4",
+    "jest": "^29.4.1",
+    "jest-environment-jsdom": "^29.4.1",
+    "jest-environment-node": "^29.4.1",
+    "jest-preset-angular": "~13.1.0",
+    "nx": "17.3.0",
+    "nx-cloud": "latest",
+    "prettier": "^2.6.2",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "typescript": "~5.4.0"
+  },
+  "pathMappings": {
+    "@monorock/api-interfaces": [
+      "libs/api-interfaces/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {
+      "rockme": [
+        {
+          "file": "apps/rockme/.eslintrc.json",
+          "hash": "2571322885143277782"
+        },
+        {
+          "file": "apps/rockme/browserslist",
+          "hash": "15525697355818847451"
+        },
+        {
+          "file": "apps/rockme/jest.config.js",
+          "hash": "5711681212760143747"
+        },
+        {
+          "file": "apps/rockme/jest.config.ts",
+          "hash": "14929375757059762142"
+        },
+        {
+          "file": "apps/rockme/project.json",
+          "hash": "15560479700179198685"
+        },
+        {
+          "file": "apps/rockme/proxy.conf.json",
+          "hash": "7740023976500524898"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/admin-guard.ts",
+          "hash": "11523344560793063051",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:rxjs",
+            "api-interfaces",
+            "npm:rxjs/operators"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/admin-routing.module.ts",
+          "hash": "5350748923038037275",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/admin.module.ts",
+          "hash": "4991150843656298934",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/forms",
+            "npm:primeng/button",
+            "npm:primeng/dropdown",
+            "npm:primeng/inputtext",
+            "npm:primeng/table"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/admin/admin.component.html",
+          "hash": "3965597423562322631"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/admin/admin.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/admin/admin.component.spec.ts",
+          "hash": "5263269849416701603",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/forms",
+            "npm:@angular/common/http",
+            "npm:primeng/table",
+            "npm:primeng/button",
+            "npm:primeng/dropdown",
+            "npm:primeng/inputtext",
+            "npm:@angular/fire",
+            "npm:apps/rockme/src/environments/environment",
+            "npm:@angular/fire/auth",
+            "npm:@angular/router/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/admin/admin.component.ts",
+          "hash": "14131019363790272203",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/dashboard/dashboard.component.html",
+          "hash": "10401141160486753301"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/dashboard/dashboard.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/dashboard/dashboard.component.spec.ts",
+          "hash": "11088954726674446178",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:primeng/button",
+            "npm:primeng/panel",
+            "npm:primeng/table",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/router/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth",
+            "npm:firebaseui-angular",
+            "api-interfaces",
+            "npm:primeng/dropdown",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/dashboard/dashboard.component.ts",
+          "hash": "5850707026840546492",
+          "deps": [
+            "npm:@angular/core",
+            "api-interfaces",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/roles/roles.component.html",
+          "hash": "16001583444490029266"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/roles/roles.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/roles/roles.component.spec.ts",
+          "hash": "14962571335022237866",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/forms",
+            "npm:@angular/common/http",
+            "npm:primeng/table",
+            "npm:primeng/button",
+            "npm:primeng/dropdown",
+            "npm:primeng/inputtext",
+            "npm:@angular/fire",
+            "npm:apps/rockme/src/environments/environment",
+            "npm:@angular/fire/auth"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/roles/roles.component.ts",
+          "hash": "11465267444428428618",
+          "deps": [
+            "npm:@angular/core",
+            "api-interfaces",
+            "npm:rxjs/operators",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/tenant-management/tenant-management.component.html",
+          "hash": "13332255872527935789"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/tenant-management/tenant-management.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/tenant-management/tenant-management.component.spec.ts",
+          "hash": "17542972023586647467",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:primeng/button",
+            "npm:primeng/panel",
+            "npm:primeng/table",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/router/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth",
+            "npm:firebaseui-angular",
+            "api-interfaces",
+            "npm:primeng/dropdown",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/tenant-management/tenant-management.component.ts",
+          "hash": "9450243933388785534",
+          "deps": [
+            "npm:@angular/core",
+            "api-interfaces",
+            "npm:rxjs/operators"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/users/users.component.html",
+          "hash": "13364376081849816414"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/users/users.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/admin/users/users.component.spec.ts",
+          "hash": "10163380296859101963",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:primeng/button",
+            "npm:primeng/panel",
+            "npm:primeng/table",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/router/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth",
+            "npm:firebaseui-angular",
+            "api-interfaces",
+            "npm:primeng/dropdown",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/admin/users/users.component.ts",
+          "hash": "14423158683362205978",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs/internal/operators/map",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/app.component.html",
+          "hash": "2314788241980263909"
+        },
+        {
+          "file": "apps/rockme/src/app/app.component.sass",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/app.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/app.component.spec.ts",
+          "hash": "13296278125867494867",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/router/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/app.component.ts",
+          "hash": "3755153440187630610",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/app.module.ts",
+          "hash": "2719446334123570301",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/app.routes.ts",
+          "hash": "6185150965714414910",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/auth/anonymous.guard.spec.ts",
+          "hash": "7154571607178128768",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth",
+            "npm:@angular/router/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/auth/anonymous.guard.ts",
+          "hash": "6105530417648124146",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/auth/api-auth.service.spec.ts",
+          "hash": "1490815316510784254",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/auth/api-auth.service.ts",
+          "hash": "13933540193337811682",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs",
+            "api-interfaces",
+            "npm:@angular/common/http",
+            "npm:firebase",
+            "npm:rxjs/operators"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/auth/auth.module.ts",
+          "hash": "15100120290922561536",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/auth/user-auth.service.ts",
+          "hash": "14731053143774299539",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs",
+            "npm:@angular/fire/auth",
+            "npm:firebase"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/components/login/login.component.html",
+          "hash": "17248644072758486851"
+        },
+        {
+          "file": "apps/rockme/src/app/components/login/login.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/components/login/login.component.spec.ts",
+          "hash": "11312153583332594592",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:primeng/button",
+            "npm:primeng/panel",
+            "npm:primeng/table",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/router/testing",
+            "npm:primeng/dropdown",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/components/login/login.component.ts",
+          "hash": "2727649898084761854",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/components/super-user/super-user.component.html",
+          "hash": "11732503608505919614"
+        },
+        {
+          "file": "apps/rockme/src/app/components/super-user/super-user.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/components/super-user/super-user.component.spec.ts",
+          "hash": "15572424326198634346",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:primeng/dropdown",
+            "npm:@angular/common/http/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/components/super-user/super-user.component.ts",
+          "hash": "12802401438242501828",
+          "deps": [
+            "npm:@angular/core",
+            "api-interfaces",
+            "npm:rxjs/operators"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/http-interceptors/auth-interceptor.ts",
+          "hash": "11039167722934522117",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common/http",
+            "api-interfaces",
+            "npm:moment"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/http-interceptors/index.ts",
+          "hash": "640968070891721500",
+          "deps": [
+            "npm:@angular/common/http"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/http-interceptors/progess-interceptor.ts",
+          "hash": "6416897801563435681",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common/http",
+            "api-interfaces",
+            "npm:rxjs/operators"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/http-interceptors/refreshtoken-interceptor.ts",
+          "hash": "15460514105493172444",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common/http",
+            "npm:rxjs",
+            "npm:rxjs/operators"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/landing/landing.component.html",
+          "hash": "18085670847367538969"
+        },
+        {
+          "file": "apps/rockme/src/app/landing/landing.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/landing/landing.component.spec.ts",
+          "hash": "8186615370616047064",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:primeng/button",
+            "npm:primeng/panel",
+            "npm:primeng/table",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/router/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth",
+            "npm:firebaseui-angular",
+            "api-interfaces",
+            "npm:primeng/dropdown"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/landing/landing.component.ts",
+          "hash": "9951331168417196971",
+          "deps": [
+            "npm:@angular/core",
+            "api-interfaces",
+            "npm:@angular/router",
+            "npm:firebase",
+            "npm:rxjs/operators",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/nx-welcome.component.ts",
+          "hash": "15646990963361671514",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/rbac-test/rbac-test.component.html",
+          "hash": "3659964564846347253"
+        },
+        {
+          "file": "apps/rockme/src/app/rbac-test/rbac-test.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/app/rbac-test/rbac-test.component.spec.ts",
+          "hash": "15750723373297195181",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:primeng/button",
+            "npm:primeng/panel",
+            "npm:primeng/table",
+            "npm:primeng/dropdown",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/router/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth",
+            "npm:firebaseui-angular",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/rbac-test/rbac-test.component.ts",
+          "hash": "9388782175632174702",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "api-interfaces",
+            "npm:rxjs/operators",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/routing/routing.module.ts",
+          "hash": "5876214040982274442",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/profile.service.spec.ts",
+          "hash": "9886636319383266057",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/common/http/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/profile.service.ts",
+          "hash": "941296074712934101",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common/http",
+            "npm:rxjs",
+            "api-interfaces",
+            "npm:rxjs/operators",
+            "npm:moment"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/progress.service.spec.ts",
+          "hash": "4630828153315471479",
+          "deps": [
+            "npm:@angular/core/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/progress.service.ts",
+          "hash": "17073549565147512686",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/rback-test.service.spec.ts",
+          "hash": "11148749200392359712",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth",
+            "npm:firebaseui-angular",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/rback-test.service.ts",
+          "hash": "6088530621337237951",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs",
+            "api-interfaces",
+            "npm:@angular/common/http",
+            "npm:rxjs/operators",
+            "npm:moment"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/role.service.spec.ts",
+          "hash": "2643473633032676030",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/role.service.ts",
+          "hash": "12904158671862027584",
+          "deps": [
+            "npm:@angular/core",
+            "api-interfaces",
+            "npm:rxjs",
+            "npm:@angular/common/http",
+            "npm:rxjs/operators",
+            "npm:moment"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/super-user.service.spec.ts",
+          "hash": "8018454684794155806",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/common/http/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/super-user.service.ts",
+          "hash": "4985096872829008250",
+          "deps": [
+            "npm:@angular/core",
+            "api-interfaces",
+            "npm:rxjs",
+            "npm:@angular/common/http",
+            "npm:@angular/compiler"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/tenant.service.spec.ts",
+          "hash": "9427684673766055783",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/common/http/testing",
+            "npm:@angular/fire",
+            "npm:@angular/fire/auth"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/tenant.service.ts",
+          "hash": "4239942023899457892",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs",
+            "api-interfaces",
+            "npm:@angular/common/http"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/user.service.spec.ts",
+          "hash": "2708125429887107601",
+          "deps": [
+            "npm:@angular/core/testing",
+            "npm:@angular/common/http/testing"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/app/services/user.service.ts",
+          "hash": "5688036654412911907",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/rockme/src/assets/images/catlogo.png",
+          "hash": "10534968532967505668"
+        },
+        {
+          "file": "apps/rockme/src/assets/images/rockonsoft-cat-white.svg",
+          "hash": "76416370857498174"
+        },
+        {
+          "file": "apps/rockme/src/environments/environment.prod.ts.enc",
+          "hash": "14340618141998850599"
+        },
+        {
+          "file": "apps/rockme/src/environments/environment.prod.ts.sample",
+          "hash": "2785873812691746980"
+        },
+        {
+          "file": "apps/rockme/src/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/rockme/src/index.html",
+          "hash": "2700303987619502093"
+        },
+        {
+          "file": "apps/rockme/src/main.ts",
+          "hash": "14191774545949582757",
+          "deps": [
+            "npm:@angular/platform-browser-dynamic"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/polyfills.ts",
+          "hash": "9529164709890795115",
+          "deps": [
+            "npm:zone.js/dist/zone"
+          ]
+        },
+        {
+          "file": "apps/rockme/src/styles.sass",
+          "hash": "5195668842064076916"
+        },
+        {
+          "file": "apps/rockme/src/styles.scss",
+          "hash": "5195668842064076916"
+        },
+        {
+          "file": "apps/rockme/src/test-setup.ts",
+          "hash": "12935735732682149507",
+          "deps": [
+            "npm:jest-preset-angular/setup-jest"
+          ]
+        },
+        {
+          "file": "apps/rockme/tsconfig.app.json",
+          "hash": "8365644956319658761"
+        },
+        {
+          "file": "apps/rockme/tsconfig.editor.json",
+          "hash": "17511610827034788226"
+        },
+        {
+          "file": "apps/rockme/tsconfig.json",
+          "hash": "12094030803572703611"
+        },
+        {
+          "file": "apps/rockme/tsconfig.spec.json",
+          "hash": "2927375835638640771"
+        },
+        {
+          "file": "apps/rockme/tslint.json",
+          "hash": "11194198826528636673"
+        }
+      ],
+      "api-interfaces": [
+        {
+          "file": "libs/api-interfaces/.eslintrc.json",
+          "hash": "2571322885143277782"
+        },
+        {
+          "file": "libs/api-interfaces/README.md",
+          "hash": "3162071937453905454"
+        },
+        {
+          "file": "libs/api-interfaces/jest.config.js",
+          "hash": "12848452879156891181"
+        },
+        {
+          "file": "libs/api-interfaces/jest.config.ts",
+          "hash": "11774145238905033531"
+        },
+        {
+          "file": "libs/api-interfaces/project.json",
+          "hash": "3240416195765216399"
+        },
+        {
+          "file": "libs/api-interfaces/src/index.ts",
+          "hash": "14692040394167312075"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/api-interfaces.module.ts",
+          "hash": "3969896789570788947",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/api-interfaces.ts",
+          "hash": "15375149385690480764"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/models.ts",
+          "hash": "4503684555862603560"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/testing.ts",
+          "hash": "4996314514191924515"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/user.ts",
+          "hash": "10156246277428162941"
+        },
+        {
+          "file": "libs/api-interfaces/src/test-setup.ts",
+          "hash": "12935735732682149507",
+          "deps": [
+            "npm:jest-preset-angular/setup-jest"
+          ]
+        },
+        {
+          "file": "libs/api-interfaces/tsconfig.json",
+          "hash": "15487755565970508470"
+        },
+        {
+          "file": "libs/api-interfaces/tsconfig.lib.json",
+          "hash": "5796668385415907511"
+        },
+        {
+          "file": "libs/api-interfaces/tsconfig.spec.json",
+          "hash": "2927375835638640771"
+        },
+        {
+          "file": "libs/api-interfaces/tslint.json",
+          "hash": "17597373198831029592"
+        }
+      ],
+      "rockme-e2e": [
+        {
+          "file": "apps/rockme-e2e/.eslintrc.json",
+          "hash": "14060216369337943343"
+        },
+        {
+          "file": "apps/rockme-e2e/cypress.config.ts",
+          "hash": "15414076024138857470",
+          "deps": [
+            "npm:cypress",
+            "npm:@nx/cypress/plugins/cypress-preset"
+          ]
+        },
+        {
+          "file": "apps/rockme-e2e/cypress.json",
+          "hash": "756238211537985378"
+        },
+        {
+          "file": "apps/rockme-e2e/project.json",
+          "hash": "12570262915563621577"
+        },
+        {
+          "file": "apps/rockme-e2e/src/e2e/app.cy.ts",
+          "hash": "488500376404520639"
+        },
+        {
+          "file": "apps/rockme-e2e/src/fixtures/example.json",
+          "hash": "11614668686582597233"
+        },
+        {
+          "file": "apps/rockme-e2e/src/integration/api.spec.ts",
+          "hash": "316494529489692620"
+        },
+        {
+          "file": "apps/rockme-e2e/src/integration/app.spec.ts",
+          "hash": "14187550820439204836"
+        },
+        {
+          "file": "apps/rockme-e2e/src/plugins/index.js",
+          "hash": "1326590868367669499",
+          "deps": [
+            "npm:@nrwl/cypress/plugins/preprocessor"
+          ]
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/app.po.ts",
+          "hash": "11157016311132186162"
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/commands.ts",
+          "hash": "7314691991044890572"
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/e2e.ts",
+          "hash": "3666078656922506009"
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/index.ts",
+          "hash": "3666078656922506009"
+        },
+        {
+          "file": "apps/rockme-e2e/tsconfig.e2e.json",
+          "hash": "17230193539068221751"
+        },
+        {
+          "file": "apps/rockme-e2e/tsconfig.json",
+          "hash": "15439127571515986436"
+        },
+        {
+          "file": "apps/rockme-e2e/tslint.json",
+          "hash": "17597373198831029592"
+        }
+      ],
+      "api": [
+        {
+          "file": "apps/api/.eslintrc.json",
+          "hash": "2295303304320410742"
+        },
+        {
+          "file": "apps/api/build/Dockerfile",
+          "hash": "12709507012341110980"
+        },
+        {
+          "file": "apps/api/build/package.json",
+          "hash": "16303020917157894869"
+        },
+        {
+          "file": "apps/api/jest.config.js",
+          "hash": "4308354320442189942"
+        },
+        {
+          "file": "apps/api/jest.config.ts",
+          "hash": "6320173860913249688"
+        },
+        {
+          "file": "apps/api/project.json",
+          "hash": "2961640611915087108"
+        },
+        {
+          "file": "apps/api/src/app/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api/src/app/accessrights/accessrights.module.ts",
+          "hash": "8525555476673066728",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:@nestjsx/crud-typeorm",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.controller.spec.ts",
+          "hash": "15777644449836142802",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.controller.ts",
+          "hash": "16829045250126479743",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.module.ts",
+          "hash": "7008740628143906912",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.service.spec.ts",
+          "hash": "4850593764572848545",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.service.ts",
+          "hash": "17635303148197879063",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/auth.controller.spec.ts",
+          "hash": "7586954236325296832",
+          "deps": [
+            "npm:@nestjs/testing",
+            "npm:@nestjs/jwt",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/auth.controller.ts",
+          "hash": "16159257387064245942",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/auth.module.ts",
+          "hash": "4909681698220797714",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/jwt",
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/auth.service.spec.ts",
+          "hash": "11077156394860763341",
+          "deps": [
+            "npm:@nestjs/testing",
+            "npm:@nestjs/jwt"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/auth.service.ts",
+          "hash": "9899512518855493997",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/jwt",
+            "npm:firebase-admin"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/get.interceptor.ts",
+          "hash": "7479533678980365471",
+          "deps": [
+            "npm:@nestjs/common",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/jwt.strategy.ts",
+          "hash": "6911413340387243044",
+          "deps": [
+            "npm:passport-jwt",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/local.strategy.ts",
+          "hash": "16932932462139900366",
+          "deps": [
+            "npm:passport-local",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/common",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/owner.interceptor.spec.ts",
+          "hash": "18208848845688106721",
+          "deps": [
+            "npm:@nestjs/testing",
+            "api-interfaces",
+            "npm:@nestjs/common",
+            "npm:rxjs",
+            "npm:rxjs/operators"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/owner.interceptor.ts",
+          "hash": "8588681877313108432",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:rxjs/operators",
+            "api-interfaces",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/rbac.interceptor.ts",
+          "hash": "9239928327809879189",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:rxjs",
+            "npm:rxjs/operators",
+            "npm:http",
+            "api-interfaces",
+            "npm:@nestjs/typeorm",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/required-header.interceptor.ts",
+          "hash": "6790733580423433660",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:rxjs",
+            "npm:rxjs/operators",
+            "npm:http",
+            "api-interfaces",
+            "npm:@nestjs/typeorm",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/roles.guard.ts",
+          "hash": "4138476146029723662",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:rxjs",
+            "npm:@nestjs/core",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/user-context-wrapper.spec.ts",
+          "hash": "8890383746341440305",
+          "deps": [
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/auth/user-context-wrapper.ts",
+          "hash": "6454815067410128554",
+          "deps": [
+            "npm:@nestjs/common",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/comments/comments.module.ts",
+          "hash": "5156875712691026119",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:@nestjsx/crud-typeorm",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/access-right.entity.ts",
+          "hash": "8419892365599940454",
+          "deps": [
+            "npm:typeorm",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/app-user-role.entity.ts",
+          "hash": "11621000532630291992",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/application.entity.ts",
+          "hash": "5358320193057124218",
+          "deps": [
+            "npm:typeorm",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/billing.entity.ts",
+          "hash": "11593882260177853182",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/comment.entity.ts",
+          "hash": "2300124471132007039",
+          "deps": [
+            "npm:typeorm",
+            "npm:class-transformer",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/model-meta-data.entity.ts",
+          "hash": "12328665468289228466",
+          "deps": [
+            "npm:typeorm",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/model-properties.entity.ts",
+          "hash": "5726203000851002004",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/product.entity.ts",
+          "hash": "17098298651264794429",
+          "deps": [
+            "npm:typeorm",
+            "npm:class-transformer",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/role.entity.ts",
+          "hash": "13087414430274202611",
+          "deps": [
+            "npm:typeorm",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/tenant-application.entity.ts",
+          "hash": "17252582059379668358",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/tenant.entity.ts",
+          "hash": "3646222927923934823",
+          "deps": [
+            "npm:typeorm",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/user-access.entity.ts",
+          "hash": "5745754380860768517",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/user-owner.entity.ts",
+          "hash": "15416507424233138251",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/user-session.entity.ts",
+          "hash": "9223500164165394870",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/dal/entities/user.entity.ts",
+          "hash": "6779166822821593440",
+          "deps": [
+            "npm:typeorm",
+            "api-interfaces",
+            "npm:class-transformer"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/hosted-app/hosted-app.module.ts",
+          "hash": "17711638905423610392",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:@nestjsx/crud-typeorm",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport",
+            "api-interfaces",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/model-meta/model-meta.module.ts",
+          "hash": "15758695362662061965",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:@nestjsx/crud-typeorm",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/products/products.module.ts",
+          "hash": "12511639066724419111",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:@nestjsx/crud-typeorm",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/roles/roles.controller.ts",
+          "hash": "9189863194601167448",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/roles/roles.module.ts",
+          "hash": "3598966638205298283",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/roles/roles.service.ts",
+          "hash": "5904505268060536309",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:@nestjsx/crud-typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/shared/base-entity.ts",
+          "hash": "4163789239429490519",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/shared/https-exception.filter.ts",
+          "hash": "11140044853091469147",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/tenants/tenants.controller.ts",
+          "hash": "14253258489501926962",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/tenants/tenants.module.ts",
+          "hash": "14377838516354101092",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/tenants/tenants.service.ts",
+          "hash": "8223582158081716393",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:@nestjsx/crud-typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/userrole/user-role.controller.spec.ts",
+          "hash": "11062630026726371058",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/userrole/user-role.controller.ts",
+          "hash": "4903605188357406337",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/userrole/userrole.module.ts",
+          "hash": "11101613099734716747",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/users/owner.service.spec.ts",
+          "hash": "16431856133636391132",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/users/owner.service.ts",
+          "hash": "2134850712882971348",
+          "deps": [
+            "npm:@nestjs/common",
+            "api-interfaces",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/users/users.controller.ts",
+          "hash": "15478165147249461929",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjsx/crud",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/users/users.module.ts",
+          "hash": "11806487942126809899",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/users/users.service.ts",
+          "hash": "1822094619364999148",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjsx/crud-typeorm",
+            "npm:@nestjs/typeorm",
+            "npm:typeorm",
+            "api-interfaces",
+            "npm:rand-token",
+            "npm:moment"
+          ]
+        },
+        {
+          "file": "apps/api/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api/src/constants.ts",
+          "hash": "15890766515491669967"
+        },
+        {
+          "file": "apps/api/src/environments/environment.prod.ts",
+          "hash": "5406836414239361753"
+        },
+        {
+          "file": "apps/api/src/environments/environment.ts",
+          "hash": "12406292292330739218"
+        },
+        {
+          "file": "apps/api/src/main.ts",
+          "hash": "6079595198951942283",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/swagger",
+            "npm:@nestjs/common",
+            "api-interfaces"
+          ]
+        },
+        {
+          "file": "apps/api/tsconfig.app.json",
+          "hash": "17628448778285850515"
+        },
+        {
+          "file": "apps/api/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/api/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        },
+        {
+          "file": "apps/api/tslint.json",
+          "hash": "17597373198831029592"
+        },
+        {
+          "file": "apps/api/webpack.config.js",
+          "hash": "12759027257167031159",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "api-e2e": [
+        {
+          "file": "apps/api-e2e/.eslintrc.json",
+          "hash": "13861748877169696160"
+        },
+        {
+          "file": "apps/api-e2e/jest.config.ts",
+          "hash": "5815415717999235924"
+        },
+        {
+          "file": "apps/api-e2e/project.json",
+          "hash": "13018397385502356359"
+        },
+        {
+          "file": "apps/api-e2e/src/api/api.spec.ts",
+          "hash": "2263470703898423778",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/src/support/global-setup.ts",
+          "hash": "14688124112638150235"
+        },
+        {
+          "file": "apps/api-e2e/src/support/global-teardown.ts",
+          "hash": "10856769668484651558"
+        },
+        {
+          "file": "apps/api-e2e/src/support/test-setup.ts",
+          "hash": "9379448616442792630",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/tsconfig.json",
+          "hash": "15443990093475294480"
+        },
+        {
+          "file": "apps/api-e2e/tsconfig.spec.json",
+          "hash": "14519349202314136898"
+        }
+      ]
+    },
+    "nonProjectFiles": [
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".firebaserc",
+        "hash": "14959312429207352194"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "15008268369887973389"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "17733650430415207254"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "5973442882558934809"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "15378302287053481125"
+      },
+      {
+        "file": "README.md",
+        "hash": "18223063884721107257"
+      },
+      {
+        "file": "apps/.gitkeep",
+        "hash": "4055606894390288348"
+      },
+      {
+        "file": "apps/sass/_mixins.scss",
+        "hash": "10148777657609585437"
+      },
+      {
+        "file": "apps/sass/colors.scss",
+        "hash": "5927973334735668843"
+      },
+      {
+        "file": "apps/sass/features/_admin.scss",
+        "hash": "6809165094310001535"
+      },
+      {
+        "file": "apps/sass/features/_app.scss",
+        "hash": "10180609171139377402"
+      },
+      {
+        "file": "apps/sass/features/_features.scss",
+        "hash": "6131403972852307144"
+      },
+      {
+        "file": "apps/sass/features/_landing.scss",
+        "hash": "6551112046648792144"
+      },
+      {
+        "file": "apps/sass/features/_listbar.scss",
+        "hash": "16414557602375651663"
+      },
+      {
+        "file": "apps/sass/features/_profile.scss",
+        "hash": "7459136887168911147"
+      },
+      {
+        "file": "apps/sass/features/_rbac.scss",
+        "hash": "14246736407186035097"
+      },
+      {
+        "file": "apps/sass/features/_roles.scss",
+        "hash": "14942081790467095334"
+      },
+      {
+        "file": "apps/sass/layout.scss",
+        "hash": "18323916629312413783"
+      },
+      {
+        "file": "apps/sass/theme.scss",
+        "hash": "15353059817526804344"
+      },
+      {
+        "file": "apps/sass/variables.scss",
+        "hash": "17926461091138326170"
+      },
+      {
+        "file": "build_tools/cloud_sql_proxy.exe",
+        "hash": "10208436127540458866"
+      },
+      {
+        "file": "build_tools/firebase/Dockerfile",
+        "hash": "8999880512619476690"
+      },
+      {
+        "file": "build_tools/firebase/cloudbuild.yaml",
+        "hash": "8948311881499132492"
+      },
+      {
+        "file": "build_tools/firebase/examples/cloudbuild.yaml",
+        "hash": "9778999442275428515"
+      },
+      {
+        "file": "build_tools/firebase/firebase.bash",
+        "hash": "11330244966570419261"
+      },
+      {
+        "file": "build_tools/firebase/readme.md",
+        "hash": "8438864726668915769"
+      },
+      {
+        "file": "build_tools/nrwl/Dockerfile",
+        "hash": "9330562772360314578"
+      },
+      {
+        "file": "build_tools/nrwl/cloudbuild.yaml",
+        "hash": "3736897696145377365"
+      },
+      {
+        "file": "build_tools/sass/Dockerfile",
+        "hash": "10894521763588435407"
+      },
+      {
+        "file": "build_tools/sass/cloudbuild.yaml",
+        "hash": "5575318959402178324"
+      },
+      {
+        "file": "build_tools/sass/sass.bash",
+        "hash": "13878145660619167382"
+      },
+      {
+        "file": "cloudbuild.yaml",
+        "hash": "8095749403452359585"
+      },
+      {
+        "file": "docker/database.env",
+        "hash": "3892296660915633221"
+      },
+      {
+        "file": "docker/docker-compose.yml",
+        "hash": "5369880473284652445"
+      },
+      {
+        "file": "docker/readme.md",
+        "hash": "13218562161169969152"
+      },
+      {
+        "file": "docker/token.pickle",
+        "hash": "228857995527177875"
+      },
+      {
+        "file": "env.sample",
+        "hash": "16245579751422152174"
+      },
+      {
+        "file": "firebase.json",
+        "hash": "2799750155395289951"
+      },
+      {
+        "file": "firestore.indexes.json",
+        "hash": "10168258939385609953"
+      },
+      {
+        "file": "firestore.rules",
+        "hash": "14242531242133713971"
+      },
+      {
+        "file": "functions/.gitignore",
+        "hash": "879587422985287144"
+      },
+      {
+        "file": "functions/package.json",
+        "hash": "6981908987476518238"
+      },
+      {
+        "file": "functions/src/index.ts",
+        "hash": "18150108659693430218"
+      },
+      {
+        "file": "functions/tsconfig.json",
+        "hash": "1065957615995710747"
+      },
+      {
+        "file": "functions/tslint.json",
+        "hash": "15902671053909829042"
+      },
+      {
+        "file": "image-1.png",
+        "hash": "4108547940736270466"
+      },
+      {
+        "file": "image.png",
+        "hash": "16968188535280347211"
+      },
+      {
+        "file": "jest.config.js",
+        "hash": "10887276901537554792"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "8278665120952369726"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "4185368808439573122"
+      },
+      {
+        "file": "key.enc",
+        "hash": "5275691537569494262"
+      },
+      {
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "nx.json",
+        "hash": "17455681116943506872"
+      },
+      {
+        "file": "package.json",
+        "hash": "15160196517519115690"
+      },
+      {
+        "file": "tools/schematics/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "11695694397560102904"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "13262439880472424152"
+      },
+      {
+        "file": "tslint.json",
+        "hash": "9321919524861568283"
+      }
+    ]
+  }
+}
