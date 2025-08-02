@@ -40,7 +40,7 @@ Monorock is a monorepo that features:
 
 - Nestjs API deployable to Google Cloud Run
 - Angular Frontend, deployable to firebase
-- Continious build and integration with Google Cloud Build
+- Continuous build and integration with Google Cloud Build
 - CRUD operations with RBAC on PostgreSQL database
 
 ## PostgreSQL and TypeOrm
@@ -239,3 +239,30 @@ Run `nx dep-graph` to see a diagram of the dependencies of your projects.
 ## Further help
 
 Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
+
+## Refresh August 2025
+
+This repo has been neglected for a while, and it's time to give it some love. Let's update the dependencies, improve the documentation, and ensure everything is working smoothly.
+
+### Development Environment Setup
+
+- Running npm install to update dependencies
+  ![alt text](image.png)
+
+- Starting the PostGres container:
+
+```bash
+docker compose up -d postgres
+```
+
+This creates the database server with the default user and password as specified in the docker-compose.yml file.
+
+The compose file use to install PgAdmin4, but now I just use DBeaver for database management.
+The DBeaver connection settings are as follows:
+![alt text](image-1.png)
+
+### Todos
+
+- [ ] Update dependencies to the latest versions
+- [ ] Improve documentation for better clarity
+- [ ] Upgrade Angular and Nx to the latest versions
