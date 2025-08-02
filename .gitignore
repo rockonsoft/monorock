@@ -44,3 +44,6 @@ Thumbs.db
 apps/rockme/src/environments/*.ts
 
 /.angular
+
+# Nx cache
+/.nx/cache
