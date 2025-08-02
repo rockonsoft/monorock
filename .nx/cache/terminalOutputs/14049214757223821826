@@ -1,0 +1,19 @@
+[1m[33mOne or more browsers which are configured in the project's Browserslist configuration will be ignored as ES5 output is not supported by the Angular CLI.[39m[22m
+[1m[33mIgnored browsers: kaios 2.5, op_mini all[39m[22m
+- Generating browser application bundles (phase: setup)...
+[32m✔[39m Browser application bundle generation complete.
+[32m✔[39m Browser application bundle generation complete.
+- Copying assets...
+[32m✔[39m Copying assets complete.
+- Generating index html...
+[32m✔[39m Index html generation complete.
+[37m[0m[0m[39m
+[37m[0m[1mInitial chunk files[22m          [2m | [22m[1mNames[22m        [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m[0m[39m
+[37m[0m[32mmain.5a05ec67080a9c95.js[39m[37m     [2m | [22m[2mmain[22m         [2m | [22m[36m207.13 kB[39m[37m[2m | [22m               [36m54.21 kB[39m[37m[0m[39m
+[37m[0m[32mpolyfills.901351d2884d8f98.js[39m[37m[2m | [22m[2mpolyfills[22m    [2m | [22m [36m33.98 kB[39m[37m[2m | [22m               [36m11.10 kB[39m[37m[0m[39m
+[37m[0m[32mruntime.48f95f51576e3204.js[39m[37m  [2m | [22m[2mruntime[22m      [2m | [22m[36m890 bytes[39m[37m[2m | [22m              [36m512 bytes[39m[37m[0m[39m
+[37m[0m[32mstyles.ef46db3751d8e999.css[39m[37m  [2m | [22m[2mstyles[22m       [2m | [22m  [36m0 bytes[39m[37m[2m | [22m                      [36m-[39m[37m[0m[39m
+[37m[0m[0m[39m
+[37m[0m[1m [22m                            [2m | [22m[1mInitial total[22m[2m | [22m[1m241.98 kB[22m[2m | [22m               [1m65.81 kB[22m[0m[39m
+[37m[0m[0m[39m
+[37m[0mBuild at: [1m[37m2025-08-02T10:39:10.287Z[39m[37m[22m - Hash: [1m[37m8884cabe224fa4fb[39m[37m[22m - Time: [1m[37m9909[39m[37m[22mms[0m[39m

@@ -1,0 +1,3 @@
+[1m[33mOption "isolatedConfig" is deprecated: Automatic configuration of Webpack is deprecated in favor of an explicit 'webpack.config.js' file. This option will be removed in Nx 18. See https://nx.dev/recipes/webpack/webpack-config-setup.[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 107 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (11584050eb4437ff)

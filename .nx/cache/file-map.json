@@ -29,6 +29,8 @@
     "moment": "^2.29.4",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "primeng": "^17.0.0",
+    "firebaseui-angular": "^6.1.0",
     "rand-token": "^1.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
@@ -83,6 +85,79 @@
   "nxJsonPlugins": [],
   "fileMap": {
     "projectFileMap": {
+      "rockme-e2e": [
+        {
+          "file": "apps/rockme-e2e/.eslintrc.json",
+          "hash": "14060216369337943343"
+        },
+        {
+          "file": "apps/rockme-e2e/cypress.config.ts",
+          "hash": "15414076024138857470",
+          "deps": [
+            "npm:cypress",
+            "npm:@nx/cypress/plugins/cypress-preset"
+          ]
+        },
+        {
+          "file": "apps/rockme-e2e/cypress.json",
+          "hash": "756238211537985378"
+        },
+        {
+          "file": "apps/rockme-e2e/project.json",
+          "hash": "12570262915563621577"
+        },
+        {
+          "file": "apps/rockme-e2e/src/e2e/app.cy.ts",
+          "hash": "488500376404520639"
+        },
+        {
+          "file": "apps/rockme-e2e/src/fixtures/example.json",
+          "hash": "11614668686582597233"
+        },
+        {
+          "file": "apps/rockme-e2e/src/integration/api.spec.ts",
+          "hash": "316494529489692620"
+        },
+        {
+          "file": "apps/rockme-e2e/src/integration/app.spec.ts",
+          "hash": "14187550820439204836"
+        },
+        {
+          "file": "apps/rockme-e2e/src/plugins/index.js",
+          "hash": "1326590868367669499",
+          "deps": [
+            "npm:@nrwl/cypress/plugins/preprocessor"
+          ]
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/app.po.ts",
+          "hash": "11157016311132186162"
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/commands.ts",
+          "hash": "7314691991044890572"
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/e2e.ts",
+          "hash": "3666078656922506009"
+        },
+        {
+          "file": "apps/rockme-e2e/src/support/index.ts",
+          "hash": "3666078656922506009"
+        },
+        {
+          "file": "apps/rockme-e2e/tsconfig.e2e.json",
+          "hash": "17230193539068221751"
+        },
+        {
+          "file": "apps/rockme-e2e/tsconfig.json",
+          "hash": "15439127571515986436"
+        },
+        {
+          "file": "apps/rockme-e2e/tslint.json",
+          "hash": "17597373198831029592"
+        }
+      ],
       "rockme": [
         {
           "file": "apps/rockme/.eslintrc.json",
@@ -545,7 +620,7 @@
         },
         {
           "file": "apps/rockme/src/app/nx-welcome.component.ts",
-          "hash": "15646990963361671514",
+          "hash": "14543297291579324164",
           "deps": [
             "npm:@angular/core"
           ]
@@ -806,152 +881,6 @@
         {
           "file": "apps/rockme/tslint.json",
           "hash": "11194198826528636673"
-        }
-      ],
-      "api-interfaces": [
-        {
-          "file": "libs/api-interfaces/.eslintrc.json",
-          "hash": "2571322885143277782"
-        },
-        {
-          "file": "libs/api-interfaces/README.md",
-          "hash": "3162071937453905454"
-        },
-        {
-          "file": "libs/api-interfaces/jest.config.js",
-          "hash": "12848452879156891181"
-        },
-        {
-          "file": "libs/api-interfaces/jest.config.ts",
-          "hash": "11774145238905033531"
-        },
-        {
-          "file": "libs/api-interfaces/project.json",
-          "hash": "3240416195765216399"
-        },
-        {
-          "file": "libs/api-interfaces/src/index.ts",
-          "hash": "14692040394167312075"
-        },
-        {
-          "file": "libs/api-interfaces/src/lib/api-interfaces.module.ts",
-          "hash": "3969896789570788947",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/common"
-          ]
-        },
-        {
-          "file": "libs/api-interfaces/src/lib/api-interfaces.ts",
-          "hash": "15375149385690480764"
-        },
-        {
-          "file": "libs/api-interfaces/src/lib/models.ts",
-          "hash": "4503684555862603560"
-        },
-        {
-          "file": "libs/api-interfaces/src/lib/testing.ts",
-          "hash": "4996314514191924515"
-        },
-        {
-          "file": "libs/api-interfaces/src/lib/user.ts",
-          "hash": "10156246277428162941"
-        },
-        {
-          "file": "libs/api-interfaces/src/test-setup.ts",
-          "hash": "12935735732682149507",
-          "deps": [
-            "npm:jest-preset-angular/setup-jest"
-          ]
-        },
-        {
-          "file": "libs/api-interfaces/tsconfig.json",
-          "hash": "15487755565970508470"
-        },
-        {
-          "file": "libs/api-interfaces/tsconfig.lib.json",
-          "hash": "5796668385415907511"
-        },
-        {
-          "file": "libs/api-interfaces/tsconfig.spec.json",
-          "hash": "2927375835638640771"
-        },
-        {
-          "file": "libs/api-interfaces/tslint.json",
-          "hash": "17597373198831029592"
-        }
-      ],
-      "rockme-e2e": [
-        {
-          "file": "apps/rockme-e2e/.eslintrc.json",
-          "hash": "14060216369337943343"
-        },
-        {
-          "file": "apps/rockme-e2e/cypress.config.ts",
-          "hash": "15414076024138857470",
-          "deps": [
-            "npm:cypress",
-            "npm:@nx/cypress/plugins/cypress-preset"
-          ]
-        },
-        {
-          "file": "apps/rockme-e2e/cypress.json",
-          "hash": "756238211537985378"
-        },
-        {
-          "file": "apps/rockme-e2e/project.json",
-          "hash": "12570262915563621577"
-        },
-        {
-          "file": "apps/rockme-e2e/src/e2e/app.cy.ts",
-          "hash": "488500376404520639"
-        },
-        {
-          "file": "apps/rockme-e2e/src/fixtures/example.json",
-          "hash": "11614668686582597233"
-        },
-        {
-          "file": "apps/rockme-e2e/src/integration/api.spec.ts",
-          "hash": "316494529489692620"
-        },
-        {
-          "file": "apps/rockme-e2e/src/integration/app.spec.ts",
-          "hash": "14187550820439204836"
-        },
-        {
-          "file": "apps/rockme-e2e/src/plugins/index.js",
-          "hash": "1326590868367669499",
-          "deps": [
-            "npm:@nrwl/cypress/plugins/preprocessor"
-          ]
-        },
-        {
-          "file": "apps/rockme-e2e/src/support/app.po.ts",
-          "hash": "11157016311132186162"
-        },
-        {
-          "file": "apps/rockme-e2e/src/support/commands.ts",
-          "hash": "7314691991044890572"
-        },
-        {
-          "file": "apps/rockme-e2e/src/support/e2e.ts",
-          "hash": "3666078656922506009"
-        },
-        {
-          "file": "apps/rockme-e2e/src/support/index.ts",
-          "hash": "3666078656922506009"
-        },
-        {
-          "file": "apps/rockme-e2e/tsconfig.e2e.json",
-          "hash": "17230193539068221751"
-        },
-        {
-          "file": "apps/rockme-e2e/tsconfig.json",
-          "hash": "15439127571515986436"
-        },
-        {
-          "file": "apps/rockme-e2e/tslint.json",
-          "hash": "17597373198831029592"
         }
       ],
       "api": [
@@ -1523,6 +1452,79 @@
           ]
         }
       ],
+      "api-interfaces": [
+        {
+          "file": "libs/api-interfaces/.eslintrc.json",
+          "hash": "2571322885143277782"
+        },
+        {
+          "file": "libs/api-interfaces/README.md",
+          "hash": "3162071937453905454"
+        },
+        {
+          "file": "libs/api-interfaces/jest.config.js",
+          "hash": "12848452879156891181"
+        },
+        {
+          "file": "libs/api-interfaces/jest.config.ts",
+          "hash": "11774145238905033531"
+        },
+        {
+          "file": "libs/api-interfaces/project.json",
+          "hash": "3240416195765216399"
+        },
+        {
+          "file": "libs/api-interfaces/src/index.ts",
+          "hash": "14692040394167312075"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/api-interfaces.module.ts",
+          "hash": "3969896789570788947",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/api-interfaces.ts",
+          "hash": "15375149385690480764"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/models.ts",
+          "hash": "4503684555862603560"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/testing.ts",
+          "hash": "4996314514191924515"
+        },
+        {
+          "file": "libs/api-interfaces/src/lib/user.ts",
+          "hash": "10156246277428162941"
+        },
+        {
+          "file": "libs/api-interfaces/src/test-setup.ts",
+          "hash": "12935735732682149507",
+          "deps": [
+            "npm:jest-preset-angular/setup-jest"
+          ]
+        },
+        {
+          "file": "libs/api-interfaces/tsconfig.json",
+          "hash": "15487755565970508470"
+        },
+        {
+          "file": "libs/api-interfaces/tsconfig.lib.json",
+          "hash": "5796668385415907511"
+        },
+        {
+          "file": "libs/api-interfaces/tsconfig.spec.json",
+          "hash": "2927375835638640771"
+        },
+        {
+          "file": "libs/api-interfaces/tslint.json",
+          "hash": "17597373198831029592"
+        }
+      ],
       "api-e2e": [
         {
           "file": "apps/api-e2e/.eslintrc.json",
@@ -1572,6 +1574,10 @@
       {
         "file": ".editorconfig",
         "hash": "5443105041930014821"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "2751630777083566471"
       },
       {
         "file": ".firebaserc",
@@ -1786,8 +1792,12 @@
         "hash": "17455681116943506872"
       },
       {
+        "file": "package-lock.json",
+        "hash": "18101556921393798412"
+      },
+      {
         "file": "package.json",
-        "hash": "15160196517519115690"
+        "hash": "8836360274400636001"
       },
       {
         "file": "tools/schematics/.gitkeep",
