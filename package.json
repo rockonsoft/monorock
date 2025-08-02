@@ -23,7 +23,7 @@
     "@nestjs/typeorm": "^10.0.1",
     "@nestjsx/crud": "^5.0.0-alpha.3",
     "@nestjsx/crud-typeorm": "^5.0.0-alpha.3",
-    "@nx/angular": "^16.7.0",
+    "@nx/angular": "^21.3.11",
     "axios": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -39,7 +39,7 @@
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~16.2.0",
+    "@angular-devkit/build-angular": "~20.1.4",
     "@angular-devkit/core": "~16.2.0",
     "@angular-devkit/schematics": "~16.2.0",
     "@angular-eslint/eslint-plugin": "~16.0.0",
